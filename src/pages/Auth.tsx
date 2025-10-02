@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import aideLogo from "@/assets/aide-logo.png";
 
 export default function Auth() {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -42,9 +43,7 @@ export default function Auth() {
       {/* Left Panel - Sign In */}
       <div className="hidden md:flex md:w-1/2 bg-primary text-primary-foreground flex-col justify-center px-16 relative">
         <div className="absolute top-8 left-8">
-          <h1 className="text-5xl font-bold tracking-wider" style={{ fontFamily: 'Impact, sans-serif' }}>
-            AIDE
-          </h1>
+          <img src={aideLogo} alt="AIDE Logo" className="h-16" />
         </div>
         
         <div className="max-w-md">
@@ -158,9 +157,7 @@ export default function Auth() {
 
       {/* Mobile Sign In Section */}
       <div className="md:hidden w-full bg-primary text-primary-foreground p-8">
-        <h1 className="text-4xl font-bold tracking-wider mb-8" style={{ fontFamily: 'Impact, sans-serif' }}>
-          AIDE
-        </h1>
+        <img src={aideLogo} alt="AIDE Logo" className="h-12 mb-8" />
         <h2 className="text-3xl font-bold mb-4">Hello, Friend!</h2>
         <p className="text-lg mb-8">
           Sign in to continue your personalized journey with <span className="font-bold">AIDE</span>
