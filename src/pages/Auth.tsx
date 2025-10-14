@@ -8,21 +8,23 @@ import { supabase } from "@/integrations/supabase/client";
 
 export default function Auth() {
   const [isSignUp, setIsSignUp] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [signInEmail, setSignInEmail] = useState("");
+  const [signInPassword, setSignInPassword] = useState("");
+  const [signUpEmail, setSignUpEmail] = useState("");
+  const [signUpPassword, setSignUpPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const navigate = useNavigate();
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !password) {
+    if (!signInEmail || !signInPassword) {
       toast.error("Please fill in all fields");
       return;
     }
 
     const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
+      email: signInEmail,
+      password: signInPassword,
     });
 
     if (error) {
@@ -36,7 +38,7 @@ export default function Auth() {
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !password || !fullName) {
+    if (!signUpEmail || !signUpPassword || !fullName) {
       toast.error("Please fill in all fields");
       return;
     }
@@ -45,8 +47,8 @@ export default function Auth() {
     const lastName = lastNameParts.join(" ");
 
     const { error } = await supabase.auth.signUp({
-      email,
-      password,
+      email: signUpEmail,
+      password: signUpPassword,
       options: {
         emailRedirectTo: `${window.location.origin}/`,
         data: {
@@ -65,8 +67,17 @@ export default function Auth() {
     navigate("/dashboard");
   };
 
-  const handleGoogleAuth = () => {
-    toast.success("Google authentication coming soon!");
+  const handleGoogleAuth = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/dashboard`,
+      },
+    });
+
+    if (error) {
+      toast.error(error.message);
+    }
   };
 
   return (
@@ -87,16 +98,16 @@ export default function Auth() {
             <Input
               type="email"
               placeholder="Your Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={signInEmail}
+              onChange={(e) => setSignInEmail(e.target.value)}
               className="bg-primary border-2 border-primary-foreground text-primary-foreground placeholder:text-primary-foreground/70 h-14 text-lg rounded-full px-6"
             />
             <div className="flex gap-4">
               <Input
                 type="password"
                 placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={signInPassword}
+                onChange={(e) => setSignInPassword(e.target.value)}
                 className="bg-primary border-2 border-primary-foreground text-primary-foreground placeholder:text-primary-foreground/70 h-14 text-lg rounded-full px-6 flex-1"
               />
               <Button
@@ -164,16 +175,16 @@ export default function Auth() {
               <Input
                 type="email"
                 placeholder="Your Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={signUpEmail}
+                onChange={(e) => setSignUpEmail(e.target.value)}
                 className="bg-background border-2 border-input h-14 text-lg rounded-full px-6"
               />
             </div>
             <Input
               type="password"
               placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={signUpPassword}
+              onChange={(e) => setSignUpPassword(e.target.value)}
               className="bg-background border-2 border-input h-14 text-lg rounded-full px-6"
             />
             <Button
