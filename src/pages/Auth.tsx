@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import aideLogo from "@/assets/aide-logo.png";
+import { supabase } from "@/integrations/supabase/client";
 
 export default function Auth() {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -12,24 +13,54 @@ export default function Auth() {
   const [fullName, setFullName] = useState("");
   const navigate = useNavigate();
 
-  const handleSignIn = (e: React.FormEvent) => {
+  const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) {
       toast.error("Please fill in all fields");
       return;
     }
-    // Mock sign in - in production, integrate with your auth system
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+
     toast.success("Signed in successfully!");
     navigate("/dashboard");
   };
 
-  const handleSignUp = (e: React.FormEvent) => {
+  const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password || !fullName) {
       toast.error("Please fill in all fields");
       return;
     }
-    // Mock sign up - in production, integrate with your auth system
+
+    const [firstName, ...lastNameParts] = fullName.trim().split(" ");
+    const lastName = lastNameParts.join(" ");
+
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: `${window.location.origin}/`,
+        data: {
+          first_name: firstName,
+          last_name: lastName,
+        },
+      },
+    });
+
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+
     toast.success("Account created successfully!");
     navigate("/dashboard");
   };

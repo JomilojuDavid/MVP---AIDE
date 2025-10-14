@@ -1,6 +1,8 @@
 import { Sidebar } from "@/components/Sidebar";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 interface DashboardProps {
   showQuizPrompt?: boolean;
@@ -8,6 +10,30 @@ interface DashboardProps {
 
 export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
   const navigate = useNavigate();
+  const [firstName, setFirstName] = useState<string>("");
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        navigate("/auth");
+        return;
+      }
+
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("first_name")
+        .eq("id", user.id)
+        .single();
+
+      if (profile?.first_name) {
+        setFirstName(profile.first_name);
+      }
+    };
+
+    fetchProfile();
+  }, [navigate]);
 
   return (
     <div className="flex min-h-screen bg-background">
@@ -17,7 +43,9 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
         <div className="max-w-5xl mx-auto space-y-8">
           {/* Welcome Card */}
           <div className="bg-primary text-primary-foreground rounded-3xl p-8 md:p-12">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Welcome Back, Name!</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              Welcome Back{firstName ? `, ${firstName}` : ""}!
+            </h1>
             <p className="text-xl md:text-2xl">From Stuck to Clear & Confident.</p>
           </div>
 
