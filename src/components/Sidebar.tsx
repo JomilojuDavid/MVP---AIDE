@@ -1,7 +1,8 @@
-import { Home, Settings, Menu, HelpCircle } from "lucide-react";
+import { Home, Settings, Menu, HelpCircle, Brain, BookOpen, CheckSquare, BarChart3 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import aideLogo from "@/assets/aide-logo.png";
 
 interface SidebarProps {
   showTasksAndResources?: boolean;
@@ -15,9 +16,10 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
 
   const navItems = [
     { name: "Home", path: "/dashboard", icon: Home, show: true },
-    { name: "Settings", path: "/settings", icon: Settings, show: true },
-    { name: "Tasks", path: "/tasks", icon: Home, show: showTasksAndResources },
-    { name: "Resources", path: "/resources", icon: Settings, show: showTasksAndResources },
+    { name: "Assessment", path: "/quiz", icon: Brain, show: showTasksAndResources },
+    { name: "Resources", path: "/resources", icon: BookOpen, show: showTasksAndResources },
+    { name: "Tasks", path: "/tasks", icon: CheckSquare, show: showTasksAndResources },
+    { name: "Analytics", path: "/analytics", icon: BarChart3, show: showTasksAndResources },
   ];
 
   return (
@@ -33,15 +35,13 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed left-0 top-0 h-screen bg-primary text-primary-foreground w-64 flex flex-col transition-transform duration-300 z-40",
+          "fixed left-0 top-0 h-screen bg-background text-foreground w-64 flex flex-col transition-transform duration-300 z-40",
           !isOpen && "max-md:-translate-x-full"
         )}
       >
         {/* Logo */}
-        <div className="p-8 border-b border-primary-foreground/20">
-          <h1 className="text-4xl font-bold tracking-wider" style={{ fontFamily: 'Impact, sans-serif' }}>
-            AIDE
-          </h1>
+        <div className="p-8">
+          <img src={aideLogo} alt="AIDE Logo" className="h-20 w-auto" />
         </div>
 
         {/* Navigation */}
@@ -51,23 +51,25 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
               key={item.name}
               to={item.path}
               className={cn(
-                "flex items-center gap-4 px-8 py-4 transition-colors uppercase tracking-wide",
+                "flex items-center gap-4 px-8 py-4 transition-colors",
                 isActive(item.path)
-                  ? "bg-primary-foreground/20"
-                  : "hover:bg-primary-foreground/10"
+                  ? "text-primary font-semibold"
+                  : "text-foreground hover:text-primary"
               )}
             >
-              <item.icon className="w-6 h-6" />
-              <span className="font-medium">{item.name}</span>
+              <item.icon className="w-5 h-5" />
+              <span>{item.name}</span>
             </Link>
           ))}
         </nav>
 
         {/* Support Button */}
-        <div className="p-8 border-t border-primary-foreground/20">
-          <button className="flex items-center gap-3 text-primary-foreground hover:opacity-80 transition-opacity">
-            <HelpCircle className="w-6 h-6" />
-            <span className="font-medium uppercase tracking-wide">Support</span>
+        <div className="p-8">
+          <button className="flex items-center gap-3 text-foreground hover:text-primary transition-colors">
+            <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
+              <HelpCircle className="w-5 h-5" />
+            </div>
+            <span className="font-medium">Support</span>
           </button>
         </div>
       </aside>

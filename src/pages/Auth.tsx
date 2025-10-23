@@ -83,14 +83,14 @@ export default function Auth() {
   return (
     <div className="min-h-screen flex">
       {/* Left Panel - Sign In */}
-      <div className="hidden md:flex md:w-1/2 bg-primary text-primary-foreground flex-col justify-center px-16 relative">
+      <div className="hidden md:flex md:w-1/2 bg-background flex-col justify-center px-16 relative">
         <div className="absolute top-8 left-8">
           <img src={aideLogo} alt="AIDE Logo" className="h-16" />
         </div>
         
         <div className="max-w-md">
-          <h2 className="text-5xl font-bold mb-6">Hello, Friend!</h2>
-          <p className="text-xl mb-12 leading-relaxed">
+          <h2 className="text-5xl font-bold mb-6 text-primary">Hello, Friend!</h2>
+          <p className="text-xl mb-12 leading-relaxed text-foreground">
             Sign in to continue your personalized journey with <span className="font-bold">AIDE</span>—where mindset mastery meets business growth.
           </p>
 
@@ -100,7 +100,7 @@ export default function Auth() {
               placeholder="Your Email"
               value={signInEmail}
               onChange={(e) => setSignInEmail(e.target.value)}
-              className="bg-primary border-2 border-primary-foreground text-primary-foreground placeholder:text-primary-foreground/70 h-14 text-lg rounded-full px-6"
+              className="bg-background border-2 border-primary text-primary placeholder:text-primary/50 h-14 text-lg rounded-full px-6"
             />
             <div className="flex gap-4">
               <Input
@@ -108,18 +108,18 @@ export default function Auth() {
                 placeholder="Password"
                 value={signInPassword}
                 onChange={(e) => setSignInPassword(e.target.value)}
-                className="bg-primary border-2 border-primary-foreground text-primary-foreground placeholder:text-primary-foreground/70 h-14 text-lg rounded-full px-6 flex-1"
+                className="bg-background border-2 border-primary text-primary placeholder:text-primary/50 h-14 text-lg rounded-full px-6 flex-1"
               />
               <Button
                 type="submit"
-                className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 h-14 px-10 text-lg font-bold rounded-full uppercase"
+                className="bg-primary text-primary-foreground hover:bg-primary/90 h-14 px-10 text-lg font-bold rounded-full uppercase"
               >
                 Sign In
               </Button>
             </div>
             <button
               type="button"
-              className="text-primary-foreground hover:underline text-sm"
+              className="text-foreground hover:underline text-sm"
             >
               Forgot Password
             </button>
@@ -128,15 +128,15 @@ export default function Auth() {
       </div>
 
       {/* Right Panel - Sign Up */}
-      <div className="w-full md:w-1/2 bg-background flex flex-col justify-center px-8 md:px-16">
+      <div className="w-full md:w-1/2 bg-primary flex flex-col justify-center px-8 md:px-16">
         <div className="max-w-md mx-auto w-full">
-          <h2 className="text-5xl font-bold text-primary mb-12 text-center">
+          <h2 className="text-5xl font-bold text-primary-foreground mb-12 text-center">
             Create an Account
           </h2>
 
           <Button
             onClick={handleGoogleAuth}
-            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground h-16 text-lg font-bold rounded-full mb-8 flex items-center justify-center gap-3"
+            className="w-full bg-primary-foreground hover:bg-primary-foreground/90 text-primary h-16 text-lg font-bold rounded-full mb-8 flex items-center justify-center gap-3"
           >
             <svg className="w-6 h-6" viewBox="0 0 24 24">
               <path
@@ -159,7 +159,7 @@ export default function Auth() {
             Continue With Google
           </Button>
 
-          <p className="text-center text-muted-foreground mb-8">
+          <p className="text-center text-primary-foreground/80 mb-8">
             or use your Email for registration
           </p>
 
@@ -170,14 +170,14 @@ export default function Auth() {
                 placeholder="Full Name"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                className="bg-background border-2 border-input h-14 text-lg rounded-full px-6"
+                className="bg-primary-foreground border-none text-foreground h-14 text-lg rounded-full px-6 placeholder:text-muted-foreground"
               />
               <Input
                 type="email"
                 placeholder="Your Email"
                 value={signUpEmail}
                 onChange={(e) => setSignUpEmail(e.target.value)}
-                className="bg-background border-2 border-input h-14 text-lg rounded-full px-6"
+                className="bg-primary-foreground border-none text-foreground h-14 text-lg rounded-full px-6 placeholder:text-muted-foreground"
               />
             </div>
             <Input
@@ -185,11 +185,11 @@ export default function Auth() {
               placeholder="Password"
               value={signUpPassword}
               onChange={(e) => setSignUpPassword(e.target.value)}
-              className="bg-background border-2 border-input h-14 text-lg rounded-full px-6"
+              className="bg-primary-foreground border-none text-foreground h-14 text-lg rounded-full px-6 placeholder:text-muted-foreground"
             />
             <Button
               type="submit"
-              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground h-16 text-xl font-bold rounded-full uppercase"
+              className="w-full bg-primary-foreground text-primary hover:bg-primary-foreground/90 h-16 text-xl font-bold rounded-full uppercase"
             >
               Sign Up
             </Button>
@@ -198,26 +198,30 @@ export default function Auth() {
       </div>
 
       {/* Mobile Sign In Section */}
-      <div className="md:hidden w-full bg-primary text-primary-foreground p-8">
+      <div className="md:hidden w-full bg-background p-8">
         <img src={aideLogo} alt="AIDE Logo" className="h-12 mb-8" />
-        <h2 className="text-3xl font-bold mb-4">Hello, Friend!</h2>
-        <p className="text-lg mb-8">
+        <h2 className="text-3xl font-bold mb-4 text-primary">Hello, Friend!</h2>
+        <p className="text-lg mb-8 text-foreground">
           Sign in to continue your personalized journey with <span className="font-bold">AIDE</span>
         </p>
         <form onSubmit={handleSignIn} className="space-y-4">
           <Input
             type="email"
             placeholder="Your Email"
-            className="bg-primary border-2 border-primary-foreground text-primary-foreground placeholder:text-primary-foreground/70 h-12 rounded-full"
+            value={signInEmail}
+            onChange={(e) => setSignInEmail(e.target.value)}
+            className="bg-background border-2 border-primary text-primary placeholder:text-primary/50 h-12 rounded-full"
           />
           <Input
             type="password"
             placeholder="Password"
-            className="bg-primary border-2 border-primary-foreground text-primary-foreground placeholder:text-primary-foreground/70 h-12 rounded-full"
+            value={signInPassword}
+            onChange={(e) => setSignInPassword(e.target.value)}
+            className="bg-background border-2 border-primary text-primary placeholder:text-primary/50 h-12 rounded-full"
           />
           <Button
             type="submit"
-            className="w-full bg-primary-foreground text-primary hover:bg-primary-foreground/90 h-12 font-bold rounded-full"
+            className="w-full bg-primary text-primary-foreground hover:bg-primary/90 h-12 font-bold rounded-full"
           >
             SIGN IN
           </Button>

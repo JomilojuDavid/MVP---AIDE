@@ -12,6 +12,7 @@ import Submission from "./pages/Submission";
 import Settings from "./pages/Settings";
 import Tasks from "./pages/Tasks";
 import Resources from "./pages/Resources";
+import Analytics from "./pages/Analytics";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,7 @@ const App = () => (
           <Route path="/settings" element={<Settings />} />
           <Route path="/tasks" element={<Tasks />} />
           <Route path="/resources" element={<Resources />} />
+          <Route path="/analytics" element={<Analytics />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
