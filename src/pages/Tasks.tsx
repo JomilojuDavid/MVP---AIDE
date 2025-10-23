@@ -1,4 +1,5 @@
 import { Sidebar } from "@/components/Sidebar";
+import { TopBar } from "@/components/TopBar";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
@@ -56,13 +57,14 @@ export default function Tasks() {
   }, [navigate]);
 
   return (
-    <div className="flex min-h-screen bg-primary">
+    <div className="flex min-h-screen bg-primary relative">
       <Sidebar showTasksAndResources />
+      <TopBar />
       
       <main className="flex-1 md:ml-64 p-8 md:p-12">
         <div className="max-w-5xl mx-auto space-y-8">
           {/* Header */}
-          <div className="bg-card rounded-3xl p-8 md:p-12 shadow-lg">
+          <div className="bg-white rounded-3xl p-8 md:p-12">
             <h1 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">
               Complete Your AIDE Tasks{firstName ? `, ${firstName}` : ""}!
             </h1>
@@ -72,7 +74,7 @@ export default function Tasks() {
           </div>
 
           {/* Tasks Card */}
-          <div className="bg-card rounded-3xl p-8 md:p-12 shadow-lg">
+          <div className="bg-white rounded-3xl p-8 md:p-12">
             <div className="space-y-8">
               {tasksList.map((task) => (
                 <div key={task.id} className="flex items-start gap-4 pb-6 border-b border-border last:border-0">
@@ -90,7 +92,7 @@ export default function Tasks() {
               ))}
               
               <div className="flex justify-end pt-4">
-                <Button className="bg-primary text-primary-foreground hover:bg-primary/90 h-14 px-10 text-lg font-bold rounded-full">
+                <Button className="bg-primary text-white hover:bg-primary/90 h-14 px-10 text-lg font-bold rounded-full">
                   Start Tasks
                 </Button>
               </div>
@@ -98,7 +100,7 @@ export default function Tasks() {
           </div>
 
           {/* Quick Tips */}
-          <div className="bg-primary border-4 border-primary-foreground rounded-3xl p-8 text-primary-foreground">
+          <div className="bg-primary border-4 border-secondary rounded-3xl p-8 text-white">
             <h3 className="text-2xl font-bold mb-6">Quick Tips</h3>
             <ul className="space-y-3 text-lg list-disc list-inside">
               <li>Start your day with clarity.</li>

@@ -1,4 +1,5 @@
 import { Sidebar } from "@/components/Sidebar";
+import { TopBar } from "@/components/TopBar";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
@@ -31,13 +32,14 @@ export default function Analytics() {
   }, [navigate]);
 
   return (
-    <div className="flex min-h-screen bg-primary">
+    <div className="flex min-h-screen bg-primary relative">
       <Sidebar showTasksAndResources />
+      <TopBar />
       
       <main className="flex-1 md:ml-64 p-8 md:p-12">
         <div className="max-w-5xl mx-auto space-y-8">
           {/* Header */}
-          <div className="bg-card rounded-3xl p-8 md:p-12 shadow-lg">
+          <div className="bg-white rounded-3xl p-8 md:p-12">
             <h1 className="text-4xl md:text-5xl font-bold mb-4 text-primary">
               Performance Analytics
             </h1>
@@ -48,28 +50,28 @@ export default function Analytics() {
 
           {/* Metrics Grid */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div className="bg-card rounded-3xl p-6 shadow-lg">
+            <div className="bg-white rounded-3xl p-6">
               <h3 className="text-sm font-medium text-muted-foreground mb-2">
                 Assessment Completed
               </h3>
               <p className="text-5xl font-bold text-foreground">0</p>
             </div>
 
-            <div className="bg-secondary rounded-3xl p-6 shadow-lg">
+            <div className="bg-secondary rounded-3xl p-6">
               <h3 className="text-sm font-medium text-foreground mb-2">
                 Tasks Done
               </h3>
               <p className="text-5xl font-bold text-foreground">0</p>
             </div>
 
-            <div className="bg-secondary rounded-3xl p-6 shadow-lg">
+            <div className="bg-secondary rounded-3xl p-6">
               <h3 className="text-sm font-medium text-foreground mb-2">
                 Time Spent
               </h3>
               <p className="text-5xl font-bold text-foreground">0<span className="text-2xl">hr</span></p>
             </div>
 
-            <div className="bg-card rounded-3xl p-6 shadow-lg">
+            <div className="bg-white rounded-3xl p-6">
               <h3 className="text-sm font-medium text-muted-foreground mb-2">
                 Average Progress
               </h3>
@@ -78,10 +80,10 @@ export default function Analytics() {
           </div>
 
           {/* Goal Tracker */}
-          <div className="bg-card rounded-3xl p-8 md:p-12 shadow-lg">
+          <div className="bg-white rounded-3xl p-8 md:p-12">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
-                <svg className="w-5 h-5 text-primary-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
@@ -90,7 +92,7 @@ export default function Analytics() {
             <p className="text-lg text-muted-foreground mb-6">
               You've achieved 0% of your monthly goals. Keep up the consistency!
             </p>
-            <div className="relative w-full h-6 bg-muted rounded-full overflow-hidden">
+            <div className="relative w-full h-6 bg-gray-200 rounded-full overflow-hidden">
               <div 
                 className="absolute top-0 left-0 h-full bg-primary rounded-full transition-all duration-500"
                 style={{ width: '0%' }}
@@ -99,7 +101,7 @@ export default function Analytics() {
           </div>
 
           {/* Recent Activity */}
-          <div className="bg-card rounded-3xl p-8 md:p-12 shadow-lg">
+          <div className="bg-white rounded-3xl p-8 md:p-12">
             <div className="flex items-center gap-3 mb-6">
               <svg className="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />

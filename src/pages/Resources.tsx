@@ -1,4 +1,5 @@
 import { Sidebar } from "@/components/Sidebar";
+import { TopBar } from "@/components/TopBar";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -59,13 +60,14 @@ export default function Resources() {
   }, [navigate]);
 
   return (
-    <div className="flex min-h-screen bg-primary">
+    <div className="flex min-h-screen bg-primary relative">
       <Sidebar showTasksAndResources />
+      <TopBar />
       
       <main className="flex-1 md:ml-64 p-8 md:p-12">
         <div className="max-w-5xl mx-auto space-y-8">
           {/* Header */}
-          <div className="bg-card rounded-3xl p-8 md:p-12 shadow-lg">
+          <div className="bg-white rounded-3xl p-8 md:p-12">
             <h1 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">
               Here's Your Resource Library{firstName ? `, ${firstName}` : ""}!
             </h1>
@@ -79,10 +81,10 @@ export default function Resources() {
             {resources.map((resource) => (
               <div
                 key={resource.id}
-                className={`rounded-3xl p-8 shadow-lg ${
+                className={`rounded-3xl p-8 ${
                   resource.variant === "secondary"
                     ? "bg-secondary"
-                    : "bg-card"
+                    : "bg-white"
                 }`}
               >
                 <h3 className="text-2xl font-bold mb-4 text-foreground">
@@ -91,7 +93,7 @@ export default function Resources() {
                 <p className="text-muted-foreground mb-6">
                   {resource.description}
                 </p>
-                <Button className="bg-primary text-primary-foreground hover:bg-primary/90 h-12 px-8 font-bold rounded-full">
+                <Button className="bg-primary text-white hover:bg-primary/90 h-12 px-8 font-bold rounded-full">
                   Access Now
                 </Button>
               </div>
@@ -99,7 +101,7 @@ export default function Resources() {
           </div>
 
           {/* Quick Tips */}
-          <div className="bg-primary border-4 border-primary-foreground rounded-3xl p-8 text-primary-foreground">
+          <div className="bg-primary border-4 border-secondary rounded-3xl p-8 text-white">
             <h3 className="text-2xl font-bold mb-6">Quick Tips</h3>
             <ul className="space-y-3 text-lg list-disc list-inside">
               <li>Start your day with clarity.</li>

@@ -1,4 +1,5 @@
 import { Sidebar } from "@/components/Sidebar";
+import { TopBar } from "@/components/TopBar";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -36,25 +37,26 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
   }, [navigate]);
 
   return (
-    <div className="flex min-h-screen bg-primary">
+    <div className="flex min-h-screen bg-primary relative">
       <Sidebar showTasksAndResources={!showQuizPrompt} />
+      <TopBar />
       
       <main className="flex-1 md:ml-64 p-8 md:p-12">
         <div className="max-w-5xl mx-auto space-y-8">
           {/* Welcome Card */}
-          <div className="bg-card rounded-3xl p-8 md:p-12 shadow-lg">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">
-              Welcome{firstName ? `, ${firstName}` : ""}!
+          <div className="bg-white rounded-3xl p-8 md:p-12">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              Welcome, <span className="text-primary">{firstName || "Name"}!</span>
             </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground">Moving From Stuck to Clear & Confident.</p>
+            <p className="text-xl md:text-2xl text-foreground">Moving From Stuck to Clear & Confident.</p>
           </div>
 
           {/* AIDE Roadmap */}
-          <div className="bg-card rounded-3xl p-8 md:p-12 shadow-lg">
+          <div className="bg-white rounded-3xl p-8 md:p-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-8 text-foreground">Your AIDE Roadmap</h2>
             
             {/* Progress Bar */}
-            <div className="relative w-full h-6 bg-muted rounded-full mb-6 overflow-hidden">
+            <div className="relative w-full h-6 bg-gray-200 rounded-full mb-6 overflow-hidden">
               <div 
                 className="absolute top-0 left-0 h-full bg-primary rounded-full transition-all duration-500"
                 style={{ width: showQuizPrompt ? '25%' : '50%' }}
@@ -75,13 +77,13 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
 
           {showQuizPrompt ? (
             /* Quiz Prompt Card */
-            <div className="bg-card rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6 shadow-lg">
+            <div className="bg-white rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6">
               <p className="text-xl md:text-2xl text-foreground">
                 To unlock your personalized dashboard, take our quick quiz.
               </p>
               <Button
                 onClick={() => navigate("/quiz")}
-                className="bg-primary text-primary-foreground hover:bg-primary/90 h-14 px-10 text-lg font-bold rounded-full uppercase transition-all whitespace-nowrap"
+                className="bg-primary text-white hover:bg-primary/90 h-14 px-10 text-lg font-bold rounded-full uppercase transition-all whitespace-nowrap"
               >
                 Take Quiz
               </Button>
@@ -90,7 +92,7 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
             /* Full Dashboard Content */
             <div className="grid md:grid-cols-2 gap-8">
               {/* Daily Prompt */}
-              <div className="bg-primary border-4 border-primary-foreground rounded-3xl p-8 text-primary-foreground">
+              <div className="bg-primary border-4 border-secondary rounded-3xl p-8 text-white">
                 <h3 className="text-2xl font-bold mb-4">Daily Prompt</h3>
                 <p className="text-lg">
                   "Set one clear intention for today and take one step toward it."
@@ -98,7 +100,7 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
               </div>
 
               {/* Progress Tracker */}
-              <div className="bg-primary border-4 border-primary-foreground rounded-3xl p-8 text-primary-foreground">
+              <div className="bg-primary border-4 border-secondary rounded-3xl p-8 text-white">
                 <h3 className="text-2xl font-bold mb-4">Progress Tracker</h3>
                 <p className="text-lg">
                   You've completed 2 of 4 stages this month.
@@ -106,7 +108,7 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
               </div>
 
               {/* Quick Tips */}
-              <div className="md:col-span-2 bg-primary border-4 border-primary-foreground rounded-3xl p-8 text-primary-foreground">
+              <div className="md:col-span-2 bg-primary border-4 border-secondary rounded-3xl p-8 text-white">
                 <h3 className="text-2xl font-bold mb-6">Quick Tips</h3>
                 <ul className="space-y-3 text-lg list-disc list-inside">
                   <li>Start your day with clarity.</li>
