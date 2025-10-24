@@ -14,8 +14,8 @@ export default function Submission() {
 
       {/* Support */}
       <div className="absolute bottom-8 left-8 flex items-center gap-3">
-        <div className="w-12 h-12 rounded-full bg-gray-300" />
-        <span className="text-lg font-medium">Support</span>
+        <div className="w-12 h-12 rounded-full bg-gray-200" />
+        <span className="text-lg font-medium text-foreground">Support</span>
       </div>
       
       <main className="flex items-center justify-center w-full">

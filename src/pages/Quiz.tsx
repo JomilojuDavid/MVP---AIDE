@@ -29,15 +29,15 @@ export default function Quiz() {
         <Button
           variant="ghost"
           size="icon"
-          className="w-10 h-10 rounded-full bg-white hover:bg-white/90 text-foreground"
+          className="w-10 h-10 text-white hover:text-white/80"
         >
-          <Settings className="w-5 h-5" />
+          <Settings className="w-6 h-6" />
         </Button>
       </div>
 
       {/* Support */}
       <div className="absolute bottom-8 left-8 flex items-center gap-3 z-10">
-        <div className="w-12 h-12 rounded-full bg-gray-300" />
+        <div className="w-12 h-12 rounded-full bg-white" />
         <span className="text-lg font-medium text-white">Support</span>
       </div>
 

@@ -51,10 +51,10 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
               key={item.name}
               to={item.path}
               className={cn(
-                "flex items-center gap-4 px-8 py-4 transition-colors",
+                "flex items-center gap-4 px-8 py-4 transition-colors rounded-lg",
                 isActive(item.path)
-                  ? "text-primary font-semibold"
-                  : "text-foreground hover:text-primary"
+                  ? "bg-secondary text-foreground font-semibold"
+                  : "text-foreground hover:bg-secondary/50"
               )}
             >
               <item.icon className="w-5 h-5" />
