@@ -43,7 +43,7 @@ export default function Analytics() {
             <h1 className="text-4xl md:text-5xl font-bold mb-4 text-primary">
               Performance Analytics
             </h1>
-            <p className="text-xl text-muted-foreground">
+            <p className="text-xl text-foreground">
               Track your growth and engagement based on your AIDE activity.
             </p>
           </div>
@@ -82,21 +82,16 @@ export default function Analytics() {
           {/* Goal Tracker */}
           <div className="bg-white rounded-3xl p-8 md:p-12">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
-                <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
+              <svg className="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
               <h3 className="text-2xl font-bold text-foreground">Goal Tracker</h3>
             </div>
-            <p className="text-lg text-muted-foreground mb-6">
+            <p className="text-lg text-foreground mb-6">
               You've achieved 0% of your monthly goals. Keep up the consistency!
             </p>
-            <div className="relative w-full h-6 bg-gray-200 rounded-full overflow-hidden">
-              <div 
-                className="absolute top-0 left-0 h-full bg-primary rounded-full transition-all duration-500"
-                style={{ width: '0%' }}
-              />
+            <div className="relative w-full h-6 bg-secondary rounded-full overflow-hidden">
+              <div className="absolute top-0 left-0 h-full w-4 bg-primary rounded-full" />
             </div>
           </div>
 

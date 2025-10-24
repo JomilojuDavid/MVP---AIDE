@@ -68,10 +68,10 @@ export default function Resources() {
         <div className="max-w-5xl mx-auto space-y-8">
           {/* Header */}
           <div className="bg-white rounded-3xl p-8 md:p-12">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">
-              Here's Your Resource Library{firstName ? `, ${firstName}` : ""}!
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              Here's Your Resource Library, <span className="text-primary">{firstName || "Name"}!</span>
             </h1>
-            <p className="text-xl text-muted-foreground">
+            <p className="text-xl text-foreground">
               Access your personalized materials to enhance your AIDE journey.
             </p>
           </div>
@@ -90,10 +90,10 @@ export default function Resources() {
                 <h3 className="text-2xl font-bold mb-4 text-foreground">
                   {resource.title}
                 </h3>
-                <p className="text-muted-foreground mb-6">
+                <p className="text-foreground mb-6">
                   {resource.description}
                 </p>
-                <Button className="bg-primary text-white hover:bg-primary/90 h-12 px-8 font-bold rounded-full">
+                <Button className="bg-primary text-white hover:bg-primary/90 h-12 px-8 text-lg font-bold rounded-full">
                   Access Now
                 </Button>
               </div>

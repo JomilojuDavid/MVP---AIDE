@@ -24,7 +24,7 @@ export default function Quiz() {
   return (
     <div className="min-h-screen bg-primary relative p-8 md:p-12">
       {/* Top Bar */}
-      <div className="absolute top-8 left-8 right-8 flex items-center justify-between">
+      <div className="absolute top-8 left-8 right-8 flex items-center justify-between z-10">
         <img src={aideLogo} alt="AIDE Logo" className="h-16" />
         <Button
           variant="ghost"
@@ -33,6 +33,12 @@ export default function Quiz() {
         >
           <Settings className="w-5 h-5" />
         </Button>
+      </div>
+
+      {/* Support */}
+      <div className="absolute bottom-8 left-8 flex items-center gap-3 z-10">
+        <div className="w-12 h-12 rounded-full bg-gray-300" />
+        <span className="text-lg font-medium text-white">Support</span>
       </div>
 
       <div className="max-w-5xl mx-auto pt-28">
@@ -109,12 +115,12 @@ export default function Quiz() {
 
           {/* Submit Button */}
           <div className="flex justify-end mt-8">
-            <Button
+            <button
               onClick={handleSubmit}
-              className="bg-primary text-white hover:bg-primary/90 h-14 px-12 text-lg font-bold rounded-md uppercase"
+              className="text-primary text-xl font-bold hover:underline"
             >
               NEXT&gt;&gt;
-            </Button>
+            </button>
           </div>
         </div>
       </div>

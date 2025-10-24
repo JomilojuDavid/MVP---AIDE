@@ -16,7 +16,7 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
 
   const navItems = [
     { name: "Home", path: "/dashboard", icon: Home, show: true },
-    { name: "Assessment", path: "/quiz", icon: Brain, show: showTasksAndResources },
+    { name: "Assessment", path: "/assessment", icon: Brain, show: showTasksAndResources },
     { name: "Resources", path: "/resources", icon: BookOpen, show: showTasksAndResources },
     { name: "Tasks", path: "/tasks", icon: CheckSquare, show: showTasksAndResources },
     { name: "Analytics", path: "/analytics", icon: BarChart3, show: showTasksAndResources },

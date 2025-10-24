@@ -9,6 +9,7 @@ import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import Quiz from "./pages/Quiz";
 import Submission from "./pages/Submission";
+import Assessment from "./pages/Assessment";
 import Settings from "./pages/Settings";
 import Tasks from "./pages/Tasks";
 import Resources from "./pages/Resources";
@@ -29,6 +30,7 @@ const App = () => (
           <Route path="/dashboard-full" element={<Dashboard showQuizPrompt={false} />} />
           <Route path="/quiz" element={<Quiz />} />
           <Route path="/submission" element={<Submission />} />
+          <Route path="/assessment" element={<Assessment />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/tasks" element={<Tasks />} />
           <Route path="/resources" element={<Resources />} />

@@ -65,10 +65,10 @@ export default function Tasks() {
         <div className="max-w-5xl mx-auto space-y-8">
           {/* Header */}
           <div className="bg-white rounded-3xl p-8 md:p-12">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">
-              Complete Your AIDE Tasks{firstName ? `, ${firstName}` : ""}!
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              Complete Your AIDE Tasks, <span className="text-primary">{firstName || "Name"}!</span>
             </h1>
-            <p className="text-xl text-muted-foreground">
+            <p className="text-xl text-foreground">
               Each step brings you closer to clarity, confidence, and execution.
             </p>
           </div>
@@ -86,7 +86,7 @@ export default function Tasks() {
                     >
                       {task.title}
                     </label>
-                    <p className="text-muted-foreground">{task.description}</p>
+                    <p className="text-foreground">{task.description}</p>
                   </div>
                 </div>
               ))}
