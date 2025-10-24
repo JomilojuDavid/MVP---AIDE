@@ -38,7 +38,7 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
 
   return (
     <div className="flex min-h-screen bg-primary relative">
-      <Sidebar showTasksAndResources={!showQuizPrompt} />
+      <Sidebar showTasksAndResources={true} />
       <TopBar />
       
       <main className="flex-1 md:ml-64 p-8 md:p-12">
