@@ -112,10 +112,10 @@ const handleGoogleSignIn = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${window.location.origin}/dashboard`, // Redirect after sign in
+        redirectTo: `${window.location.origin}/dashboard`,
         queryParams: {
           access_type: "offline",
-          prompt: "consent", // ensures refresh token
+          prompt: "consent",
         },
       },
     });
@@ -131,7 +131,7 @@ const handleGoogleSignIn = async () => {
     setLoading(false);
   }
 };
-
+  
   // Animation presets
   const sectionVariants = {
     hidden: { opacity: 0, y: 80, scale: 0.98 },
