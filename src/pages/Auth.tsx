@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,15 +12,10 @@ export default function Auth() {
   const [signInEmail, setSignInEmail] = useState("");
   const [signInPassword, setSignInPassword] = useState("");
 
-  const handleSignUp = (e: FormEvent<HTMLFormElement>) => e.preventDefault();
-  const handleSignIn = (e: FormEvent<HTMLFormElement>) => e.preventDefault();
+  const handleSignUp = (e: React.FormEvent) => e.preventDefault();
+  const handleSignIn = (e: React.FormEvent) => e.preventDefault();
 
-  const handleChange =
-    (setter: (value: string) => void) =>
-    (e: ChangeEvent<HTMLInputElement>) =>
-      setter(e.target.value);
-
-  // Animation variants
+  // Motion variants
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: (i: number) => ({
@@ -31,13 +26,13 @@ export default function Auth() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row overflow-hidden rounded-3xl shadow-lg">
-      {/* Left Panel - Sign In (White, 40%) */}
+    <div className="min-h-screen flex flex-col md:flex-row overflow-hidden">
+      {/* Left Panel - Sign In (White) */}
       <motion.div
         initial={{ opacity: 0, x: -60, scale: 0.95 }}
         animate={{ opacity: 1, x: 0, scale: 1 }}
         transition={{ duration: 1, delay: 0.3 }}
-        className="flex-[0.4] bg-white flex items-center justify-center p-8 md:p-16"
+        className="flex-1 bg-white flex items-center justify-center p-8 md:p-16"
       >
         <div className="w-full max-w-md">
           <motion.img
@@ -48,16 +43,16 @@ export default function Auth() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.6 }}
           />
-
+          
           <motion.h1
-            className="text-4xl md:text-5xl font-bold text-primary mb-4"
+            className="text-4xl md:text-5xl font-bold text-primary mb-6"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.6 }}
           >
             Hello, Friend!
           </motion.h1>
-
+          
           <motion.p
             className="text-foreground mb-8 leading-relaxed"
             initial={{ opacity: 0, y: 20 }}
@@ -65,8 +60,7 @@ export default function Auth() {
             transition={{ delay: 0.7, duration: 0.6 }}
           >
             Sign in to continue your personalized journey with{" "}
-            <span className="font-bold">AIDE</span>—where mindset mastery meets
-            business growth.
+            <span className="font-bold">AIDE</span>—where mindset mastery meets business growth.
           </motion.p>
 
           <motion.form
@@ -76,13 +70,18 @@ export default function Auth() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.8, duration: 0.6 }}
           >
-            <motion.div custom={0} variants={itemVariants} initial="hidden" animate="visible">
+            <motion.div
+              custom={0}
+              variants={itemVariants}
+              initial="hidden"
+              animate="visible"
+            >
               <Input
                 type="email"
                 placeholder="Your Email"
                 value={signInEmail}
-                onChange={handleChange(setSignInEmail)}
-                className="h-14 rounded-full border-2 border-primary text-primary placeholder:text-primary/70 focus-visible:ring-primary"
+                onChange={(e) => setSignInEmail(e.target.value)}
+                className="h-14 rounded-full border-2 border-primary bg-white text-foreground placeholder:text-primary/60 focus-visible:ring-primary"
               />
             </motion.div>
 
@@ -97,8 +96,8 @@ export default function Auth() {
                 type="password"
                 placeholder="Password"
                 value={signInPassword}
-                onChange={handleChange(setSignInPassword)}
-                className="h-14 rounded-full border-2 border-primary text-primary placeholder:text-primary/70 focus-visible:ring-primary"
+                onChange={(e) => setSignInPassword(e.target.value)}
+                className="h-14 rounded-full border-2 border-primary bg-white text-foreground placeholder:text-primary/60 focus-visible:ring-primary"
               />
               <Button
                 type="submit"
@@ -110,7 +109,7 @@ export default function Auth() {
 
             <motion.button
               type="button"
-              className="text-black font-medium hover:text-primary transition-colors"
+              className="text-foreground hover:text-primary transition-colors"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.2 }}
@@ -121,12 +120,12 @@ export default function Auth() {
         </div>
       </motion.div>
 
-      {/* Right Panel - Sign Up (Red, 60%) */}
+      {/* Right Panel - Sign Up (Red) */}
       <motion.div
         initial={{ opacity: 0, x: 60, scale: 0.95 }}
         animate={{ opacity: 1, x: 0, scale: 1 }}
         transition={{ duration: 1.1, delay: 0.5 }}
-        className="flex-[0.6] bg-primary flex items-center justify-center p-8 md:p-16 rounded-t-3xl md:rounded-l-none md:rounded-r-3xl"
+        className="flex-1 bg-primary flex items-center justify-center p-8 md:p-16"
       >
         <div className="w-full max-w-md">
           <motion.h2
@@ -180,15 +179,15 @@ export default function Auth() {
                 type="text"
                 placeholder="Full Name"
                 value={fullName}
-                onChange={handleChange(setFullName)}
-                className="h-14 rounded-full bg-white/95 border-0 text-foreground placeholder:text-muted focus-visible:ring-white"
+                onChange={(e) => setFullName(e.target.value)}
+                className="h-14 rounded-full bg-white/95 border-0 text-foreground placeholder:text-muted-foreground"
               />
               <Input
                 type="email"
                 placeholder="Your Email"
                 value={signUpEmail}
-                onChange={handleChange(setSignUpEmail)}
-                className="h-14 rounded-full bg-white/95 border-0 text-foreground placeholder:text-muted focus-visible:ring-white"
+                onChange={(e) => setSignUpEmail(e.target.value)}
+                className="h-14 rounded-full bg-white/95 border-0 text-foreground placeholder:text-muted-foreground"
               />
             </motion.div>
 
@@ -202,8 +201,8 @@ export default function Auth() {
                 type="password"
                 placeholder="Password"
                 value={signUpPassword}
-                onChange={handleChange(setSignUpPassword)}
-                className="h-14 rounded-full bg-white/95 border-0 text-foreground placeholder:text-muted focus-visible:ring-white"
+                onChange={(e) => setSignUpPassword(e.target.value)}
+                className="h-14 rounded-full bg-white/95 border-0 text-foreground placeholder:text-muted-foreground"
               />
             </motion.div>
 
