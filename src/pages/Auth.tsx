@@ -201,7 +201,7 @@ export default function Auth() {
               onChange={(e) => setSignInEmail(e.target.value)}
               className="h-[65px] sm:h-[70px] rounded-[0px] border border-[#DF1516]
                          text-[24px] font-normal font-['Poppins'] 
-                         placeholder:text-[22px] placeholder:font-normal
+                         placeholder:text-[19px] placeholder:font-normal
                          placeholder:text-[#DF1516] focus-visible:ring-[#DF1516]"
             />
             <div className="relative">
@@ -212,7 +212,7 @@ export default function Auth() {
                 onChange={(e) => setSignInPassword(e.target.value)}
                 className="h-[83px] sm:h-[70px] rounded-[0px] border border-[#DF1516] 
                            pr-[150px] text-[24px] font-normal font-['Poppins']
-                           placeholder:text-[22px] placeholder:font-normal
+                           placeholder:text-[19px] placeholder:font-normal
                            placeholder:text-[#DF1516]"
               />
               <Button
@@ -283,7 +283,7 @@ export default function Auth() {
                 className="h-[75px] sm:h-[83px] rounded-[0px] border border-white 
                            bg-white/95 text-black placeholder:text-gray-500 
                            text-[24px] font-normal font-['Poppins'] 
-                           placeholder:text-[22px] placeholder:font-normal"
+                           placeholder:text-[19px] placeholder:font-normal"
               />
               <Input
                 type="email"
@@ -293,7 +293,7 @@ export default function Auth() {
                 className="h-[75px] sm:h-[83px] rounded-[0px] border border-white 
                            bg-white/95 text-black placeholder:text-gray-500 
                            text-[24px] font-normal font-['Poppins'] 
-                           placeholder:text-[22px] placeholder:font-normal"
+                           placeholder:text-[19px] placeholder:font-normal"
               />
             </div>
 
@@ -305,7 +305,7 @@ export default function Auth() {
               className="h-[75px] sm:h-[83px] w-full rounded-[0px] border border-white 
                          bg-white/95 text-black placeholder:text-gray-500 
                          text-[24px] font-normal font-['Poppins'] 
-                         placeholder:text-[22px] placeholder:font-normal"
+                         placeholder:text-[19px] placeholder:font-normal"
             />
 
             <Button
