@@ -187,77 +187,98 @@ export default function Auth() {
 </motion.form>
      </motion.div>
 
-      {/* Right Panel - Sign Up (Red, 65%) */}
-      <motion.div
-        initial={{ opacity: 0, x: 60 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 1.1, ease: "easeOut" }}
-        className="w-[65%] bg-[#DF1516] flex flex-col items-center justify-center p-16"
+      {/* Right Panel - Sign Up (Red) */}
+<motion.div
+  initial={{ opacity: 0, x: 60, scale: 0.95 }}
+  animate={{ opacity: 1, x: 0, scale: 1 }}
+  transition={{ duration: 1.1, delay: 0.5 }}
+  className="flex-1 bg-[#DF1516] flex items-center justify-center p-8 md:p-16"
+>
+  <div className="w-full max-w-[720px] flex flex-col items-center">
+    {/* Heading */}
+    <motion.h2
+      className="text-[40px] font-extrabold text-white font-['Montserrat'] text-center leading-[100%]"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.8, duration: 0.6 }}
+    >
+      Create an Account
+    </motion.h2>
+
+    {/* Google Sign-in */}
+    <motion.div
+      className="mt-10 mb-6 w-[603px]"
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ delay: 0.9, duration: 0.4 }}
+    >
+      <Button
+        type="button"
+        onClick={handleGoogleSignIn}
+        disabled={loading}
+        className="w-full h-[83px] rounded-[30px] bg-white text-[#DF1516] font-semibold text-[20px] hover:bg-white/90 flex items-center justify-center gap-3"
       >
-        <motion.h2
-          className="text-white font-[Montserrat] font-extrabold text-[40px] mb-6 text-center leading-[100%]"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.5 }}
-        >
-          Create an Account
-        </motion.h2>
+        <FcGoogle size={26} />
+        Continue With Google
+      </Button>
+    </motion.div>
 
-        <Button
-          type="button"
-          onClick={handleGoogleSignIn}
-          disabled={loading}
-          className="w-[80%] h-12 rounded-xl bg-white text-[#DF1516] font-semibold hover:bg-white/90 flex items-center justify-center gap-3 mb-4"
-        >
-          <FcGoogle size={24} />
-          Continue with Google
-        </Button>
+    {/* Divider Text */}
+    <motion.p
+      className="text-white text-center font-['Poppins'] text-[20px] mt-2 mb-8"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 1, duration: 0.5 }}
+    >
+      or use your Email for registration
+    </motion.p>
 
-        <p className="text-white text-[18px] mb-4 font-[Poppins]">
-          or use your Email for registration
-        </p>
+    {/* Sign Up Form */}
+    <motion.form
+      onSubmit={handleSignUp}
+      className="flex flex-col items-center gap-5"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 1.1, duration: 0.6, ease: 'easeOut' }}
+    >
+      {/* Row: Full Name + Email */}
+      <div className="flex gap-5">
+        <Input
+          type="text"
+          placeholder="Full Name"
+          value={fullName}
+          onChange={(e) => setFullName(e.target.value)}
+          className="w-[283px] h-[83px] rounded-[30px] border border-white/60 bg-white/95 text-[#000] text-[20px] font-['Poppins'] placeholder:text-[#000000]/60 px-5 focus:outline-none focus:ring-0"
+        />
+        <Input
+          type="email"
+          placeholder="Your Email"
+          value={signUpEmail}
+          onChange={(e) => setSignUpEmail(e.target.value)}
+          className="w-[283px] h-[83px] rounded-[30px] border border-white/60 bg-white/95 text-[#000] text-[20px] font-['Poppins'] placeholder:text-[#000000]/60 px-5 focus:outline-none focus:ring-0"
+        />
+      </div>
 
-        <motion.form
-          onSubmit={handleSignUp}
-          className="w-[80%] flex flex-col gap-4"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5, duration: 0.6 }}
-        >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <Input
-              type="text"
-              placeholder="Full Name"
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-              className="h-12 rounded-xl bg-white border-0 text-[18px] placeholder:text-gray-500 px-5"
-            />
-            <Input
-              type="email"
-              placeholder="Your Email"
-              value={signUpEmail}
-              onChange={(e) => setSignUpEmail(e.target.value)}
-              className="h-12 rounded-xl bg-white border-0 text-[18px] placeholder:text-gray-500 px-5"
-            />
-          </div>
+      {/* Password Field */}
+      <Input
+        type="password"
+        placeholder="Password"
+        value={signUpPassword}
+        onChange={(e) => setSignUpPassword(e.target.value)}
+        className="w-[603px] h-[83px] rounded-[30px] border border-white/60 bg-white/95 text-[#000] text-[20px] font-['Poppins'] placeholder:text-[#000000]/60 px-5 focus:outline-none focus:ring-0"
+      />
 
-          <Input
-            type="password"
-            placeholder="Password"
-            value={signUpPassword}
-            onChange={(e) => setSignUpPassword(e.target.value)}
-            className="h-12 rounded-xl bg-white border-0 text-[18px] placeholder:text-gray-500 px-5"
-          />
-
-          <Button
-            type="submit"
-            disabled={loading}
-            className="w-full h-12 rounded-xl bg-white text-[#DF1516] font-bold text-lg hover:bg-white/90"
-          >
-            {loading ? "SIGNING UP..." : "SIGN UP"}
-          </Button>
-        </motion.form>
-      </motion.div>
+      {/* Sign Up Button */}
+      <Button
+        type="submit"
+        disabled={loading}
+        className="mt-4 w-[603px] h-[83px] bg-white text-[#DF1516] text-[20px] font-semibold rounded-[30px] hover:bg-white/90 transition-all duration-300"
+      >
+        {loading ? "CREATING ACCOUNT..." : "SIGN UP"}
+      </Button>
+    </motion.form>
+  </div>
+</motion.div>
     </div>
   );
 }
