@@ -187,18 +187,17 @@ export default function Auth() {
 </motion.form>
      </motion.div>
 
-      {/* Right Panel - Sign Up (Red) */}
-{/* Right Panel - Sign Up (Red) */}
+     {/* Right Panel - Sign Up (Red) */}
 <motion.div
   initial={{ opacity: 0, x: 60, scale: 0.95 }}
   animate={{ opacity: 1, x: 0, scale: 1 }}
   transition={{ duration: 1.1, delay: 0.5 }}
   className="flex-1 bg-[#DF1516] flex items-center justify-center p-8 md:p-12"
 >
-  <div className="w-full max-w-[760px] flex flex-col items-center scale-[1.1]">
+  <div className="w-full max-w-[700px] flex flex-col items-center scale-[0.85]">
     {/* Heading */}
     <motion.h2
-      className="text-[44px] font-extrabold text-white font-['Montserrat'] text-center leading-[100%] mb-4"
+      className="text-[44px] font-extrabold text-white font-['Montserrat'] text-center leading-[100%] mb-3"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.8, duration: 0.6 }}
@@ -208,7 +207,7 @@ export default function Auth() {
 
     {/* Google Sign-in */}
     <motion.div
-      className="mt-8 mb-5 w-[620px]"
+      className="mt-5 mb-4 w-[580px]"
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ delay: 0.9, duration: 0.4 }}
@@ -217,16 +216,16 @@ export default function Auth() {
         type="button"
         onClick={handleGoogleSignIn}
         disabled={loading}
-        className="w-full h-[88px] rounded-[28px] bg-white text-[#DF1516] font-semibold text-[22px] hover:bg-white/90 flex items-center justify-center gap-3"
+        className="w-full h-[76px] rounded-[28px] bg-white text-[#DF1516] font-semibold text-[20px] hover:bg-white/90 flex items-center justify-center gap-3"
       >
-        <FcGoogle size={28} />
+        <FcGoogle size={26} />
         Continue With Google
       </Button>
     </motion.div>
 
     {/* Divider Text */}
     <motion.p
-      className="text-white text-center font-['Poppins'] text-[22px] mt-1 mb-6 leading-[100%]"
+      className="text-white text-center font-['Poppins'] text-[20px] mt-1 mb-4 leading-[100%]"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: 1, duration: 0.5 }}
@@ -237,26 +236,26 @@ export default function Auth() {
     {/* Sign Up Form */}
     <motion.form
       onSubmit={handleSignUp}
-      className="flex flex-col items-center gap-4"
+      className="flex flex-col items-center gap-3"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 1.1, duration: 0.6, ease: 'easeOut' }}
     >
       {/* Row: Full Name + Email */}
-      <div className="flex gap-4">
+      <div className="flex gap-3">
         <Input
           type="text"
           placeholder="Full Name"
           value={fullName}
           onChange={(e) => setFullName(e.target.value)}
-          className="w-[295px] h-[88px] rounded-[28px] border border-white/60 bg-white/95 text-[#000] text-[22px] font-['Poppins'] placeholder:text-[#000000]/60 px-6 focus:outline-none focus:ring-0"
+          className="w-[260px] h-[76px] rounded-[26px] border border-white/60 bg-white/95 text-[#000] text-[20px] font-['Poppins'] placeholder:text-[#000000]/60 px-5 focus:outline-none focus:ring-0"
         />
         <Input
           type="email"
           placeholder="Your Email"
           value={signUpEmail}
           onChange={(e) => setSignUpEmail(e.target.value)}
-          className="w-[295px] h-[88px] rounded-[28px] border border-white/60 bg-white/95 text-[#000] text-[22px] font-['Poppins'] placeholder:text-[#000000]/60 px-6 focus:outline-none focus:ring-0"
+          className="w-[260px] h-[76px] rounded-[26px] border border-white/60 bg-white/95 text-[#000] text-[20px] font-['Poppins'] placeholder:text-[#000000]/60 px-5 focus:outline-none focus:ring-0"
         />
       </div>
 
@@ -266,14 +265,14 @@ export default function Auth() {
         placeholder="Password"
         value={signUpPassword}
         onChange={(e) => setSignUpPassword(e.target.value)}
-        className="w-[620px] h-[88px] rounded-[28px] border border-white/60 bg-white/95 text-[#000] text-[22px] font-['Poppins'] placeholder:text-[#000000]/60 px-6 focus:outline-none focus:ring-0"
+        className="w-[560px] h-[76px] rounded-[26px] border border-white/60 bg-white/95 text-[#000] text-[20px] font-['Poppins'] placeholder:text-[#000000]/60 px-5 focus:outline-none focus:ring-0"
       />
 
       {/* Sign Up Button */}
       <Button
         type="submit"
         disabled={loading}
-        className="mt-3 w-[620px] h-[88px] bg-white text-[#DF1516] text-[22px] font-semibold rounded-[28px] hover:bg-white/90 transition-all duration-300"
+        className="mt-2 w-[560px] h-[76px] bg-white text-[#DF1516] text-[20px] font-semibold rounded-[26px] hover:bg-white/90 transition-all duration-300"
       >
         {loading ? "CREATING ACCOUNT..." : "SIGN UP"}
       </Button>
