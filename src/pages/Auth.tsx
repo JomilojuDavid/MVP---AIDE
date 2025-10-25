@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { FcGoogle } from "react-icons/fc";
+import aideLogo from "@/assets/aide-logo.png";
 
 export default function Auth() {
-  const [isSignUp, setIsSignUp] = useState(false);
   const [fullName, setFullName] = useState("");
   const [signUpEmail, setSignUpEmail] = useState("");
   const [signUpPassword, setSignUpPassword] = useState("");
@@ -16,211 +16,212 @@ export default function Auth() {
   const handleSignIn = (e: React.FormEvent) => e.preventDefault();
 
   // Motion variants
-  const containerVariants = {
-    hidden: { opacity: 0, scale: 0.98 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: { duration: 0.8, ease: "easeOut" },
-    },
-  };
-
   const itemVariants = {
-    hidden: { opacity: 0, y: 20, scale: 0.97 },
+    hidden: { opacity: 0, y: 20 },
     visible: (i: number) => ({
       opacity: 1,
       y: 0,
-      scale: 1,
       transition: { delay: 0.2 + i * 0.1, duration: 0.5 },
     }),
   };
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row items-center justify-center bg-primary text-white overflow-hidden px-4">
-      {/* Desktop Panels */}
+    <div className="min-h-screen flex flex-col md:flex-row overflow-hidden">
+      {/* Left Panel - Sign In (White) */}
       <motion.div
         initial={{ opacity: 0, x: -60, scale: 0.95 }}
         animate={{ opacity: 1, x: 0, scale: 1 }}
-        transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
-        className="hidden md:flex flex-1 items-center justify-center"
-      >
-        <h1 className="text-5xl font-extrabold tracking-tight">Welcome Back!</h1>
-      </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0, x: 60, scale: 0.95 }}
-        animate={{ opacity: 1, x: 0, scale: 1 }}
-        transition={{ duration: 1.1, delay: 0.5, ease: "easeOut" }}
-        className="hidden md:flex flex-1 items-center justify-center"
+        transition={{ duration: 1, delay: 0.3 }}
+        className="flex-1 bg-white flex items-center justify-center p-8 md:p-16"
       >
         <div className="w-full max-w-md">
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            className="bg-white/10 backdrop-blur-md rounded-3xl p-8 shadow-xl"
+          <motion.img
+            src={aideLogo}
+            alt="AIDE Logo"
+            className="h-20 mb-12"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.6 }}
+          />
+          
+          <motion.h1
+            className="text-4xl md:text-5xl font-bold text-primary mb-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.6 }}
+          >
+            Hello, Friend!
+          </motion.h1>
+          
+          <motion.p
+            className="text-foreground mb-8 leading-relaxed"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7, duration: 0.6 }}
+          >
+            Sign in to continue your personalized journey with{" "}
+            <span className="font-bold">AIDE</span>—where mindset mastery meets business growth.
+          </motion.p>
+
+          <motion.form
+            onSubmit={handleSignIn}
+            className="space-y-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8, duration: 0.6 }}
           >
             <motion.div
-              className="flex justify-center mb-6"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.9, duration: 0.4 }}
+              custom={0}
+              variants={itemVariants}
+              initial="hidden"
+              animate="visible"
             >
+              <Input
+                type="email"
+                placeholder="Your Email"
+                value={signInEmail}
+                onChange={(e) => setSignInEmail(e.target.value)}
+                className="h-14 rounded-full border-2 border-primary bg-white text-foreground placeholder:text-primary/60 focus-visible:ring-primary"
+              />
+            </motion.div>
+
+            <motion.div
+              custom={1}
+              variants={itemVariants}
+              initial="hidden"
+              animate="visible"
+              className="flex gap-2"
+            >
+              <Input
+                type="password"
+                placeholder="Password"
+                value={signInPassword}
+                onChange={(e) => setSignInPassword(e.target.value)}
+                className="h-14 rounded-full border-2 border-primary bg-white text-foreground placeholder:text-primary/60 focus-visible:ring-primary"
+              />
               <Button
-                type="button"
-                variant="outline"
-                className="w-full flex items-center justify-center gap-3 bg-white text-black rounded-full h-14 hover:scale-[1.02] transition-transform duration-300"
+                type="submit"
+                className="h-14 px-10 rounded-full bg-primary text-white font-semibold hover:bg-primary/90 whitespace-nowrap"
               >
-                <FcGoogle size={22} />
-                Continue with Google
+                SIGN IN
               </Button>
             </motion.div>
 
-            <AnimatePresence mode="wait">
-              {isSignUp ? (
-                <motion.form
-                  key="signup"
-                  onSubmit={handleSignUp}
-                  initial="hidden"
-                  animate="visible"
-                  exit={{ opacity: 0, y: 30 }}
-                  transition={{ duration: 0.5 }}
-                  className="space-y-4"
-                >
-                  {[0, 1, 2, 3].map((i) => (
-                    <motion.div
-                      key={i}
-                      custom={i}
-                      variants={itemVariants}
-                      initial="hidden"
-                      animate="visible"
-                    >
-                      {i === 0 && (
-                        <Input
-                          type="text"
-                          placeholder="Full Name"
-                          value={fullName}
-                          onChange={(e) => setFullName(e.target.value)}
-                          className="auth-input"
-                        />
-                      )}
-                      {i === 1 && (
-                        <Input
-                          type="email"
-                          placeholder="Your Email"
-                          value={signUpEmail}
-                          onChange={(e) => setSignUpEmail(e.target.value)}
-                          className="auth-input"
-                        />
-                      )}
-                      {i === 2 && (
-                        <Input
-                          type="password"
-                          placeholder="Password"
-                          value={signUpPassword}
-                          onChange={(e) => setSignUpPassword(e.target.value)}
-                          className="auth-input"
-                        />
-                      )}
-                      {i === 3 && (
-                        <Button
-                          type="submit"
-                          className="auth-btn bg-white text-primary hover:bg-white/90"
-                        >
-                          Sign Up
-                        </Button>
-                      )}
-                    </motion.div>
-                  ))}
-                </motion.form>
-              ) : (
-                <motion.form
-                  key="signin"
-                  onSubmit={handleSignIn}
-                  initial="hidden"
-                  animate="visible"
-                  exit={{ opacity: 0, y: -30 }}
-                  transition={{ duration: 0.5 }}
-                  className="space-y-4"
-                >
-                  {[0, 1, 2].map((i) => (
-                    <motion.div
-                      key={i}
-                      custom={i}
-                      variants={itemVariants}
-                      initial="hidden"
-                      animate="visible"
-                    >
-                      {i === 0 && (
-                        <Input
-                          type="email"
-                          placeholder="Email"
-                          value={signInEmail}
-                          onChange={(e) => setSignInEmail(e.target.value)}
-                          className="auth-input"
-                        />
-                      )}
-                      {i === 1 && (
-                        <Input
-                          type="password"
-                          placeholder="Password"
-                          value={signInPassword}
-                          onChange={(e) => setSignInPassword(e.target.value)}
-                          className="auth-input"
-                        />
-                      )}
-                      {i === 2 && (
-                        <Button
-                          type="submit"
-                          className="auth-btn bg-white text-primary hover:bg-white/90"
-                        >
-                          Sign In
-                        </Button>
-                      )}
-                    </motion.div>
-                  ))}
-                </motion.form>
-              )}
-            </AnimatePresence>
-
-            <motion.p
-              className="text-center mt-6 cursor-pointer underline text-white/80 hover:text-white"
-              onClick={() => setIsSignUp(!isSignUp)}
+            <motion.button
+              type="button"
+              className="text-foreground hover:text-primary transition-colors"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.2 }}
             >
-              {isSignUp ? "Already have an account? Sign In" : "Don’t have an account? Sign Up"}
-            </motion.p>
-          </motion.div>
+              Forgot Password
+            </motion.button>
+          </motion.form>
         </div>
       </motion.div>
 
-      {/* Mobile View */}
-      <div className="md:hidden w-full max-w-sm py-10">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: 40 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 1, ease: "easeOut" }}
-          className="bg-white/10 backdrop-blur-md rounded-3xl p-6 shadow-lg"
-        >
+      {/* Right Panel - Sign Up (Red) */}
+      <motion.div
+        initial={{ opacity: 0, x: 60, scale: 0.95 }}
+        animate={{ opacity: 1, x: 0, scale: 1 }}
+        transition={{ duration: 1.1, delay: 0.5 }}
+        className="flex-1 bg-primary flex items-center justify-center p-8 md:p-16"
+      >
+        <div className="w-full max-w-md">
+          <motion.h2
+            className="text-4xl md:text-5xl font-bold text-white mb-8 text-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8, duration: 0.6 }}
+          >
+            Create an Account
+          </motion.h2>
+
           <motion.div
-            className="flex justify-center mb-6"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6, duration: 0.5 }}
+            className="mb-6"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.9, duration: 0.4 }}
           >
             <Button
               type="button"
-              variant="outline"
-              className="w-full flex items-center justify-center gap-3 bg-white text-black rounded-full h-14 hover:scale-[1.02] transition-transform duration-300"
+              className="w-full h-14 rounded-full bg-white text-primary font-semibold hover:bg-white/90 flex items-center justify-center gap-3"
             >
-              <FcGoogle size={22} />
-              Continue with Google
+              <FcGoogle size={24} />
+              Continue With Google
             </Button>
           </motion.div>
-        </motion.div>
-      </div>
+
+          <motion.p
+            className="text-white text-center mb-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1, duration: 0.5 }}
+          >
+            or use your Email for registration
+          </motion.p>
+
+          <motion.form
+            onSubmit={handleSignUp}
+            className="space-y-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.1, duration: 0.6 }}
+          >
+            <motion.div
+              custom={0}
+              variants={itemVariants}
+              initial="hidden"
+              animate="visible"
+              className="grid grid-cols-1 md:grid-cols-2 gap-4"
+            >
+              <Input
+                type="text"
+                placeholder="Full Name"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                className="h-14 rounded-full bg-white/95 border-0 text-foreground placeholder:text-muted-foreground"
+              />
+              <Input
+                type="email"
+                placeholder="Your Email"
+                value={signUpEmail}
+                onChange={(e) => setSignUpEmail(e.target.value)}
+                className="h-14 rounded-full bg-white/95 border-0 text-foreground placeholder:text-muted-foreground"
+              />
+            </motion.div>
+
+            <motion.div
+              custom={1}
+              variants={itemVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              <Input
+                type="password"
+                placeholder="Password"
+                value={signUpPassword}
+                onChange={(e) => setSignUpPassword(e.target.value)}
+                className="h-14 rounded-full bg-white/95 border-0 text-foreground placeholder:text-muted-foreground"
+              />
+            </motion.div>
+
+            <motion.div
+              custom={2}
+              variants={itemVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              <Button
+                type="submit"
+                className="w-full h-14 rounded-full bg-white text-primary font-bold text-lg hover:bg-white/90"
+              >
+                SIGN UP
+              </Button>
+            </motion.div>
+          </motion.form>
+        </div>
+      </motion.div>
     </div>
   );
 }
