@@ -157,7 +157,7 @@ export default function Auth() {
         <motion.img
           src={aideLogo}
           alt="AIDE Logo"
-          className="h-14 md:h-16 mb-6 absolute top-6 left-6 md:top-10 md:left-10"
+          className="h-[64px] md:h-[74px] mb-6 absolute top-6 left-6 md:top-10 md:left-10"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.7 }}
@@ -245,11 +245,11 @@ export default function Auth() {
         variants={sectionVariants}
         initial="hidden"
         animate={rightControls}
-        className="md:flex-[0.6] bg-[#DF1516] flex items-center justify-center p-6 sm:p-10 md:p-16"
+        className="md:flex-[0.6] bg-[#DF1516] flex items-center justify-center p-8 sm:p-12 md:p-20"
       >
-        <div className="w-full max-w-md">
+        <div className="w-full max-w-lg">
           <motion.h2
-            className="text-3xl sm:text-4xl font-bold text-white mb-8 text-center font-['Montserrat']"
+            className="text-4xl sm:text-5xl font-extrabold text-white mb-10 text-center font-['Montserrat']"
             variants={fadeItem}
             custom={0}
             initial="hidden"
@@ -262,38 +262,38 @@ export default function Auth() {
             type="button"
             onClick={handleGoogleSignIn}
             disabled={loading}
-            className="w-full h-[65px] sm:h-[70px] rounded-[0px] bg-white text-[#DF1516] 
-                       font-semibold hover:bg-white/90 flex items-center justify-center gap-1"
+            className="w-full h-[78px] sm:h-[85px] rounded-[0px] bg-white text-[#DF1516] 
+                       font-semibold hover:bg-white/90 flex items-center justify-center gap-2 text-[20px]"
           >
-            <FcGoogle size={30} />
+            <FcGoogle size={34} />
             Continue With Google
           </Button>
 
-          <p className="text-white text-center my-6 font-['Poppins']">
+          <p className="text-white text-center my-8 font-['Poppins'] text-[20px]">
             or use your Email for registration
           </p>
 
-          <motion.form onSubmit={handleSignUp} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <motion.form onSubmit={handleSignUp} className="space-y-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <Input
                 type="text"
                 placeholder="Full Name"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                className="h-[75px] sm:h-[83px] rounded-[0px] border border-white 
+                className="h-[82px] sm:h-[90px] rounded-[0px] border border-white 
                            bg-white/95 text-black placeholder:text-gray-500 
-                           text-[24px] font-normal font-['Poppins'] 
-                           placeholder:text-[19px] placeholder:font-normal"
+                           text-[26px] font-normal font-['Poppins'] 
+                           placeholder:text-[17px] placeholder:font-normal"
               />
               <Input
                 type="email"
                 placeholder="Your Email"
                 value={signUpEmail}
                 onChange={(e) => setSignUpEmail(e.target.value)}
-                className="h-[75px] sm:h-[83px] rounded-[0px] border border-white 
+                className="h-[82px] sm:h-[90px] rounded-[0px] border border-white 
                            bg-white/95 text-black placeholder:text-gray-500 
-                           text-[24px] font-normal font-['Poppins'] 
-                           placeholder:text-[19px] placeholder:font-normal"
+                           text-[26px] font-normal font-['Poppins'] 
+                           placeholder:text-[17px] placeholder:font-normal"
               />
             </div>
 
@@ -302,17 +302,17 @@ export default function Auth() {
               placeholder="Password"
               value={signUpPassword}
               onChange={(e) => setSignUpPassword(e.target.value)}
-              className="h-[75px] sm:h-[83px] w-full rounded-[0px] border border-white 
+              className="h-[82px] sm:h-[90px] w-full rounded-[0px] border border-white 
                          bg-white/95 text-black placeholder:text-gray-500 
-                         text-[24px] font-normal font-['Poppins'] 
-                         placeholder:text-[19px] placeholder:font-normal"
+                         text-[26px] font-normal font-['Poppins'] 
+                         placeholder:text-[17px] placeholder:font-normal"
             />
 
             <Button
               type="submit"
               disabled={loading}
-              className="w-full h-[75px] sm:h-[83px] rounded-[0px] bg-white text-[#DF1516] 
-                         font-bold text-lg hover:bg-white/90 font-['Poppins']"
+              className="w-full h-[82px] sm:h-[90px] rounded-[0px] bg-white text-[#DF1516] 
+                         font-bold text-xl hover:bg-white/90 font-['Poppins']"
             >
               {loading ? "SIGNING UP..." : "SIGN UP"}
             </Button>
