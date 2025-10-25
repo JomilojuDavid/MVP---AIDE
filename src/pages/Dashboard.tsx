@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { motion } from "framer-motion";
 
 interface DashboardProps {
   showQuizPrompt?: boolean;
@@ -45,25 +44,15 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
       <main className="flex-1 md:ml-64 p-8 md:p-12">
         <div className="max-w-5xl mx-auto space-y-8">
           {/* Welcome Card */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="bg-white rounded-3xl p-8 md:p-12"
-          >
+          <div className="bg-white rounded-3xl p-8 md:p-12">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
               Welcome, <span className="text-primary">{firstName || "Name"}!</span>
             </h1>
             <p className="text-xl md:text-2xl text-foreground">Moving From Stuck to Clear & Confident.</p>
-          </motion.div>
+          </div>
 
           {/* AIDE Roadmap */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="bg-white rounded-3xl p-8 md:p-12"
-          >
+          <div className="bg-white rounded-3xl p-8 md:p-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-8 text-foreground">Your AIDE Roadmap</h2>
             
             {/* Progress Bar */}
@@ -84,16 +73,11 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
               <span>→</span>
               <span>Execution</span>
             </div>
-          </motion.div>
+          </div>
 
           {showQuizPrompt ? (
             /* Quiz Prompt Card */
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-              className="bg-white rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6"
-            >
+            <div className="bg-white rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6">
               <p className="text-xl md:text-2xl text-foreground">
                 To unlock your personalized dashboard, take our quick quiz.
               </p>
@@ -103,15 +87,10 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
               >
                 Take Quiz
               </Button>
-            </motion.div>
+            </div>
           ) : (
             /* Full Dashboard Content */
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-              className="grid md:grid-cols-2 gap-8"
-            >
+            <div className="grid md:grid-cols-2 gap-8">
               {/* Daily Prompt */}
               <div className="bg-primary border-4 border-secondary rounded-3xl p-8 text-white">
                 <h3 className="text-2xl font-bold mb-4">Daily Prompt</h3>
@@ -137,7 +116,7 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
                   <li>Review wins weekly.</li>
                 </ul>
               </div>
-            </motion.div>
+            </div>
           )}
         </div>
       </main>
