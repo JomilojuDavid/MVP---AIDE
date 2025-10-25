@@ -1,339 +1,303 @@
-import { useState, useRef, useEffect } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-import aideLogo from "@/assets/aide-logo.png";
+import { useState, useEffect, useRef } from "react";
+import { motion, useAnimation } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { FcGoogle } from "react-icons/fc";
+import aideLogo from "@/assets/aide-logo.png";
+import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
-/**
- * Auth.tsx
- * - Sign Up is default (landing)
- * - Crossfade to Sign In when toggled
- * - Uses a safe online mockup image for red background
- */
-
-const TAB_MOCKUP =
-  "https://images.unsplash.com/photo-1581090700227-1e37b190418e?auto=format&fit=crop&w=1000&q=80";
-const PRIMARY = "#DF1516";
-
-export default function Auth(): JSX.Element {
-  const [showSignIn, setShowSignIn] = useState(false); // false => show Sign Up
+export default function Auth() {
+  const [fullName, setFullName] = useState("");
+  const [signUpEmail, setSignUpEmail] = useState("");
+  const [signUpPassword, setSignUpPassword] = useState("");
+  const [signInEmail, setSignInEmail] = useState("");
+  const [signInPassword, setSignInPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    // small mount flag so initial animations behave predictably
-    setMounted(true);
-  }, []);
+  const { toast } = useToast();
 
-  // Crossfade variants
-  const fade = {
-    initial: { opacity: 0, scale: 0.995 },
-    animate: { opacity: 1, scale: 1, transition: { duration: 0.45, ease: "easeOut" } },
-    exit: { opacity: 0, scale: 0.995, transition: { duration: 0.35, ease: "easeIn" } },
+  // Scroll-triggered animations
+  const leftControls = useAnimation();
+  const rightControls = useAnimation();
+  const leftRef = useRef<HTMLDivElement>(null);
+  const rightRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            if (entry.target === leftRef.current) leftControls.start("visible");
+            if (entry.target === rightRef.current) rightControls.start("visible");
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    if (leftRef.current) observer.observe(leftRef.current);
+    if (rightRef.current) observer.observe(rightRef.current);
+
+    return () => observer.disconnect();
+  }, [leftControls, rightControls]);
+
+  const handleSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const nameParts = fullName.trim().split(" ");
+      const firstName = nameParts[0] || "";
+      const lastName = nameParts.slice(1).join(" ") || "";
+
+      const { error } = await supabase.auth.signUp({
+        email: signUpEmail,
+        password: signUpPassword,
+        options: {
+          emailRedirectTo: `${window.location.origin}/dashboard`,
+          data: { first_name: firstName, last_name: lastName },
+        },
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Account created successfully!",
+        description: "Redirecting to dashboard...",
+      });
+
+      navigate("/dashboard");
+    } catch (error: any) {
+      toast({
+        title: "Sign up failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSignIn = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: signInEmail,
+        password: signInPassword,
+      });
+      if (error) throw error;
+
+      toast({
+        title: "Welcome back!",
+        description: "Redirecting to dashboard...",
+      });
+
+      navigate("/dashboard");
+    } catch (error: any) {
+      toast({
+        title: "Sign in failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: { redirectTo: `${window.location.origin}/dashboard` },
+      });
+      if (error) throw error;
+    } catch (error: any) {
+      toast({
+        title: "Google sign in failed",
+        description: error.message,
+        variant: "destructive",
+      });
+      setLoading(false);
+    }
+  };
+
+  // Animation presets
+  const sectionVariants = {
+    hidden: { opacity: 0, y: 80, scale: 0.98 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: { duration: 1.2, ease: "easeOut" },
+    },
+  };
+
+  const fadeItem = {
+    hidden: { opacity: 0, y: 25 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: { delay: i * 0.15 + 0.3, duration: 0.7 },
+    }),
   };
 
   return (
-    <div
-      ref={containerRef}
-      className="min-h-screen flex items-center justify-center bg-[#f7f7f7] p-6"
-    >
-      <div
-        className="w-full max-w-[1512px] h-[982px] rounded-[30px] overflow-hidden shadow-2xl relative"
-        style={{ background: "transparent" }}
+    <div className="min-h-screen flex flex-col md:flex-row overflow-hidden bg-white">
+      {/* Left Panel - Sign In */}
+      <motion.div
+        ref={leftRef}
+        variants={sectionVariants}
+        initial="hidden"
+        animate={leftControls}
+        className="md:flex-[0.4] bg-white flex flex-col items-center justify-center p-6 sm:p-8 md:p-14 relative"
       >
-        <AnimatePresence mode="wait">
-          {/* SIGN UP (default landing) */}
-          {!showSignIn && mounted && (
-            <motion.div
-              key="sign-up"
-              initial="initial"
-              animate="animate"
-              exit="exit"
-              variants={fade}
-              className="absolute inset-0 flex"
-            >
-              {/* Left white column (logo + sign in greeting style visually on left in original) */}
-              <div className="w-[40%] bg-white p-16 flex flex-col items-start">
-                {/* Logo top-left */}
-                <img src={aideLogo} alt="AIDE Logo" className="w-[259px] h-[125px] object-contain mb-6" />
+        <motion.img
+          src={aideLogo}
+          alt="AIDE Logo"
+          className="h-14 md:h-16 mb-6 absolute top-6 left-6 md:top-10 md:left-10"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.7 }}
+        />
 
-                {/* Centered greeting on left side */}
-                <div className="mt-16 w-full">
-                  <h1
-                    className="text-[48px] leading-[1] font-extrabold"
-                    style={{ fontFamily: "'Montserrat', sans-serif", color: PRIMARY, textAlign: "center" }}
-                  >
-                    Hello, Friend!
-                  </h1>
+        <div className="w-full max-w-md mt-20 md:mt-0">
+          <motion.h1
+            className="text-center text-3xl sm:text-4xl md:text-[40px] font-extrabold text-[#DF1516] mb-5 font-['Montserrat']"
+            variants={fadeItem}
+            custom={0}
+            initial="hidden"
+            animate="visible"
+          >
+            Hello, Friend!
+          </motion.h1>
 
-                  <p
-                    className="mt-6 text-[24px] leading-[1] text-center"
-                    style={{ fontFamily: "'Poppins', sans-serif", color: "#111" }}
-                  >
-                    Sign in to continue your personalized journey with{" "}
-                    <span style={{ fontWeight: 600 }}>AIDE</span>—where mindset mastery meets business
-                    growth.
-                  </p>
+          <motion.p
+            className="text-center text-[18px] sm:text-[20px] md:text-[22px] font-normal leading-tight text-gray-800 mb-10 font-['Poppins']"
+            variants={fadeItem}
+            custom={1}
+            initial="hidden"
+            animate="visible"
+          >
+            Sign in to continue your personalized journey with{" "}
+            <span className="font-semibold text-black">AIDE</span> — where
+            mindset mastery meets business growth.
+          </motion.p>
 
-                  {/* sign-in inputs on the left side as per design (these replicate original) */}
-                  <div className="mt-12 max-w-[520px] mx-auto">
-                    <input
-                      placeholder="Your Email"
-                      className="w-full h-[64px] rounded-[24px] border border-[#DF1516] px-6 text-[18px] placeholder:text-[#DF1516]/80 mb-6"
-                    />
-
-                    <div className="flex items-stretch w-full rounded-[24px] border border-[#DF1516] overflow-hidden">
-                      <input
-                        placeholder="Password"
-                        type="password"
-                        className="flex-1 h-[64px] pl-6 text-[18px] placeholder:text-[#DF1516]/80"
-                      />
-                      <button
-                        type="button"
-                        className="h-[64px] px-8 bg-[#DF1516] text-white font-semibold rounded-r-[24px] whitespace-nowrap"
-                      >
-                        SIGN IN
-                      </button>
-                    </div>
-
-                    <button
-                      onClick={() => navigate("/reset-password")}
-                      className="mt-4 text-[16px] font-semibold text-black"
-                    >
-                      Forgot Password
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {/* Right red column (signup form) */}
-              <div
-                className="flex-1 bg-[#DF1516] flex items-center justify-center p-16"
-                style={{
-                  backgroundImage: `linear-gradient(rgba(223,21,22,0.95), rgba(223,21,22,0.95)), url(${TAB_MOCKUP})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                }}
+          <motion.form
+            onSubmit={handleSignIn}
+            className="space-y-4"
+            variants={fadeItem}
+            custom={2}
+            initial="hidden"
+            animate="visible"
+          >
+            <Input
+              type="email"
+              placeholder="Your Email"
+              value={signInEmail}
+              onChange={(e) => setSignInEmail(e.target.value)}
+              className="h-[65px] sm:h-[70px] rounded-[30px] border border-[#DF1516] text-[18px] font-['Poppins'] focus-visible:ring-[#DF1516]"
+            />
+            <div className="relative">
+              <Input
+                type="password"
+                placeholder="Password"
+                value={signInPassword}
+                onChange={(e) => setSignInPassword(e.target.value)}
+                className="h-[65px] sm:h-[70px] rounded-[30px] border border-[#DF1516] pr-[150px] text-[18px] font-['Poppins']"
+              />
+              <Button
+                type="submit"
+                disabled={loading}
+                className="absolute right-[2px] top-[2px] bottom-[2px] h-[61px] sm:h-[66px] px-10 rounded-[28px] bg-[#DF1516] text-white font-semibold hover:bg-[#DF1516]/90 text-[18px]"
               >
-                <div className="w-full max-w-[620px]">
-                  <h2
-                    className="text-[48px] font-extrabold text-white text-center mb-6"
-                    style={{ fontFamily: "'Montserrat', sans-serif" }}
-                  >
-                    Create an Account
-                  </h2>
+                {loading ? "SIGNING IN..." : "SIGN IN"}
+              </Button>
+            </div>
 
-                  <button
-                    type="button"
-                    onClick={() => {
-                      /* placeholder: will hook to Google later */
-                    }}
-                    className="mx-auto flex items-center justify-center gap-4 w-full max-w-[520px] h-[64px] rounded-[24px] bg-white text-[#DF1516] font-semibold mb-6"
-                  >
-                    <img
-                      src="https://www.svgrepo.com/show/475656/google-color.svg"
-                      alt="Google"
-                      className="w-6 h-6"
-                    />
-                    Continue With Google
-                  </button>
-
-                  <p className="text-center text-white mb-6" style={{ fontFamily: "'Poppins', sans-serif" }}>
-                    or use your Email for registration
-                  </p>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    <input
-                      placeholder="Full Name"
-                      className="h-[64px] rounded-[24px] px-6 border-0 bg-white/95 text-[#111]"
-                    />
-                    <input
-                      placeholder="Your Email"
-                      className="h-[64px] rounded-[24px] px-6 border-0 bg-white/95 text-[#111]"
-                    />
-                  </div>
-
-                  <input
-                    placeholder="Password"
-                    className="w-full h-[64px] rounded-[24px] px-6 border-0 bg-white/95 text-[#111] mb-6"
-                  />
-
-                  <button
-                    type="button"
-                    className="w-full h-[64px] rounded-[24px] bg-white text-[#DF1516] font-bold text-lg"
-                  >
-                    SIGN UP
-                  </button>
-
-                  <div className="text-center mt-6">
-                    <span className="text-white mr-2">Already have an account?</span>
-                    <button
-                      onClick={() => setShowSignIn(true)}
-                      className="text-white underline font-semibold"
-                    >
-                      Sign In
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        <AnimatePresence mode="wait">
-          {/* SIGN IN view (crossfades in when showSignIn is true) */}
-          {showSignIn && mounted && (
-            <motion.div
-              key="sign-in"
-              initial="initial"
-              animate="animate"
-              exit="exit"
-              variants={fade}
-              className="absolute inset-0 flex"
+            <button
+              type="button"
+              onClick={() => navigate("/reset-password")}
+              className="text-black hover:text-[#DF1516] transition-colors font-semibold text-[16px] font-['Poppins'] pl-[10px]"
             >
-              {/* Left column becomes the sign-in (white on red logic requested: sign in white on red background)
-                  To satisfy "sign in a white on a red background" we place a red column on left with white inner card. */}
-              <div
-                className="w-[40%] bg-[#DF1516] p-16 flex items-center justify-center"
-                style={{
-                  backgroundImage: `linear-gradient(rgba(223,21,22,0.95), rgba(223,21,22,0.95)), url(${TAB_MOCKUP})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                }}
-              >
-                <div className="w-full max-w-[520px] bg-white rounded-[24px] p-10">
-                  {/* logo top-left inside white card area */}
-                  <div className="absolute top-[35px] left-[35px]">
-                    <img src={aideLogo} alt="AIDE Logo" className="w-[150px]" />
-                  </div>
+              Forgot Password?
+            </button>
+          </motion.form>
+        </div>
+      </motion.div>
 
-                  <h1
-                    className="text-[48px] font-extrabold text-[#DF1516] text-center mb-4"
-                    style={{ fontFamily: "'Montserrat', sans-serif" }}
-                  >
-                    Hello, Friend!
-                  </h1>
+      {/* Right Panel - Sign Up */}
+      <motion.div
+        ref={rightRef}
+        variants={sectionVariants}
+        initial="hidden"
+        animate={rightControls}
+        className="md:flex-[0.6] bg-[#DF1516] flex items-center justify-center p-6 sm:p-10 md:p-16"
+      >
+        <div className="w-full max-w-md">
+          <motion.h2
+            className="text-3xl sm:text-4xl font-bold text-white mb-8 text-center font-['Montserrat']"
+            variants={fadeItem}
+            custom={0}
+            initial="hidden"
+            animate="visible"
+          >
+            Create an Account
+          </motion.h2>
 
-                  <p className="text-[24px] text-center mb-8" style={{ fontFamily: "'Poppins', sans-serif" }}>
-                    Sign in to continue your personalized journey with{" "}
-                    <span style={{ fontWeight: 600 }}>AIDE</span>—where mindset mastery meets business growth.
-                  </p>
+          <Button
+            type="button"
+            onClick={handleGoogleSignIn}
+            disabled={loading}
+            className="w-full h-[65px] sm:h-[70px] rounded-[30px] bg-white text-[#DF1516] font-semibold hover:bg-white/90 flex items-center justify-center gap-3"
+          >
+            <FcGoogle size={24} />
+            Continue With Google
+          </Button>
 
-                  {/* Email */}
-                  <div className="mb-6">
-                    <input
-                      placeholder="Your Email"
-                      className="w-full h-[64px] rounded-[24px] border border-[#DF1516] px-6 text-[18px] placeholder:text-[#DF1516]/80"
-                    />
-                  </div>
+          <p className="text-white text-center my-6 font-['Poppins']">
+            or use your Email for registration
+          </p>
 
-                  {/* Password with sign-in button attached to right */}
-                  <div className="mb-4">
-                    <div className="flex items-stretch w-full rounded-[24px] border border-[#DF1516] overflow-hidden">
-                      <input
-                        placeholder="Password"
-                        type="password"
-                        className="flex-1 h-[64px] pl-6 text-[18px] placeholder:text-[#DF1516]/80"
-                      />
-                      <button
-                        type="button"
-                        className="h-[64px] px-8 bg-[#DF1516] text-white font-semibold"
-                      >
-                        SIGN IN
-                      </button>
-                    </div>
-                  </div>
+          <motion.form onSubmit={handleSignUp} className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Input
+                type="text"
+                placeholder="Full Name"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                className="h-[75px] sm:h-[83px] rounded-[30px] border border-white bg-white/95 text-black placeholder:text-gray-500 font-['Poppins']"
+              />
+              <Input
+                type="email"
+                placeholder="Your Email"
+                value={signUpEmail}
+                onChange={(e) => setSignUpEmail(e.target.value)}
+                className="h-[75px] sm:h-[83px] rounded-[30px] border border-white bg-white/95 text-black placeholder:text-gray-500 font-['Poppins']"
+              />
+            </div>
 
-                  <div className="mb-6">
-                    <button
-                      onClick={() => navigate("/reset-password")}
-                      className="text-[16px] font-semibold text-black"
-                    >
-                      Forgot Password
-                    </button>
-                  </div>
+            <Input
+              type="password"
+              placeholder="Password"
+              value={signUpPassword}
+              onChange={(e) => setSignUpPassword(e.target.value)}
+              className="h-[75px] sm:h-[83px] w-full rounded-[30px] border border-white bg-white/95 text-black placeholder:text-gray-500 font-['Poppins']"
+            />
 
-                  {/* Google connect (on sign-in side) */}
-                  <div className="mb-6">
-                    <button className="w-full border border-gray-300 rounded-[18px] py-3 text-gray-700 font-medium hover:bg-gray-100">
-                      Connect with Google
-                    </button>
-                  </div>
-
-                  <div className="text-center">
-                    <span className="text-gray-700 mr-2">Don’t have an account?</span>
-                    <button
-                      onClick={() => setShowSignIn(false)}
-                      className="text-[#DF1516] font-semibold underline"
-                    >
-                      Sign Up
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {/* Right column becomes the sign-up red area (white form centered on red) */}
-              <div className="flex-1 bg-white flex items-center justify-center p-16">
-                <div className="w-full max-w-[620px]">
-                  <h2
-                    className="text-[48px] font-extrabold text-black text-center mb-6"
-                    style={{ fontFamily: "'Montserrat', sans-serif" }}
-                  >
-                    Create an Account
-                  </h2>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      /* placeholder for google */
-                    }}
-                    className="mx-auto flex items-center justify-center gap-4 w-full max-w-[520px] h-[64px] rounded-[24px] bg-[#DF1516] text-white font-semibold mb-6"
-                    style={{ backgroundColor: PRIMARY }}
-                  >
-                    <img
-                      src="https://www.svgrepo.com/show/475656/google-color.svg"
-                      alt="Google"
-                      className="w-6 h-6"
-                    />
-                    Continue With Google
-                  </button>
-
-                  <p className="text-center text-[#111] mb-6" style={{ fontFamily: "'Poppins', sans-serif" }}>
-                    or use your Email for registration
-                  </p>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    <input
-                      placeholder="Full Name"
-                      className="h-[64px] rounded-[24px] px-6 border border-neutral-200"
-                    />
-                    <input
-                      placeholder="Your Email"
-                      className="h-[64px] rounded-[24px] px-6 border border-neutral-200"
-                    />
-                  </div>
-
-                  <input placeholder="Password" className="w-full h-[64px] rounded-[24px] px-6 border border-neutral-200 mb-6" />
-
-                  <button
-                    type="button"
-                    className="w-full h-[64px] rounded-[24px] bg-[#DF1516] text-white font-bold text-lg"
-                  >
-                    SIGN UP
-                  </button>
-
-                  <div className="text-center mt-6">
-                    <span className="text-gray-700 mr-2">Already have an account?</span>
-                    <button onClick={() => setShowSignIn(true)} className="text-[#DF1516] font-semibold underline">
-                      Sign In
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+            <Button
+              type="submit"
+              disabled={loading}
+              className="w-full h-[75px] sm:h-[83px] rounded-[30px] bg-white text-[#DF1516] font-bold text-lg hover:bg-white/90 font-['Poppins']"
+            >
+              {loading ? "SIGNING UP..." : "SIGN UP"}
+            </Button>
+          </motion.form>
+        </div>
+      </motion.div>
     </div>
   );
 }
