@@ -18,33 +18,32 @@ export default function Auth() {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  // Scroll animation controls
-  const controls = useAnimation();
-  const sectionRef = useRef<HTMLDivElement | null>(null);
+  const leftControls = useAnimation();
+  const rightControls = useAnimation();
+  const leftRef = useRef<HTMLDivElement>(null);
+  const rightRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            controls.start("visible");
+            if (entry.target === leftRef.current) leftControls.start("visible");
+            if (entry.target === rightRef.current) rightControls.start("visible");
           }
         });
       },
-      { threshold: 0.15 }
+      { threshold: 0.2 }
     );
 
-    observer.observe(section);
+    if (leftRef.current) observer.observe(leftRef.current);
+    if (rightRef.current) observer.observe(rightRef.current);
     return () => observer.disconnect();
-  }, [controls]);
+  }, [leftControls, rightControls]);
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-
     try {
       const nameParts = fullName.trim().split(" ");
       const firstName = nameParts[0] || "";
@@ -60,18 +59,10 @@ export default function Auth() {
       });
 
       if (error) throw error;
-      toast({
-        title: "Account created successfully!",
-        description: "Redirecting to dashboard...",
-      });
+      toast({ title: "Account created successfully!" });
       navigate("/dashboard");
-    } catch (error: unknown) {
-      const err = error as Error;
-      toast({
-        title: "Sign up failed",
-        description: err.message,
-        variant: "destructive",
-      });
+    } catch (error: any) {
+      toast({ title: "Sign up failed", description: error.message, variant: "destructive" });
     } finally {
       setLoading(false);
     }
@@ -80,26 +71,16 @@ export default function Auth() {
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-
     try {
       const { error } = await supabase.auth.signInWithPassword({
         email: signInEmail,
         password: signInPassword,
       });
-
       if (error) throw error;
-      toast({
-        title: "Welcome back!",
-        description: "Redirecting to dashboard...",
-      });
+      toast({ title: "Welcome back!" });
       navigate("/dashboard");
-    } catch (error: unknown) {
-      const err = error as Error;
-      toast({
-        title: "Sign in failed",
-        description: err.message,
-        variant: "destructive",
-      });
+    } catch (error: any) {
+      toast({ title: "Sign in failed", description: error.message, variant: "destructive" });
     } finally {
       setLoading(false);
     }
@@ -113,176 +94,177 @@ export default function Auth() {
         options: { redirectTo: `${window.location.origin}/dashboard` },
       });
       if (error) throw error;
-    } catch (error: unknown) {
-      const err = error as Error;
+    } catch (error: any) {
       toast({
         title: "Google sign in failed",
-        description: err.message,
+        description: error.message,
         variant: "destructive",
       });
       setLoading(false);
     }
   };
 
-  // Variants for scroll + entrance
-  const fadeVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: {
+  const sectionVariants = {
+    hidden: { opacity: 0, y: 80, scale: 0.98 },
+    visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 1.2, ease: "easeOut" } },
+  };
+
+  const fadeItem = {
+    hidden: { opacity: 0, y: 25 },
+    visible: (i: number) => ({
       opacity: 1,
       y: 0,
-      transition: { duration: 0.8, ease: [0.25, 0.1, 0.25, 1] },
-    },
+      transition: { delay: i * 0.15 + 0.3, duration: 0.7 },
+    }),
   };
 
   return (
-    <div
-      ref={sectionRef}
-      className="min-h-screen flex flex-col md:flex-row overflow-hidden"
-    >
-      {/* Left Panel - Sign In */}
+    <div className="min-h-screen flex flex-col md:flex-row overflow-hidden bg-white">
+      {/* Sign In Section */}
       <motion.div
-        initial={{ opacity: 0, x: -80, scale: 0.95 }}
-        animate={controls}
-        variants={fadeVariants}
-        className="w-full md:w-[40%] bg-white flex flex-col items-center justify-center px-8 md:px-16"
+        ref={leftRef}
+        variants={sectionVariants}
+        initial="hidden"
+        animate={leftControls}
+        className="md:flex-[0.4] bg-white flex flex-col items-center justify-center p-8 md:p-14 relative"
       >
-        <div className="w-full max-w-md">
-          <motion.img
-            src={aideLogo}
-            alt="AIDE Logo"
-            className="w-[180px] h-auto mb-8"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
+        <img src={aideLogo} alt="AIDE Logo" className="h-14 md:h-16 absolute top-6 left-6 md:top-10 md:left-10" />
+
+        <motion.h1
+          className="text-center text-[38px] md:text-[44px] font-extrabold text-[#DF1516] mb-4 font-['Montserrat']"
+          variants={fadeItem}
+          custom={0}
+          initial="hidden"
+          animate="visible"
+        >
+          Hello, Friend!
+        </motion.h1>
+
+        <motion.p
+          className="text-center text-[20px] md:text-[22px] font-normal text-gray-800 mb-8 font-['Poppins']"
+          variants={fadeItem}
+          custom={1}
+          initial="hidden"
+          animate="visible"
+        >
+          Sign in to continue your personalized journey with{" "}
+          <span className="font-semibold text-black">AIDE</span> — where mindset mastery meets business growth.
+        </motion.p>
+
+        <motion.form onSubmit={handleSignIn} className="space-y-4" variants={fadeItem} custom={2}>
+          <label className="block text-[20px] font-semibold font-['Poppins'] text-gray-700 pl-3">
+            Your Email
+          </label>
+          <Input
+            type="email"
+            placeholder="Enter your email"
+            value={signInEmail}
+            onChange={(e) => setSignInEmail(e.target.value)}
+            className="h-[65px] rounded-[12px] border border-[#DF1516] text-[18px] font-['Poppins']"
           />
 
-          <motion.h1
-            className="text-[42px] font-extrabold text-[#DF1516] text-center mb-4 font-[Montserrat]"
-            variants={fadeVariants}
-          >
-            Hello, Friend!
-          </motion.h1>
-
-          <motion.p
-            className="text-center text-[20px] font-[Poppins] text-gray-700 mb-10 leading-snug"
-            variants={fadeVariants}
-          >
-            Sign in to continue your personalized journey with{" "}
-            <span className="font-semibold text-black">AIDE</span>—where
-            mindset mastery meets business growth.
-          </motion.p>
-
-          <motion.form
-            onSubmit={handleSignIn}
-            className="space-y-4"
-            variants={fadeVariants}
-          >
-            <div>
-              <Input
-                type="email"
-                placeholder="Your Email"
-                value={signInEmail}
-                onChange={(e) => setSignInEmail(e.target.value)}
-                className="h-11 w-full bg-gray-50 border border-gray-300 rounded-md text-gray-700 placeholder:text-gray-500 px-4 focus:ring-[#DF1516]/50"
-              />
-            </div>
-
-            <div className="flex gap-2">
-              <Input
-                type="password"
-                placeholder="Password"
-                value={signInPassword}
-                onChange={(e) => setSignInPassword(e.target.value)}
-                className="h-11 flex-1 bg-gray-50 border border-gray-300 rounded-md text-gray-700 placeholder:text-gray-500 px-4 focus:ring-[#DF1516]/50"
-              />
-              <Button
-                type="submit"
-                disabled={loading}
-                className="h-11 px-8 rounded-md bg-[#DF1516] text-white font-semibold hover:bg-[#c51213] transition-all"
-              >
-                {loading ? "SIGNING IN..." : "SIGN IN"}
-              </Button>
-            </div>
-
-            <button
-              type="button"
-              onClick={() => navigate("/reset-password")}
-              className="text-black font-semibold text-[16px] font-[Poppins] mt-2 ml-1 hover:text-[#DF1516] transition-colors"
+          <label className="block text-[20px] font-semibold font-['Poppins'] text-gray-700 pl-3">
+            Password
+          </label>
+          <div className="relative">
+            <Input
+              type="password"
+              placeholder="Enter your password"
+              value={signInPassword}
+              onChange={(e) => setSignInPassword(e.target.value)}
+              className="h-[65px] rounded-[12px] border border-[#DF1516] pr-[150px] text-[18px] font-['Poppins']"
+            />
+            <Button
+              type="submit"
+              disabled={loading}
+              className="absolute right-[2px] top-[2px] bottom-[2px] h-[61px] px-10 rounded-[10px] bg-[#DF1516] text-white font-semibold text-[18px]"
             >
-              Forgot Password?
-            </button>
-          </motion.form>
-        </div>
+              {loading ? "SIGNING IN..." : "SIGN IN"}
+            </Button>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => navigate("/reset-password")}
+            className="text-black hover:text-[#DF1516] text-[16px] font-semibold font-['Poppins'] text-left pl-[10px]"
+          >
+            Forgot Password?
+          </button>
+        </motion.form>
       </motion.div>
 
-      {/* Right Panel - Sign Up */}
+      {/* Sign Up Section */}
       <motion.div
-        initial={{ opacity: 0, x: 80, scale: 0.95 }}
-        animate={controls}
-        variants={fadeVariants}
-        className="w-full md:w-[60%] bg-[#DF1516] flex items-center justify-center px-8 md:px-16"
+        ref={rightRef}
+        variants={sectionVariants}
+        initial="hidden"
+        animate={rightControls}
+        className="md:flex-[0.6] bg-[#DF1516] flex items-center justify-center p-8 md:p-16"
       >
         <div className="w-full max-w-md">
           <motion.h2
-            className="text-4xl font-extrabold text-white text-center mb-6 font-[Montserrat]"
-            variants={fadeVariants}
+            className="text-[36px] md:text-[40px] font-bold text-white mb-8 text-center font-['Montserrat']"
+            variants={fadeItem}
+            custom={0}
           >
             Create an Account
           </motion.h2>
 
-          <motion.div className="mb-5" variants={fadeVariants}>
+          <label className="block text-center text-white text-[18px] font-semibold mb-4 font-['Poppins']">
+            Continue with
+          </label>
+
+          <div className="relative mb-6">
+            <Input
+              type="text"
+              placeholder="Google Account"
+              disabled
+              className="h-[65px] rounded-[12px] border border-white bg-white/95 text-gray-600 font-['Poppins'] pr-[150px]"
+            />
             <Button
               type="button"
               onClick={handleGoogleSignIn}
               disabled={loading}
-              className="w-full h-11 rounded-md bg-white text-[#DF1516] font-semibold hover:bg-white/90 flex items-center justify-center gap-3"
+              className="absolute right-[2px] top-[2px] bottom-[2px] h-[61px] px-6 rounded-[10px] bg-white text-[#DF1516] font-semibold text-[18px] flex items-center gap-2"
             >
-              <FcGoogle size={22} />
-              Continue With Google
+              <FcGoogle size={24} /> Google
             </Button>
-          </motion.div>
+          </div>
 
-          <motion.p
-            className="text-white text-center mb-5 font-[Poppins] text-[18px]"
-            variants={fadeVariants}
-          >
-            or use your Email for registration
-          </motion.p>
+          <p className="text-white text-center mb-6 font-['Poppins']">or use your Email for registration</p>
 
-          <motion.form
-            onSubmit={handleSignUp}
-            className="space-y-3"
-            variants={fadeVariants}
-          >
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <Input
-                type="text"
-                placeholder="Full Name"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-                className="h-11 w-full bg-gray-50 border border-gray-300 rounded-md text-gray-700 placeholder:text-gray-500 px-4"
-              />
-              <Input
-                type="email"
-                placeholder="Your Email"
-                value={signUpEmail}
-                onChange={(e) => setSignUpEmail(e.target.value)}
-                className="h-11 w-full bg-gray-50 border border-gray-300 rounded-md text-gray-700 placeholder:text-gray-500 px-4"
-              />
-            </div>
+          <motion.form onSubmit={handleSignUp} className="space-y-4">
+            <label className="block text-[20px] font-semibold text-white font-['Poppins']">Full Name</label>
+            <Input
+              type="text"
+              placeholder="Enter your name"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              className="h-[75px] rounded-[12px] border border-white bg-white/95 text-black placeholder:text-gray-500 font-['Poppins']"
+            />
 
+            <label className="block text-[20px] font-semibold text-white font-['Poppins']">Your Email</label>
+            <Input
+              type="email"
+              placeholder="Enter your email"
+              value={signUpEmail}
+              onChange={(e) => setSignUpEmail(e.target.value)}
+              className="h-[75px] rounded-[12px] border border-white bg-white/95 text-black placeholder:text-gray-500 font-['Poppins']"
+            />
+
+            <label className="block text-[20px] font-semibold text-white font-['Poppins']">Password</label>
             <Input
               type="password"
-              placeholder="Password"
+              placeholder="Enter your password"
               value={signUpPassword}
               onChange={(e) => setSignUpPassword(e.target.value)}
-              className="h-11 w-full bg-gray-50 border border-gray-300 rounded-md text-gray-700 placeholder:text-gray-500 px-4"
+              className="h-[75px] rounded-[12px] border border-white bg-white/95 text-black placeholder:text-gray-500 font-['Poppins']"
             />
 
             <Button
               type="submit"
               disabled={loading}
-              className="w-full h-11 rounded-md bg-white text-[#DF1516] font-bold text-lg hover:bg-white/90 transition-all"
+              className="w-full h-[75px] rounded-[12px] bg-white text-[#DF1516] font-semibold text-[18px] hover:bg-white/90 font-['Poppins']"
             >
               {loading ? "SIGNING UP..." : "SIGN UP"}
             </Button>
