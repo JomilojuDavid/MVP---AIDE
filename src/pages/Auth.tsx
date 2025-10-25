@@ -227,7 +227,7 @@ export default function Auth() {
               <Button
                 type="submit"
                 disabled={loading}
-                className="absolute right-0 h-[70px] rounded-[25px] bg-[#DF1516] text-white px-8 font-semibold hover:bg-[#c01314]"
+                className="absolute right-0 h-[90px] rounded-[25px] bg-[#DF1516] text-white px-8 font-semibold hover:bg-[#c01314]"
               >
                 {loading ? "SIGNING IN..." : "SIGN IN"}
               </Button>
