@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const tasksList = [
   {
@@ -64,17 +65,27 @@ export default function Tasks() {
       <main className="flex-1 md:ml-64 p-8 md:p-12">
         <div className="max-w-5xl mx-auto space-y-8">
           {/* Header */}
-          <div className="bg-white rounded-3xl p-8 md:p-12">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="bg-white rounded-3xl p-8 md:p-12"
+          >
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
               Complete Your AIDE Tasks, <span className="text-primary">{firstName || "Name"}!</span>
             </h1>
             <p className="text-xl text-foreground">
               Each step brings you closer to clarity, confidence, and execution.
             </p>
-          </div>
+          </motion.div>
 
           {/* Tasks Card */}
-          <div className="bg-white rounded-3xl p-8 md:p-12">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="bg-white rounded-3xl p-8 md:p-12"
+          >
             <div className="space-y-8">
               {tasksList.map((task) => (
                 <div key={task.id} className="flex items-start gap-4 pb-6 border-b border-border last:border-0">
@@ -97,17 +108,22 @@ export default function Tasks() {
                 </Button>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Quick Tips */}
-          <div className="bg-primary border-4 border-secondary rounded-3xl p-8 text-white">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            className="bg-primary border-4 border-secondary rounded-3xl p-8 text-white"
+          >
             <h3 className="text-2xl font-bold mb-6">Quick Tips</h3>
             <ul className="space-y-3 text-lg list-disc list-inside">
               <li>Start your day with clarity.</li>
               <li>Break goals into smaller steps.</li>
               <li>Review wins weekly.</li>
             </ul>
-          </div>
+          </motion.div>
         </div>
       </main>
     </div>

@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import aideLogo from "@/assets/aide-logo.png";
+import { motion } from "framer-motion";
 
 export default function Submission() {
   const navigate = useNavigate();
@@ -21,8 +22,18 @@ export default function Submission() {
       <main className="flex items-center justify-center w-full">
         <div className="max-w-4xl w-full">
           {/* Success Card */}
-          <div className="bg-card border-4 border-muted rounded-3xl p-12 md:p-16">
-            <div className="bg-secondary rounded-3xl p-12 text-center mb-12">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="bg-card border-4 border-muted rounded-3xl p-12 md:p-16"
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+              className="bg-secondary rounded-3xl p-12 text-center mb-12"
+            >
               <h1 className="text-4xl md:text-5xl font-bold mb-6 flex items-center justify-center gap-3 text-foreground">
                 <span>🎉</span>
                 Quiz Completed!
@@ -31,18 +42,23 @@ export default function Submission() {
               <p className="text-xl md:text-2xl text-foreground">
                 Thank you for completing the quiz. Your personalized roadmap is now ready.
               </p>
-            </div>
+            </motion.div>
 
             {/* Action Button */}
-            <div className="flex justify-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.9 }}
+              className="flex justify-center"
+            >
               <Button
                 onClick={() => navigate("/dashboard")}
                 className="bg-primary text-white hover:bg-primary/90 h-16 px-16 text-xl font-bold rounded-full uppercase"
               >
                 START YOUR JOURNEY TO MINDSET MASTERY
               </Button>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </main>
     </div>
