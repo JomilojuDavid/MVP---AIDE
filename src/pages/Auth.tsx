@@ -55,7 +55,7 @@ export default function Auth() {
         email: signUpEmail,
         password: signUpPassword,
         options: {
-          emailRedirectTo: `${window.location.origin}/dashboard`,
+          emailRedirectTo: `${window.location.origin}/quiz`,
           data: { first_name: firstName, last_name: lastName },
         },
       });
@@ -67,7 +67,7 @@ export default function Auth() {
         description: "Redirecting to dashboard...",
       });
 
-      navigate("/dashboard");
+      navigate("/quiz");
     } catch (error: any) {
       toast({
         title: "Sign up failed",
@@ -94,7 +94,7 @@ export default function Auth() {
         description: "Redirecting to dashboard...",
       });
 
-      navigate("/dashboard");
+      navigate("/quiz");
     } catch (error: any) {
       toast({
         title: "Sign in failed",
