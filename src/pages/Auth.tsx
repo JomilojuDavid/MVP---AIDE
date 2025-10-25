@@ -8,10 +8,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 
-import "@/index.css";
-
-/* Import Google Fonts directly for this page */
-import { Helmet } from "react-helmet";
 export default function Auth() {
   const [fullName, setFullName] = useState("");
   const [signUpEmail, setSignUpEmail] = useState("");
@@ -22,7 +18,7 @@ export default function Auth() {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
@@ -36,7 +32,10 @@ export default function Auth() {
         password: signUpPassword,
         options: {
           emailRedirectTo: `${window.location.origin}/dashboard`,
-          data: { first_name: firstName, last_name: lastName },
+          data: {
+            first_name: firstName,
+            last_name: lastName,
+          },
         },
       });
 
@@ -46,21 +45,21 @@ export default function Auth() {
         title: "Account created successfully!",
         description: "Redirecting to dashboard...",
       });
+
       navigate("/dashboard");
-    } catch (error) {
-      if (error instanceof Error) {
-        toast({
-          title: "Sign up failed",
-          description: error.message,
-          variant: "destructive",
-        });
-      }
+    } catch (error: unknown) {
+      const err = error as Error;
+      toast({
+        title: "Sign up failed",
+        description: err.message,
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
   };
 
-  const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
@@ -76,15 +75,15 @@ export default function Auth() {
         title: "Welcome back!",
         description: "Redirecting to dashboard...",
       });
+
       navigate("/dashboard");
-    } catch (error) {
-      if (error instanceof Error) {
-        toast({
-          title: "Sign in failed",
-          description: error.message,
-          variant: "destructive",
-        });
-      }
+    } catch (error: unknown) {
+      const err = error as Error;
+      toast({
+        title: "Sign in failed",
+        description: err.message,
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
@@ -95,164 +94,166 @@ export default function Auth() {
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
-        options: { redirectTo: `${window.location.origin}/dashboard` },
+        options: {
+          redirectTo: `${window.location.origin}/dashboard`,
+        },
       });
+
       if (error) throw error;
-    } catch (error) {
-      if (error instanceof Error) {
-        toast({
-          title: "Google sign in failed",
-          description: error.message,
-          variant: "destructive",
-        });
-      }
+    } catch (error: unknown) {
+      const err = error as Error;
+      toast({
+        title: "Google sign in failed",
+        description: err.message,
+        variant: "destructive",
+      });
       setLoading(false);
     }
   };
 
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: { delay: 0.2 + i * 0.1, duration: 0.5, ease: "easeOut" },
+    }),
+  };
+
   return (
     <>
-      <Helmet>
-        <style>
-          {`
-            @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Poppins:wght@400;500;600&display=swap');
-          `}
-        </style>
-      </Helmet>
+      {/* ✅ Native head tags (no react-helmet) */}
+      <head>
+        <title>AIDE | Sign In or Create Account</title>
+        <meta name="description" content="Access AIDE — your mindset and business growth companion." />
+        <link rel="icon" href="/favicon.ico" />
+      </head>
 
-      <div
-        className="min-h-screen flex flex-row overflow-hidden"
-        style={{ fontFamily: "'Poppins', sans-serif" }}
-      >
-        {/* LEFT SIDE – SIGN IN */}
+      <div className="min-h-screen flex flex-col md:flex-row overflow-hidden font-[Poppins]">
+        {/* Left Panel - Sign In */}
         <motion.div
-          initial={{ opacity: 0, x: -40 }}
+          initial={{ opacity: 0, x: -60 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="flex-1 bg-white flex items-center justify-center p-16"
+          transition={{ duration: 1, ease: "easeOut" }}
+          className="flex-1 bg-white flex items-center justify-center p-12"
         >
-          <div className="w-full max-w-md">
+          <div className="w-full max-w-md space-y-6">
             <motion.img
               src={aideLogo}
               alt="AIDE Logo"
-              className="h-20 mb-12"
+              className="h-20 mb-10"
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
+              transition={{ delay: 0.3 }}
             />
 
             <motion.h1
-              className="text-[2.5rem] font-[Montserrat] font-extrabold text-[#E31E24] mb-4"
+              className="text-4xl font-[Montserrat] font-extrabold text-primary mb-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
+              transition={{ delay: 0.4 }}
             >
               Hello, Friend!
             </motion.h1>
 
             <motion.p
-              className="text-gray-800 text-base leading-relaxed mb-8"
+              className="text-foreground mb-8 leading-relaxed"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
+              transition={{ delay: 0.5 }}
             >
               Sign in to continue your personalized journey with{" "}
-              <span className="font-bold">AIDE</span>—where mindset mastery
-              meets business growth.
+              <span className="font-semibold text-primary">AIDE</span> — where mindset mastery meets business growth.
             </motion.p>
 
-            <form onSubmit={handleSignIn} className="space-y-4">
-              <div>
-                <Input
-                  type="email"
-                  placeholder="Your Email"
-                  value={signInEmail}
-                  onChange={(e) => setSignInEmail(e.target.value)}
-                  className="h-14 rounded-xl border-2 border-[#E31E24] text-[#E31E24] placeholder:text-[#E31E24] focus-visible:ring-[#E31E24]"
-                />
-              </div>
+            <motion.form
+              onSubmit={handleSignIn}
+              className="space-y-5"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6 }}
+            >
+              <Input
+                type="email"
+                placeholder="Your Email"
+                value={signInEmail}
+                onChange={(e) => setSignInEmail(e.target.value)}
+                className="h-14 rounded-full border-2 border-primary bg-white text-foreground placeholder:text-primary/60 focus-visible:ring-primary"
+              />
 
-              {/* Combined Password + Button bar */}
-              <div className="flex w-full">
+              {/* Align password + button inline */}
+              <div className="flex gap-3 items-center">
                 <Input
                   type="password"
                   placeholder="Password"
                   value={signInPassword}
                   onChange={(e) => setSignInPassword(e.target.value)}
-                  className="h-14 flex-1 rounded-l-xl border-2 border-[#E31E24] border-r-0 text-[#E31E24] placeholder:text-[#E31E24] focus-visible:ring-[#E31E24]"
+                  className="h-14 flex-1 rounded-full border-2 border-primary bg-white text-foreground placeholder:text-primary/60 focus-visible:ring-primary"
                 />
                 <Button
                   type="submit"
                   disabled={loading}
-                  className="h-14 px-10 rounded-r-xl bg-[#E31E24] text-white font-semibold hover:bg-[#c71a1e] transition-all duration-300 ease-out"
+                  className="h-14 px-10 rounded-full bg-primary text-white font-semibold hover:bg-primary/90 transition-all"
                 >
-                  {loading ? "SIGNING IN..." : "SIGN IN"}
+                  {loading ? "..." : "SIGN IN"}
                 </Button>
               </div>
 
               <button
                 type="button"
-                className="text-sm font-semibold text-black hover:text-[#E31E24] transition-colors mt-2"
+                onClick={() => navigate("/reset-password")}
+                className="block text-sm text-primary font-medium hover:underline"
               >
-                Forgot Password
+                Forgot Password?
               </button>
-            </form>
+            </motion.form>
           </div>
         </motion.div>
 
-        {/* RIGHT SIDE – SIGN UP */}
+        {/* Right Panel - Sign Up */}
         <motion.div
-          initial={{ opacity: 0, x: 40 }}
+          initial={{ opacity: 0, x: 60 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-          className="flex-1 bg-[#E31E24] flex items-center justify-center p-16"
+          transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
+          className="flex-1 bg-primary flex items-center justify-center p-12"
         >
-          <div className="w-full max-w-md text-center">
+          <div className="w-full max-w-md">
             <motion.h2
-              className="text-[2.5rem] font-[Montserrat] font-extrabold text-white mb-8"
+              className="text-4xl font-[Montserrat] font-extrabold text-white mb-8 text-center"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
+              transition={{ delay: 0.4 }}
             >
               Create an Account
             </motion.h2>
 
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              className="mb-6"
+            <Button
+              type="button"
+              onClick={handleGoogleSignIn}
+              disabled={loading}
+              className="w-full h-14 rounded-full bg-white text-primary font-semibold hover:bg-white/90 flex items-center justify-center gap-3 mb-6"
             >
-              <Button
-                type="button"
-                onClick={handleGoogleSignIn}
-                disabled={loading}
-                className="w-full h-14 rounded-xl bg-white text-[#E31E24] font-semibold flex items-center justify-center gap-3 hover:bg-white/90 transition-colors"
-              >
-                <FcGoogle size={24} />
-                Continue With Google
-              </Button>
-            </motion.div>
+              <FcGoogle size={24} />
+              Continue With Google
+            </Button>
 
-            <p className="text-white mb-6 text-base">
-              or use your Email for registration
-            </p>
+            <p className="text-white text-center mb-6">or use your email for registration</p>
 
             <form onSubmit={handleSignUp} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Input
                   type="text"
                   placeholder="Full Name"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  className="h-14 rounded-xl bg-white text-gray-800 placeholder:text-gray-500 border-0"
+                  className="h-14 rounded-full bg-white/95 border-0 text-foreground placeholder:text-muted-foreground"
                 />
                 <Input
                   type="email"
                   placeholder="Your Email"
                   value={signUpEmail}
                   onChange={(e) => setSignUpEmail(e.target.value)}
-                  className="h-14 rounded-xl bg-white text-gray-800 placeholder:text-gray-500 border-0"
+                  className="h-14 rounded-full bg-white/95 border-0 text-foreground placeholder:text-muted-foreground"
                 />
               </div>
 
@@ -261,15 +262,15 @@ export default function Auth() {
                 placeholder="Password"
                 value={signUpPassword}
                 onChange={(e) => setSignUpPassword(e.target.value)}
-                className="h-14 rounded-xl bg-white text-gray-800 placeholder:text-gray-500 border-0"
+                className="h-14 rounded-full bg-white/95 border-0 text-foreground placeholder:text-muted-foreground"
               />
 
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full h-14 rounded-xl bg-white text-[#E31E24] font-bold text-lg hover:bg-white/90 transition-all duration-300 ease-out"
+                className="w-full h-14 rounded-full bg-white text-primary font-bold text-lg hover:bg-white/90 transition-all"
               >
-                {loading ? "SIGNING UP..." : "SIGN UP"}
+                {loading ? "..." : "SIGN UP"}
               </Button>
             </form>
           </div>
