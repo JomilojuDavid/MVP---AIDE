@@ -245,11 +245,11 @@ export default function Auth() {
         variants={sectionVariants}
         initial="hidden"
         animate={rightControls}
-        className="md:flex-[0.6] bg-[#DF1516] flex items-center justify-center p-8 sm:p-12 md:p-20"
+        className="md:flex-[0.6] bg-[#DF1516] flex items-center justify-center p-10 sm:p-14 md:p-24"
       >
-        <div className="w-full max-w-lg">
+        <div className="w-full max-w-2xl">
           <motion.h2
-            className="text-4xl sm:text-5xl font-extrabold text-white mb-10 text-center font-['Montserrat']"
+            className="text-4xl sm:text-5xl font-extrabold text-white mb-12 text-center font-['Montserrat']"
             variants={fadeItem}
             custom={0}
             initial="hidden"
@@ -262,25 +262,25 @@ export default function Auth() {
             type="button"
             onClick={handleGoogleSignIn}
             disabled={loading}
-            className="w-full h-[78px] sm:h-[85px] rounded-[0px] bg-white text-[#DF1516] 
-                       font-semibold hover:bg-white/90 flex items-center justify-center gap-2 text-[20px]"
+            className="w-full h-[90px] sm:h-[95px] rounded-[0px] bg-white text-[#DF1516] 
+                       font-semibold hover:bg-white/90 flex items-center justify-center gap-2 text-[22px]"
           >
-            <FcGoogle size={34} />
+            <FcGoogle size={38} />
             Continue With Google
           </Button>
 
-          <p className="text-white text-center my-8 font-['Poppins'] text-[20px]">
+          <p className="text-white text-center my-10 font-['Poppins'] text-[20px]">
             or use your Email for registration
           </p>
 
-          <motion.form onSubmit={handleSignUp} className="space-y-5">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <motion.form onSubmit={handleSignUp} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Input
                 type="text"
                 placeholder="Full Name"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                className="h-[82px] sm:h-[90px] rounded-[0px] border border-white 
+                className="h-[95px] sm:h-[100px] rounded-[0px] border border-white 
                            bg-white/95 text-black placeholder:text-gray-500 
                            text-[26px] font-normal font-['Poppins'] 
                            placeholder:text-[17px] placeholder:font-normal"
@@ -290,7 +290,7 @@ export default function Auth() {
                 placeholder="Your Email"
                 value={signUpEmail}
                 onChange={(e) => setSignUpEmail(e.target.value)}
-                className="h-[82px] sm:h-[90px] rounded-[0px] border border-white 
+                className="h-[95px] sm:h-[100px] rounded-[0px] border border-white 
                            bg-white/95 text-black placeholder:text-gray-500 
                            text-[26px] font-normal font-['Poppins'] 
                            placeholder:text-[17px] placeholder:font-normal"
@@ -302,7 +302,7 @@ export default function Auth() {
               placeholder="Password"
               value={signUpPassword}
               onChange={(e) => setSignUpPassword(e.target.value)}
-              className="h-[82px] sm:h-[90px] w-full rounded-[0px] border border-white 
+              className="h-[95px] sm:h-[100px] w-full rounded-[0px] border border-white 
                          bg-white/95 text-black placeholder:text-gray-500 
                          text-[26px] font-normal font-['Poppins'] 
                          placeholder:text-[17px] placeholder:font-normal"
@@ -311,8 +311,8 @@ export default function Auth() {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full h-[82px] sm:h-[90px] rounded-[0px] bg-white text-[#DF1516] 
-                         font-bold text-xl hover:bg-white/90 font-['Poppins']"
+              className="w-full h-[95px] sm:h-[100px] rounded-[0px] bg-white text-[#DF1516] 
+                         font-bold text-2xl hover:bg-white/90 font-['Poppins']"
             >
               {loading ? "SIGNING UP..." : "SIGN UP"}
             </Button>
