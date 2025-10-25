@@ -7,9 +7,9 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import ResetPassword from "./pages/ResetPassword";
 import Auth from "./pages/Auth";
-import Dashboard from "./pages/Dashboard";
 import Quiz from "./pages/Quiz";
 import Submission from "./pages/Submission";
+import Dashboard from "./pages/Dashboard";
 import Assessment from "./pages/Assessment";
 import Settings from "./pages/Settings";
 import Tasks from "./pages/Tasks";
@@ -30,14 +30,20 @@ const App = () => (
           <Route path="/auth" element={<Auth />} />
           <Route path="/quiz" element={<Quiz />} />
           <Route path="/submission" element={<Submission />} />
-          <Route path="/dashboard" element={<Dashboard showQuizPrompt={true} />} />
-          <Route path="/dashboard-full" element={<Dashboard showQuizPrompt={false} />} />
+          <Route
+            path="/dashboard"
+            element={<Dashboard showQuizPrompt={true} />}
+          />
+          <Route
+            path="/dashboard-full"
+            element={<Dashboard showQuizPrompt={false} />}
+          />
           <Route path="/assessment" element={<Assessment />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/tasks" element={<Tasks />} />
           <Route path="/resources" element={<Resources />} />
           <Route path="/analytics" element={<Analytics />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          {/* Keep all custom routes above the catch-all */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
