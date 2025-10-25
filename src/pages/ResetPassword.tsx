@@ -1,11 +1,11 @@
-import { useState } from "react";
-import { motion, Variants, easeOut } from "framer-motion";
+import { useState, FormEvent } from "react";
+import { motion, Variants } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import aideLogo from "@/assets/aide-logo.png";
+import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
+import aideLogo from "@/assets/aide-logo.png";
 
 import "@fontsource/montserrat/800.css";
 import "@fontsource/poppins/400.css";
@@ -13,36 +13,10 @@ import "@fontsource/poppins/400.css";
 export default function ResetPassword() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  const { toast } = useToast();
   const navigate = useNavigate();
+  const { toast } = useToast();
 
-  // Animation variants
-  const fadeUp: Variants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: (i: number = 0) => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        delay: i * 0.15,
-        duration: 0.6,
-        ease: easeOut,
-      },
-    }),
-  };
-
-  const fadeIn: Variants = {
-    hidden: { opacity: 0 },
-    visible: (i: number = 0) => ({
-      opacity: 1,
-      transition: {
-        delay: i * 0.15,
-        duration: 0.5,
-        ease: easeOut,
-      },
-    }),
-  };
-
-  const handleResetPassword = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handlePasswordReset = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     setLoading(true);
 
@@ -51,101 +25,91 @@ export default function ResetPassword() {
         redirectTo: `${window.location.origin}/auth`,
       });
 
-      if (error) throw error;
+      if (error) throw new Error(error.message);
 
       toast({
-        title: "Password reset email sent!",
-        description: "Check your inbox for a reset link.",
+        title: "Password Reset Email Sent",
+        description: "Check your inbox to reset your password.",
       });
-      setEmail("");
-    } catch (err) {
-      const description =
-        err instanceof Error ? err.message : "An unknown error occurred";
-      toast({
-        title: "Reset failed",
-        description,
-        variant: "destructive",
-      });
+
+      navigate("/auth");
+    } catch (error) {
+      if (error instanceof Error) {
+        toast({
+          title: "Reset failed",
+          description: error.message,
+          variant: "destructive",
+        });
+      }
     } finally {
       setLoading(false);
     }
   };
 
+  const slideIn: Variants = {
+    hidden: { opacity: 0, y: 40, scale: 0.95 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        type: "spring" as const,
+        stiffness: 70,
+        damping: 14,
+        delay: 0.2,
+        duration: 0.8,
+        ease: [0.25, 0.1, 0.25, 1],
+      },
+    },
+  };
+
   return (
-    <div className="min-h-screen bg-primary flex items-center justify-center font-[Poppins] p-6">
+    <div className="min-h-screen flex items-center justify-center bg-primary font-[Poppins] p-6">
       <motion.div
-        initial={{ opacity: 0, scale: 0.95, y: 20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ duration: 0.7, ease: easeOut }}
-        className="bg-white w-full max-w-md rounded-3xl shadow-lg p-10 flex flex-col items-center text-center"
+        variants={slideIn}
+        initial="hidden"
+        animate="visible"
+        className="bg-white rounded-3xl shadow-lg p-10 w-full max-w-lg flex flex-col items-center"
       >
-        <motion.img
+        <img
           src={aideLogo}
           alt="AIDE Logo"
-          className="h-16 mb-8"
-          initial="hidden"
-          animate="visible"
-          variants={fadeIn}
+          className="h-20 mb-8"
         />
 
-        <motion.h1
-          className="text-4xl font-[Montserrat] font-extrabold text-primary mb-4"
-          initial="hidden"
-          animate="visible"
-          variants={fadeUp}
-        >
+        <h1 className="text-4xl font-[Montserrat] font-extrabold text-primary mb-4">
           Reset Password
-        </motion.h1>
+        </h1>
+        <p className="text-foreground text-center mb-8 leading-relaxed">
+          Enter your email address below and we’ll send you a link to reset your password.
+        </p>
 
-        <motion.p
-          className="text-foreground text-base mb-8"
-          initial="hidden"
-          animate="visible"
-          variants={fadeUp}
-          custom={1}
-        >
-          Enter your email address and we’ll send you a link to reset your
-          password.
-        </motion.p>
+        <form onSubmit={handlePasswordReset} className="w-full space-y-6">
+          <Input
+            type="email"
+            placeholder="Your Email Address"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="h-14 rounded-full border-2 border-primary bg-white text-foreground placeholder:text-primary/60 focus-visible:ring-primary"
+          />
 
-        <motion.form
-          onSubmit={handleResetPassword}
-          className="w-full space-y-4"
-          initial="hidden"
-          animate="visible"
-          variants={fadeIn}
-        >
-          <motion.div variants={fadeUp} custom={2}>
-            <Input
-              type="email"
-              placeholder="Your Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="h-14 rounded-full border-2 border-primary bg-white text-foreground placeholder:text-primary/60 focus-visible:ring-primary"
-              required
-            />
-          </motion.div>
-
-          <motion.div variants={fadeUp} custom={3}>
-            <Button
-              type="submit"
-              disabled={loading}
-              className="w-full h-14 rounded-full bg-primary text-white font-bold text-lg hover:bg-primary/90"
-            >
-              {loading ? "SENDING..." : "SEND RESET LINK"}
-            </Button>
-          </motion.div>
-
-          <motion.button
-            type="button"
-            onClick={() => navigate("/auth")}
-            className="text-primary hover:underline mt-3 text-sm"
-            variants={fadeUp}
-            custom={4}
+          <Button
+            type="submit"
+            disabled={loading}
+            className="w-full h-14 rounded-full bg-primary text-white font-semibold text-lg hover:bg-primary/90 transition-all duration-300"
           >
-            Back to Sign In
-          </motion.button>
-        </motion.form>
+            {loading ? "SENDING..." : "SEND RESET LINK"}
+          </Button>
+        </form>
+
+        <button
+          type="button"
+          onClick={() => navigate("/auth")}
+          className="mt-8 text-primary hover:underline font-medium transition-colors"
+        >
+          Back to Sign In
+        </button>
       </motion.div>
     </div>
   );
