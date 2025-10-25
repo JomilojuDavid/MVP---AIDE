@@ -12,7 +12,6 @@ import "@/index.css";
 
 /* Import Google Fonts directly for this page */
 import { Helmet } from "react-helmet";
-
 export default function Auth() {
   const [fullName, setFullName] = useState("");
   const [signUpEmail, setSignUpEmail] = useState("");
