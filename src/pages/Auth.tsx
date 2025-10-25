@@ -8,7 +8,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 
-// ✅ Import Google Fonts via CDN using Helmet alternative (direct injection)
 const addGoogleFonts = () => {
   const link = document.createElement("link");
   link.href =
@@ -27,12 +26,11 @@ export default function Auth() {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  // Add Google Fonts
   useEffect(() => {
     addGoogleFonts();
   }, []);
 
-  // Scroll animation using IntersectionObserver
+  // --- Intersection observer animation ---
   const sectionsRef = useRef<(HTMLDivElement | null)[]>([]);
   const [visibleSections, setVisibleSections] = useState<boolean[]>([]);
 
@@ -76,25 +74,15 @@ export default function Auth() {
         password: signUpPassword,
         options: {
           emailRedirectTo: `${window.location.origin}/dashboard`,
-          data: {
-            first_name: firstName,
-            last_name: lastName,
-          },
+          data: { first_name: firstName, last_name: lastName },
         },
       });
 
       if (error) throw error;
-      toast({
-        title: "Account created successfully!",
-        description: "Redirecting to dashboard...",
-      });
+      toast({ title: "Account created successfully!", description: "Redirecting..." });
       navigate("/dashboard");
     } catch (error: any) {
-      toast({
-        title: "Sign up failed",
-        description: error.message,
-        variant: "destructive",
-      });
+      toast({ title: "Sign up failed", description: error.message, variant: "destructive" });
     } finally {
       setLoading(false);
     }
@@ -109,18 +97,10 @@ export default function Auth() {
         password: signInPassword,
       });
       if (error) throw error;
-
-      toast({
-        title: "Welcome back!",
-        description: "Redirecting to dashboard...",
-      });
+      toast({ title: "Welcome back!", description: "Redirecting..." });
       navigate("/dashboard");
     } catch (error: any) {
-      toast({
-        title: "Sign in failed",
-        description: error.message,
-        variant: "destructive",
-      });
+      toast({ title: "Sign in failed", description: error.message, variant: "destructive" });
     } finally {
       setLoading(false);
     }
@@ -131,28 +111,13 @@ export default function Auth() {
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
-        options: {
-          redirectTo: `${window.location.origin}/dashboard`,
-        },
+        options: { redirectTo: `${window.location.origin}/dashboard` },
       });
       if (error) throw error;
     } catch (error: any) {
-      toast({
-        title: "Google sign in failed",
-        description: error.message,
-        variant: "destructive",
-      });
+      toast({ title: "Google sign in failed", description: error.message, variant: "destructive" });
       setLoading(false);
     }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: { delay: 0.2 + i * 0.1, duration: 0.5 },
-    }),
   };
 
   return (
@@ -163,49 +128,30 @@ export default function Auth() {
         initial={{ opacity: 0, x: -60 }}
         animate={visibleSections[0] ? { opacity: 1, x: 0 } : {}}
         transition={{ duration: 1, ease: "easeOut" }}
-        className="flex-[0.4] bg-white flex flex-col items-center justify-center p-12"
-        style={{
-          fontFamily: "Poppins, sans-serif",
-        }}
+        className="flex-[0.4] bg-white flex flex-col items-center justify-center p-12 relative"
+        style={{ fontFamily: "Poppins, sans-serif" }}
       >
         <img
           src={aideLogo}
           alt="AIDE Logo"
-          style={{
-            width: "180px",
-            height: "auto",
-            position: "absolute",
-            top: "35px",
-            left: "50px",
-          }}
+          style={{ width: "180px", position: "absolute", top: "35px", left: "50px" }}
         />
 
         <div className="w-full max-w-md text-center mt-32">
           <h1
             className="font-extrabold text-[#DF1516] mb-4"
-            style={{
-              fontFamily: "Montserrat, sans-serif",
-              fontSize: "40px",
-              lineHeight: "100%",
-              letterSpacing: "0%",
-            }}
+            style={{ fontFamily: "Montserrat, sans-serif", fontSize: "40px", lineHeight: "100%" }}
           >
             Hello, Friend!
           </h1>
 
           <p
             className="mb-10 text-[#000000]"
-            style={{
-              fontFamily: "Poppins, sans-serif",
-              fontWeight: 400,
-              fontSize: "20px",
-              lineHeight: "100%",
-              letterSpacing: "0%",
-            }}
+            style={{ fontFamily: "Poppins, sans-serif", fontWeight: 400, fontSize: "20px" }}
           >
             Sign in to continue your personalized journey with{" "}
-            <span className="font-semibold text-black">AIDE</span>—where
-            mindset mastery meets business growth.
+            <span className="font-semibold text-black">AIDE</span>—where mindset mastery meets
+            business growth.
           </p>
 
           <form onSubmit={handleSignIn} className="space-y-5">
@@ -222,12 +168,13 @@ export default function Auth() {
                 placeholder="Password"
                 value={signInPassword}
                 onChange={(e) => setSignInPassword(e.target.value)}
-                className="h-[70px] w-full rounded-[25px] border border-[#DF1516] text-[18px] px-6"
+                className="h-[70px] w-full rounded-[25px] border border-[#DF1516] text-[18px] px-6 pr-40"
               />
+              {/* extended button overlapping slightly inside */}
               <Button
                 type="submit"
                 disabled={loading}
-                className="absolute right-0 h-[90px] rounded-[25px] bg-[#DF1516] text-white px-8 font-semibold hover:bg-[#c01314]"
+                className="absolute right-[-15px] h-[70px] rounded-[25px] bg-[#DF1516] text-white px-10 font-semibold hover:bg-[#c01314]"
               >
                 {loading ? "SIGNING IN..." : "SIGN IN"}
               </Button>
@@ -235,6 +182,7 @@ export default function Auth() {
 
             <button
               type="button"
+              onClick={() => navigate("/reset-password")}
               className="text-black font-semibold mt-2 text-[16px] text-left ml-1"
             >
               Forgot Password
@@ -271,11 +219,7 @@ export default function Auth() {
 
           <p
             className="text-white text-center my-6"
-            style={{
-              fontFamily: "Poppins, sans-serif",
-              fontWeight: 400,
-              fontSize: "20px",
-            }}
+            style={{ fontFamily: "Poppins, sans-serif", fontWeight: 400, fontSize: "20px" }}
           >
             or use your Email for registration
           </p>
