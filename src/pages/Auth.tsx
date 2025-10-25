@@ -4,6 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { FcGoogle } from "react-icons/fc";
 import aideLogo from "@/assets/aide-logo.png";
+import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Auth() {
   const [fullName, setFullName] = useState("");
@@ -11,9 +14,99 @@ export default function Auth() {
   const [signUpPassword, setSignUpPassword] = useState("");
   const [signInEmail, setSignInEmail] = useState("");
   const [signInPassword, setSignInPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { toast } = useToast();
 
-  const handleSignUp = (e: React.FormEvent) => e.preventDefault();
-  const handleSignIn = (e: React.FormEvent) => e.preventDefault();
+  const handleSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const nameParts = fullName.trim().split(" ");
+      const firstName = nameParts[0] || "";
+      const lastName = nameParts.slice(1).join(" ") || "";
+
+      const { error } = await supabase.auth.signUp({
+        email: signUpEmail,
+        password: signUpPassword,
+        options: {
+          emailRedirectTo: `${window.location.origin}/dashboard`,
+          data: {
+            first_name: firstName,
+            last_name: lastName,
+          },
+        },
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Account created successfully!",
+        description: "Redirecting to dashboard...",
+      });
+
+      navigate("/dashboard");
+    } catch (error: any) {
+      toast({
+        title: "Sign up failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSignIn = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: signInEmail,
+        password: signInPassword,
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Welcome back!",
+        description: "Redirecting to dashboard...",
+      });
+
+      navigate("/dashboard");
+    } catch (error: any) {
+      toast({
+        title: "Sign in failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: `${window.location.origin}/dashboard`,
+        },
+      });
+
+      if (error) throw error;
+    } catch (error: any) {
+      toast({
+        title: "Google sign in failed",
+        description: error.message,
+        variant: "destructive",
+      });
+      setLoading(false);
+    }
+  };
 
   // Motion variants
   const itemVariants = {
@@ -101,9 +194,10 @@ export default function Auth() {
               />
               <Button
                 type="submit"
+                disabled={loading}
                 className="h-14 px-10 rounded-full bg-primary text-white font-semibold hover:bg-primary/90 whitespace-nowrap"
               >
-                SIGN IN
+                {loading ? "SIGNING IN..." : "SIGN IN"}
               </Button>
             </motion.div>
 
@@ -145,6 +239,8 @@ export default function Auth() {
           >
             <Button
               type="button"
+              onClick={handleGoogleSignIn}
+              disabled={loading}
               className="w-full h-14 rounded-full bg-white text-primary font-semibold hover:bg-white/90 flex items-center justify-center gap-3"
             >
               <FcGoogle size={24} />
@@ -212,11 +308,12 @@ export default function Auth() {
               initial="hidden"
               animate="visible"
             >
-              <Button
+            <Button
                 type="submit"
+                disabled={loading}
                 className="w-full h-14 rounded-full bg-white text-primary font-bold text-lg hover:bg-white/90"
               >
-                SIGN UP
+                {loading ? "SIGNING UP..." : "SIGN UP"}
               </Button>
             </motion.div>
           </motion.form>
