@@ -106,23 +106,31 @@ export default function Auth() {
     }
   };
 
-  const handleGoogleSignIn = async () => {
-    setLoading(true);
-    try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
-        options: { redirectTo: `${window.location.origin}/dashboard` },
-      });
-      if (error) throw error;
-    } catch (error: any) {
-      toast({
-        title: "Google sign in failed",
-        description: error.message,
-        variant: "destructive",
-      });
-      setLoading(false);
-    }
-  };
+const handleGoogleSignIn = async () => {
+  setLoading(true);
+  try {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${window.location.origin}/dashboard`, // Redirect after sign in
+        queryParams: {
+          access_type: "offline",
+          prompt: "consent", // ensures refresh token
+        },
+      },
+    });
+
+    if (error) throw error;
+  } catch (error: any) {
+    toast({
+      title: "Google Sign-In Failed",
+      description: error.message,
+      variant: "destructive",
+    });
+  } finally {
+    setLoading(false);
+  }
+};
 
   // Animation presets
   const sectionVariants = {
