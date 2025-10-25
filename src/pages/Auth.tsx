@@ -1,180 +1,338 @@
-import { useState, useEffect, useRef } from "react";
-import { motion, useAnimation } from "framer-motion";
-import { useInView } from "framer-motion";
-import aideLogo from "@/assets/aide-logo.png";
+import { useState, useRef, useEffect } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import aideLogo from "@/assets/aide-logo.png";
 import { Button } from "@/components/ui/button";
 
-const tabMockup =
+/**
+ * Auth.tsx
+ * - Sign Up is default (landing)
+ * - Crossfade to Sign In when toggled
+ * - Uses a safe online mockup image for red background
+ */
+
+const TAB_MOCKUP =
   "https://images.unsplash.com/photo-1581090700227-1e37b190418e?auto=format&fit=crop&w=1000&q=80";
+const PRIMARY = "#DF1516";
 
-export default function Auth() {
+export default function Auth(): JSX.Element {
+  const [showSignIn, setShowSignIn] = useState(false); // false => show Sign Up
   const navigate = useNavigate();
-  const [isSignIn, setIsSignIn] = useState(false);
-
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true });
-  const controls = useAnimation();
-
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [mounted, setMounted] = useState(false);
   useEffect(() => {
-    if (inView) controls.start("visible");
-  }, [inView, controls]);
+    // small mount flag so initial animations behave predictably
+    setMounted(true);
+  }, []);
 
-  const fadeVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.9, ease: "easeOut" } },
+  // Crossfade variants
+  const fade = {
+    initial: { opacity: 0, scale: 0.995 },
+    animate: { opacity: 1, scale: 1, transition: { duration: 0.45, ease: "easeOut" } },
+    exit: { opacity: 0, scale: 0.995, transition: { duration: 0.35, ease: "easeIn" } },
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#DF1516]">
-      <div className="w-[90%] md:w-[1512px] h-[982px] bg-white rounded-[30px] overflow-hidden flex flex-col md:flex-row shadow-xl">
-        {/* --- Left Side (Sign In) --- */}
-        <motion.div
-          ref={ref}
-          variants={fadeVariants}
-          initial="hidden"
-          animate={controls}
-          className="relative w-full md:w-[40%] bg-white flex flex-col justify-center items-center px-10 md:px-16"
-        >
-          <div className="absolute top-[35px] left-[35px]">
-            <img
-              src={aideLogo}
-              alt="AIDE Logo"
-              style={{ width: "150px", height: "auto" }}
-            />
-          </div>
-
-          {isSignIn ? (
+    <div
+      ref={containerRef}
+      className="min-h-screen flex items-center justify-center bg-[#f7f7f7] p-6"
+    >
+      <div
+        className="w-full max-w-[1512px] h-[982px] rounded-[30px] overflow-hidden shadow-2xl relative"
+        style={{ background: "transparent" }}
+      >
+        <AnimatePresence mode="wait">
+          {/* SIGN UP (default landing) */}
+          {!showSignIn && mounted && (
             <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7 }}
-              className="w-full max-w-[400px] mt-32"
+              key="sign-up"
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              variants={fade}
+              className="absolute inset-0 flex"
             >
-              <h2 className="text-center font-montserrat font-extrabold text-[48px] text-[#DF1516] mb-4">
-                Welcome Back
-              </h2>
-              <p className="text-center font-poppins text-[20px] font-regular text-gray-600 mb-10">
-                Sign in to continue to your dashboard
-              </p>
+              {/* Left white column (logo + sign in greeting style visually on left in original) */}
+              <div className="w-[40%] bg-white p-16 flex flex-col items-start">
+                {/* Logo top-left */}
+                <img src={aideLogo} alt="AIDE Logo" className="w-[259px] h-[125px] object-contain mb-6" />
 
-              <div className="mb-6">
-                <label className="block text-[20px] font-semibold mb-2 font-poppins text-gray-800">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="w-full h-[60px] border border-gray-300 rounded-[18px] px-4 font-semibold text-gray-800 placeholder:font-semibold placeholder:text-gray-400"
-                />
+                {/* Centered greeting on left side */}
+                <div className="mt-16 w-full">
+                  <h1
+                    className="text-[48px] leading-[1] font-extrabold"
+                    style={{ fontFamily: "'Montserrat', sans-serif", color: PRIMARY, textAlign: "center" }}
+                  >
+                    Hello, Friend!
+                  </h1>
+
+                  <p
+                    className="mt-6 text-[24px] leading-[1] text-center"
+                    style={{ fontFamily: "'Poppins', sans-serif", color: "#111" }}
+                  >
+                    Sign in to continue your personalized journey with{" "}
+                    <span style={{ fontWeight: 600 }}>AIDE</span>—where mindset mastery meets business
+                    growth.
+                  </p>
+
+                  {/* sign-in inputs on the left side as per design (these replicate original) */}
+                  <div className="mt-12 max-w-[520px] mx-auto">
+                    <input
+                      placeholder="Your Email"
+                      className="w-full h-[64px] rounded-[24px] border border-[#DF1516] px-6 text-[18px] placeholder:text-[#DF1516]/80 mb-6"
+                    />
+
+                    <div className="flex items-stretch w-full rounded-[24px] border border-[#DF1516] overflow-hidden">
+                      <input
+                        placeholder="Password"
+                        type="password"
+                        className="flex-1 h-[64px] pl-6 text-[18px] placeholder:text-[#DF1516]/80"
+                      />
+                      <button
+                        type="button"
+                        className="h-[64px] px-8 bg-[#DF1516] text-white font-semibold rounded-r-[24px] whitespace-nowrap"
+                      >
+                        SIGN IN
+                      </button>
+                    </div>
+
+                    <button
+                      onClick={() => navigate("/reset-password")}
+                      className="mt-4 text-[16px] font-semibold text-black"
+                    >
+                      Forgot Password
+                    </button>
+                  </div>
+                </div>
               </div>
 
-              <div className="mb-6">
-                <label className="block text-[20px] font-semibold mb-2 font-poppins text-gray-800">
-                  Password
-                </label>
-                <input
-                  type="password"
-                  placeholder="Enter your password"
-                  className="w-full h-[60px] border border-gray-300 rounded-[18px] px-4 font-semibold text-gray-800 placeholder:font-semibold placeholder:text-gray-400"
-                />
-              </div>
+              {/* Right red column (signup form) */}
+              <div
+                className="flex-1 bg-[#DF1516] flex items-center justify-center p-16"
+                style={{
+                  backgroundImage: `linear-gradient(rgba(223,21,22,0.95), rgba(223,21,22,0.95)), url(${TAB_MOCKUP})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }}
+              >
+                <div className="w-full max-w-[620px]">
+                  <h2
+                    className="text-[48px] font-extrabold text-white text-center mb-6"
+                    style={{ fontFamily: "'Montserrat', sans-serif" }}
+                  >
+                    Create an Account
+                  </h2>
 
-              <div className="text-right mb-6">
-                <button
-                  onClick={() => navigate("/reset-password")}
-                  className="font-poppins font-semibold text-[16px] text-black hover:text-[#DF1516] transition-all"
-                >
-                  Forgot Password?
-                </button>
-              </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      /* placeholder: will hook to Google later */
+                    }}
+                    className="mx-auto flex items-center justify-center gap-4 w-full max-w-[520px] h-[64px] rounded-[24px] bg-white text-[#DF1516] font-semibold mb-6"
+                  >
+                    <img
+                      src="https://www.svgrepo.com/show/475656/google-color.svg"
+                      alt="Google"
+                      className="w-6 h-6"
+                    />
+                    Continue With Google
+                  </button>
 
-              <Button className="w-full h-[60px] bg-[#DF1516] text-white font-semibold rounded-[18px] text-lg hover:bg-[#c01213] transition-all">
-                Sign In
-              </Button>
+                  <p className="text-center text-white mb-6" style={{ fontFamily: "'Poppins', sans-serif" }}>
+                    or use your Email for registration
+                  </p>
 
-              <div className="flex items-center justify-center mt-8">
-                <button className="w-full border border-gray-300 rounded-[18px] py-3 text-gray-700 font-medium hover:bg-gray-100 transition-all">
-                  Connect with Google
-                </button>
-              </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <input
+                      placeholder="Full Name"
+                      className="h-[64px] rounded-[24px] px-6 border-0 bg-white/95 text-[#111]"
+                    />
+                    <input
+                      placeholder="Your Email"
+                      className="h-[64px] rounded-[24px] px-6 border-0 bg-white/95 text-[#111]"
+                    />
+                  </div>
 
-              <div className="text-center mt-8 text-gray-600">
-                Don’t have an account?{" "}
-                <button
-                  onClick={() => setIsSignIn(false)}
-                  className="text-[#DF1516] font-semibold hover:underline"
-                >
-                  Sign Up
-                </button>
-              </div>
-            </motion.div>
-          ) : (
-            /* --- Sign Up Form --- */
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7 }}
-              className="w-full max-w-[400px] mt-32"
-            >
-              <h2 className="text-center font-montserrat font-extrabold text-[48px] text-[#DF1516] mb-4">
-                Hello Friend
-              </h2>
-              <p className="text-center font-poppins text-[20px] text-gray-600 mb-10">
-                Enter your details and start your journey with{" "}
-                <span className="font-semibold text-black">AIDE</span>
-              </p>
+                  <input
+                    placeholder="Password"
+                    className="w-full h-[64px] rounded-[24px] px-6 border-0 bg-white/95 text-[#111] mb-6"
+                  />
 
-              <div className="flex gap-4 mb-6">
-                <input
-                  type="text"
-                  placeholder="Full Name"
-                  className="w-1/2 h-[60px] border border-gray-300 rounded-[18px] px-4 font-regular text-gray-800"
-                />
-                <input
-                  type="email"
-                  placeholder="Your Email"
-                  className="w-1/2 h-[60px] border border-gray-300 rounded-[18px] px-4 font-regular text-gray-800"
-                />
-              </div>
+                  <button
+                    type="button"
+                    className="w-full h-[64px] rounded-[24px] bg-white text-[#DF1516] font-bold text-lg"
+                  >
+                    SIGN UP
+                  </button>
 
-              <div className="mb-6">
-                <input
-                  type="password"
-                  placeholder="Password"
-                  className="w-full h-[60px] border border-gray-300 rounded-[18px] px-4 font-regular text-gray-800"
-                />
-              </div>
-
-              <Button className="w-full h-[60px] bg-[#DF1516] text-white font-semibold rounded-[18px] text-lg hover:bg-[#c01213] transition-all">
-                Sign Up
-              </Button>
-
-              <div className="text-center mt-8 text-gray-600">
-                Already have an account?{" "}
-                <button
-                  onClick={() => setIsSignIn(true)}
-                  className="text-[#DF1516] font-semibold hover:underline"
-                >
-                  Sign In
-                </button>
+                  <div className="text-center mt-6">
+                    <span className="text-white mr-2">Already have an account?</span>
+                    <button
+                      onClick={() => setShowSignIn(true)}
+                      className="text-white underline font-semibold"
+                    >
+                      Sign In
+                    </button>
+                  </div>
+                </div>
               </div>
             </motion.div>
           )}
-        </motion.div>
+        </AnimatePresence>
 
-        {/* --- Right Side (Red Background with Mockup) --- */}
-        <motion.div
-          className="relative hidden md:flex w-[60%] bg-[#DF1516] justify-center items-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.2 }}
-          style={{
-            backgroundImage: `linear-gradient(rgba(223, 21, 22, 0.8), rgba(223, 21, 22, 0.8)), url(${tabMockup})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        />
+        <AnimatePresence mode="wait">
+          {/* SIGN IN view (crossfades in when showSignIn is true) */}
+          {showSignIn && mounted && (
+            <motion.div
+              key="sign-in"
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              variants={fade}
+              className="absolute inset-0 flex"
+            >
+              {/* Left column becomes the sign-in (white on red logic requested: sign in white on red background)
+                  To satisfy "sign in a white on a red background" we place a red column on left with white inner card. */}
+              <div
+                className="w-[40%] bg-[#DF1516] p-16 flex items-center justify-center"
+                style={{
+                  backgroundImage: `linear-gradient(rgba(223,21,22,0.95), rgba(223,21,22,0.95)), url(${TAB_MOCKUP})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }}
+              >
+                <div className="w-full max-w-[520px] bg-white rounded-[24px] p-10">
+                  {/* logo top-left inside white card area */}
+                  <div className="absolute top-[35px] left-[35px]">
+                    <img src={aideLogo} alt="AIDE Logo" className="w-[150px]" />
+                  </div>
+
+                  <h1
+                    className="text-[48px] font-extrabold text-[#DF1516] text-center mb-4"
+                    style={{ fontFamily: "'Montserrat', sans-serif" }}
+                  >
+                    Hello, Friend!
+                  </h1>
+
+                  <p className="text-[24px] text-center mb-8" style={{ fontFamily: "'Poppins', sans-serif" }}>
+                    Sign in to continue your personalized journey with{" "}
+                    <span style={{ fontWeight: 600 }}>AIDE</span>—where mindset mastery meets business growth.
+                  </p>
+
+                  {/* Email */}
+                  <div className="mb-6">
+                    <input
+                      placeholder="Your Email"
+                      className="w-full h-[64px] rounded-[24px] border border-[#DF1516] px-6 text-[18px] placeholder:text-[#DF1516]/80"
+                    />
+                  </div>
+
+                  {/* Password with sign-in button attached to right */}
+                  <div className="mb-4">
+                    <div className="flex items-stretch w-full rounded-[24px] border border-[#DF1516] overflow-hidden">
+                      <input
+                        placeholder="Password"
+                        type="password"
+                        className="flex-1 h-[64px] pl-6 text-[18px] placeholder:text-[#DF1516]/80"
+                      />
+                      <button
+                        type="button"
+                        className="h-[64px] px-8 bg-[#DF1516] text-white font-semibold"
+                      >
+                        SIGN IN
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="mb-6">
+                    <button
+                      onClick={() => navigate("/reset-password")}
+                      className="text-[16px] font-semibold text-black"
+                    >
+                      Forgot Password
+                    </button>
+                  </div>
+
+                  {/* Google connect (on sign-in side) */}
+                  <div className="mb-6">
+                    <button className="w-full border border-gray-300 rounded-[18px] py-3 text-gray-700 font-medium hover:bg-gray-100">
+                      Connect with Google
+                    </button>
+                  </div>
+
+                  <div className="text-center">
+                    <span className="text-gray-700 mr-2">Don’t have an account?</span>
+                    <button
+                      onClick={() => setShowSignIn(false)}
+                      className="text-[#DF1516] font-semibold underline"
+                    >
+                      Sign Up
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right column becomes the sign-up red area (white form centered on red) */}
+              <div className="flex-1 bg-white flex items-center justify-center p-16">
+                <div className="w-full max-w-[620px]">
+                  <h2
+                    className="text-[48px] font-extrabold text-black text-center mb-6"
+                    style={{ fontFamily: "'Montserrat', sans-serif" }}
+                  >
+                    Create an Account
+                  </h2>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      /* placeholder for google */
+                    }}
+                    className="mx-auto flex items-center justify-center gap-4 w-full max-w-[520px] h-[64px] rounded-[24px] bg-[#DF1516] text-white font-semibold mb-6"
+                    style={{ backgroundColor: PRIMARY }}
+                  >
+                    <img
+                      src="https://www.svgrepo.com/show/475656/google-color.svg"
+                      alt="Google"
+                      className="w-6 h-6"
+                    />
+                    Continue With Google
+                  </button>
+
+                  <p className="text-center text-[#111] mb-6" style={{ fontFamily: "'Poppins', sans-serif" }}>
+                    or use your Email for registration
+                  </p>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <input
+                      placeholder="Full Name"
+                      className="h-[64px] rounded-[24px] px-6 border border-neutral-200"
+                    />
+                    <input
+                      placeholder="Your Email"
+                      className="h-[64px] rounded-[24px] px-6 border border-neutral-200"
+                    />
+                  </div>
+
+                  <input placeholder="Password" className="w-full h-[64px] rounded-[24px] px-6 border border-neutral-200 mb-6" />
+
+                  <button
+                    type="button"
+                    className="w-full h-[64px] rounded-[24px] bg-[#DF1516] text-white font-bold text-lg"
+                  >
+                    SIGN UP
+                  </button>
+
+                  <div className="text-center mt-6">
+                    <span className="text-gray-700 mr-2">Already have an account?</span>
+                    <button onClick={() => setShowSignIn(true)} className="text-[#DF1516] font-semibold underline">
+                      Sign In
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );
