@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const resources = [
   {
@@ -67,17 +68,27 @@ export default function Resources() {
       <main className="flex-1 md:ml-64 p-8 md:p-12">
         <div className="max-w-5xl mx-auto space-y-8">
           {/* Header */}
-          <div className="bg-white rounded-3xl p-8 md:p-12">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="bg-white rounded-3xl p-8 md:p-12"
+          >
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
               Here's Your Resource Library, <span className="text-primary">{firstName || "Name"}!</span>
             </h1>
             <p className="text-xl text-foreground">
               Access your personalized materials to enhance your AIDE journey.
             </p>
-          </div>
+          </motion.div>
 
           {/* Resources Grid */}
-          <div className="grid md:grid-cols-2 gap-6">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="grid md:grid-cols-2 gap-6"
+          >
             {resources.map((resource) => (
               <div
                 key={resource.id}
@@ -98,17 +109,22 @@ export default function Resources() {
                 </Button>
               </div>
             ))}
-          </div>
+          </motion.div>
 
           {/* Quick Tips */}
-          <div className="bg-primary border-4 border-secondary rounded-3xl p-8 text-white">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            className="bg-primary border-4 border-secondary rounded-3xl p-8 text-white"
+          >
             <h3 className="text-2xl font-bold mb-6">Quick Tips</h3>
             <ul className="space-y-3 text-lg list-disc list-inside">
               <li>Start your day with clarity.</li>
               <li>Break goals into smaller steps.</li>
               <li>Review wins weekly.</li>
             </ul>
-          </div>
+          </motion.div>
         </div>
       </main>
     </div>

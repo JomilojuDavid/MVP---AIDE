@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { Settings } from "lucide-react";
 import aideLogo from "@/assets/aide-logo.png";
+import { motion } from "framer-motion";
 
 export default function Quiz() {
   const navigate = useNavigate();
@@ -43,15 +44,25 @@ export default function Quiz() {
 
       <div className="max-w-5xl mx-auto pt-28">
         {/* Quiz Header */}
-        <div className="bg-white rounded-3xl p-8 md:p-12 mb-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="bg-white rounded-3xl p-8 md:p-12 mb-8"
+        >
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">AIDE Onboarding Quiz</h1>
           <p className="text-lg md:text-xl text-muted-foreground">
             Answer a few quick questions so we can personalize your roadmap.
           </p>
-        </div>
+        </motion.div>
 
         {/* Quiz Card */}
-        <div className="bg-white rounded-3xl p-8 md:p-12">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="bg-white rounded-3xl p-8 md:p-12"
+        >
           <div className="space-y-10">
             {/* Question 1 */}
             <div>
@@ -122,7 +133,7 @@ export default function Quiz() {
               NEXT&gt;&gt;
             </button>
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
