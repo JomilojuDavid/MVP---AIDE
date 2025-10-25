@@ -1,197 +1,181 @@
 import { useState, useEffect, useRef } from "react";
-import { motion } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
+import { useInView } from "framer-motion";
 import aideLogo from "@/assets/aide-logo.png";
-import tabMockup from "@/assets/tab-mockup.png"; // <-- add your artwork file in /assets
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+
+const tabMockup =
+  "https://images.unsplash.com/photo-1581090700227-1e37b190418e?auto=format&fit=crop&w=1000&q=80";
 
 export default function Auth() {
+  const navigate = useNavigate();
   const [isSignIn, setIsSignIn] = useState(false);
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const [isVisible, setIsVisible] = useState(false);
+
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true });
+  const controls = useAnimation();
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => setIsVisible(entry.isIntersecting),
-      { threshold: 0.2 }
-    );
-    if (containerRef.current) observer.observe(containerRef.current);
-    return () => {
-      if (containerRef.current) observer.unobserve(containerRef.current);
-    };
-  }, []);
+    if (inView) controls.start("visible");
+  }, [inView, controls]);
+
+  const fadeVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.9, ease: "easeOut" } },
+  };
 
   return (
-    <div
-      ref={containerRef}
-      className="min-h-screen flex items-center justify-center bg-[#DF1516] text-[#1A1A1A] font-['Poppins'] overflow-hidden"
-    >
-      <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        animate={
-          isVisible
-            ? { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } }
-            : {}
-        }
-        className="flex w-[1512px] h-[982px] rounded-[30px] overflow-hidden shadow-2xl"
-      >
-        {/* Sign In Section */}
-        <div
-          className={`transition-all duration-700 ease-in-out relative ${
-            isSignIn ? "w-[40%] opacity-100" : "w-0 opacity-0 pointer-events-none"
-          } flex flex-col items-center justify-center bg-white text-center px-12`}
+    <div className="min-h-screen flex items-center justify-center bg-[#DF1516]">
+      <div className="w-[90%] md:w-[1512px] h-[982px] bg-white rounded-[30px] overflow-hidden flex flex-col md:flex-row shadow-xl">
+        {/* --- Left Side (Sign In) --- */}
+        <motion.div
+          ref={ref}
+          variants={fadeVariants}
+          initial="hidden"
+          animate={controls}
+          className="relative w-full md:w-[40%] bg-white flex flex-col justify-center items-center px-10 md:px-16"
         >
-          {isSignIn && (
+          <div className="absolute top-[35px] left-[35px]">
+            <img
+              src={aideLogo}
+              alt="AIDE Logo"
+              style={{ width: "150px", height: "auto" }}
+            />
+          </div>
+
+          {isSignIn ? (
             <motion.div
-              initial={{ opacity: 0, x: -40 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              className="w-full"
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7 }}
+              className="w-full max-w-[400px] mt-32"
             >
-              <div className="absolute top-[35px] left-[50px]">
-                <img
-                  src={aideLogo}
-                  alt="Aide Logo"
-                  style={{
-                    width: "259px",
-                    height: "125px",
-                    opacity: 1,
-                  }}
+              <h2 className="text-center font-montserrat font-extrabold text-[48px] text-[#DF1516] mb-4">
+                Welcome Back
+              </h2>
+              <p className="text-center font-poppins text-[20px] font-regular text-gray-600 mb-10">
+                Sign in to continue to your dashboard
+              </p>
+
+              <div className="mb-6">
+                <label className="block text-[20px] font-semibold mb-2 font-poppins text-gray-800">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  className="w-full h-[60px] border border-gray-300 rounded-[18px] px-4 font-semibold text-gray-800 placeholder:font-semibold placeholder:text-gray-400"
                 />
               </div>
 
-              <h1 className="text-[40px] font-extrabold font-['Montserrat'] text-[#DF1516] mt-52">
-                Hello, Friend!
-              </h1>
+              <div className="mb-6">
+                <label className="block text-[20px] font-semibold mb-2 font-poppins text-gray-800">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  placeholder="Enter your password"
+                  className="w-full h-[60px] border border-gray-300 rounded-[18px] px-4 font-semibold text-gray-800 placeholder:font-semibold placeholder:text-gray-400"
+                />
+              </div>
 
-              <p className="text-[20px] leading-[100%] mt-4 text-center">
-                Sign in to continue your personalized journey <br />
-                with <span className="font-semibold text-black">AIDE</span>—where mindset
-                mastery meets business growth.
+              <div className="text-right mb-6">
+                <button
+                  onClick={() => navigate("/reset-password")}
+                  className="font-poppins font-semibold text-[16px] text-black hover:text-[#DF1516] transition-all"
+                >
+                  Forgot Password?
+                </button>
+              </div>
+
+              <Button className="w-full h-[60px] bg-[#DF1516] text-white font-semibold rounded-[18px] text-lg hover:bg-[#c01213] transition-all">
+                Sign In
+              </Button>
+
+              <div className="flex items-center justify-center mt-8">
+                <button className="w-full border border-gray-300 rounded-[18px] py-3 text-gray-700 font-medium hover:bg-gray-100 transition-all">
+                  Connect with Google
+                </button>
+              </div>
+
+              <div className="text-center mt-8 text-gray-600">
+                Don’t have an account?{" "}
+                <button
+                  onClick={() => setIsSignIn(false)}
+                  className="text-[#DF1516] font-semibold hover:underline"
+                >
+                  Sign Up
+                </button>
+              </div>
+            </motion.div>
+          ) : (
+            /* --- Sign Up Form --- */
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7 }}
+              className="w-full max-w-[400px] mt-32"
+            >
+              <h2 className="text-center font-montserrat font-extrabold text-[48px] text-[#DF1516] mb-4">
+                Hello Friend
+              </h2>
+              <p className="text-center font-poppins text-[20px] text-gray-600 mb-10">
+                Enter your details and start your journey with{" "}
+                <span className="font-semibold text-black">AIDE</span>
               </p>
 
-              <form className="flex flex-col gap-6 mt-10 w-full max-w-[400px] mx-auto">
+              <div className="flex gap-4 mb-6">
+                <input
+                  type="text"
+                  placeholder="Full Name"
+                  className="w-1/2 h-[60px] border border-gray-300 rounded-[18px] px-4 font-regular text-gray-800"
+                />
                 <input
                   type="email"
                   placeholder="Your Email"
-                  className="border border-[#DF1516] text-[#DF1516] rounded-[20px] py-4 px-6 text-[20px] font-semibold placeholder:font-semibold placeholder:text-[#DF1516] focus:outline-none"
+                  className="w-1/2 h-[60px] border border-gray-300 rounded-[18px] px-4 font-regular text-gray-800"
                 />
-                <div className="flex w-full border border-[#DF1516] rounded-[20px] overflow-hidden">
-                  <input
-                    type="password"
-                    placeholder="Password"
-                    className="flex-1 py-4 px-6 text-[#DF1516] text-[20px] font-semibold placeholder:font-semibold placeholder:text-[#DF1516] focus:outline-none"
-                  />
-                  <button
-                    type="submit"
-                    className="bg-[#DF1516] text-white font-semibold text-[20px] px-8 flex items-center justify-center"
-                  >
-                    SIGN IN
-                  </button>
-                </div>
-
-                <div className="flex justify-start text-sm font-semibold text-black ml-2">
-                  <span
-                    className="cursor-pointer hover:underline"
-                    onClick={() => alert("Forgot Password flow")}
-                  >
-                    Forgot Password
-                  </span>
-                </div>
-              </form>
-
-              <div className="mt-8">
-                <button className="bg-white border border-[#DF1516] text-[#DF1516] rounded-[20px] py-3 px-6 text-lg font-semibold hover:bg-[#DF1516] hover:text-white transition-colors duration-300">
-                  Continue with Google
-                </button>
               </div>
 
-              <p className="mt-8 text-[16px] text-black font-medium">
-                Don’t have an account?{" "}
-                <span
-                  className="text-[#DF1516] cursor-pointer font-semibold hover:underline"
-                  onClick={() => setIsSignIn(false)}
-                >
-                  Sign Up
-                </span>
-              </p>
-            </motion.div>
-          )}
-        </div>
-
-        {/* Sign Up Section */}
-        <div
-          className={`flex flex-col justify-center items-center text-white transition-all duration-700 ease-in-out relative ${
-            isSignIn ? "w-[60%]" : "w-full"
-          }`}
-          style={{
-            backgroundColor: "#DF1516",
-            backgroundImage: `url(${tabMockup})`,
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "center right 80px",
-            backgroundSize: "contain",
-          }}
-        >
-          {!isSignIn && (
-            <motion.div
-              initial={{ opacity: 0, x: 40 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              className="text-center px-12"
-            >
-              <h1 className="text-[48px] font-extrabold font-['Montserrat'] mb-6">
-                Create an Account
-              </h1>
-              <button className="flex items-center justify-center gap-3 bg-white text-[#DF1516] rounded-[20px] py-4 px-10 text-lg font-semibold w-full max-w-[400px] mx-auto hover:bg-gray-100 transition-all">
-                <img
-                  src="https://www.svgrepo.com/show/475656/google-color.svg"
-                  alt="Google"
-                  className="w-6 h-6"
-                />
-                Continue With Google
-              </button>
-
-              <p className="text-[18px] mt-6 mb-8 font-light">
-                or use your Email for registration
-              </p>
-
-              <form className="flex flex-col gap-6 w-full max-w-[400px] mx-auto">
-                <div className="flex gap-4">
-                  <input
-                    type="text"
-                    placeholder="Full Name"
-                    className="flex-1 border border-white/60 rounded-[20px] py-4 px-6 text-[#1A1A1A] placeholder:text-[#1A1A1A]/70 text-lg font-normal focus:outline-none"
-                  />
-                  <input
-                    type="email"
-                    placeholder="Your Email"
-                    className="flex-1 border border-white/60 rounded-[20px] py-4 px-6 text-[#1A1A1A] placeholder:text-[#1A1A1A]/70 text-lg font-normal focus:outline-none"
-                  />
-                </div>
+              <div className="mb-6">
                 <input
                   type="password"
                   placeholder="Password"
-                  className="border border-white/60 rounded-[20px] py-4 px-6 text-[#1A1A1A] placeholder:text-[#1A1A1A]/70 text-lg font-normal focus:outline-none"
+                  className="w-full h-[60px] border border-gray-300 rounded-[18px] px-4 font-regular text-gray-800"
                 />
-                <button
-                  type="submit"
-                  className="bg-white text-[#DF1516] font-semibold text-lg rounded-[20px] py-4 hover:bg-gray-100 transition-all"
-                >
-                  SIGN UP
-                </button>
-              </form>
+              </div>
 
-              <p className="mt-10 text-[16px] font-medium">
+              <Button className="w-full h-[60px] bg-[#DF1516] text-white font-semibold rounded-[18px] text-lg hover:bg-[#c01213] transition-all">
+                Sign Up
+              </Button>
+
+              <div className="text-center mt-8 text-gray-600">
                 Already have an account?{" "}
-                <span
-                  className="text-white underline cursor-pointer font-semibold"
+                <button
                   onClick={() => setIsSignIn(true)}
+                  className="text-[#DF1516] font-semibold hover:underline"
                 >
                   Sign In
-                </span>
-              </p>
+                </button>
+              </div>
             </motion.div>
           )}
-        </div>
-      </motion.div>
+        </motion.div>
+
+        {/* --- Right Side (Red Background with Mockup) --- */}
+        <motion.div
+          className="relative hidden md:flex w-[60%] bg-[#DF1516] justify-center items-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.2 }}
+          style={{
+            backgroundImage: `linear-gradient(rgba(223, 21, 22, 0.8), rgba(223, 21, 22, 0.8)), url(${tabMockup})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        />
+      </div>
     </div>
   );
 }
