@@ -263,7 +263,7 @@ export default function Auth() {
             onClick={handleGoogleSignIn}
             disabled={loading}
             className="w-full h-[90px] sm:h-[95px] rounded-[0px] bg-white text-[#DF1516] 
-                       font-semibold hover:bg-white/90 flex items-center justify-center gap-2 text-[22px]"
+                       font-semibold hover:bg-white/90 flex items-center justify-center gap-2 text-[18px]"
           >
             <FcGoogle size={38} />
             Continue With Google
@@ -282,8 +282,8 @@ export default function Auth() {
                 onChange={(e) => setFullName(e.target.value)}
                 className="h-[95px] sm:h-[100px] rounded-[0px] border border-white 
                            bg-white/95 text-black placeholder:text-gray-500 
-                           text-[26px] font-normal font-['Poppins'] 
-                           placeholder:text-[17px] placeholder:font-normal"
+                           text-[24px] font-normal font-['Poppins'] 
+                           placeholder:text-[19px] placeholder:font-normal"
               />
               <Input
                 type="email"
@@ -292,8 +292,8 @@ export default function Auth() {
                 onChange={(e) => setSignUpEmail(e.target.value)}
                 className="h-[95px] sm:h-[100px] rounded-[0px] border border-white 
                            bg-white/95 text-black placeholder:text-gray-500 
-                           text-[26px] font-normal font-['Poppins'] 
-                           placeholder:text-[17px] placeholder:font-normal"
+                           text-[24px] font-normal font-['Poppins'] 
+                           placeholder:text-[19px] placeholder:font-normal"
               />
             </div>
 
@@ -304,8 +304,8 @@ export default function Auth() {
               onChange={(e) => setSignUpPassword(e.target.value)}
               className="h-[95px] sm:h-[100px] w-full rounded-[0px] border border-white 
                          bg-white/95 text-black placeholder:text-gray-500 
-                         text-[26px] font-normal font-['Poppins'] 
-                         placeholder:text-[17px] placeholder:font-normal"
+                         text-[24px] font-normal font-['Poppins'] 
+                         placeholder:text-[14px] placeholder:font-normal"
             />
 
             <Button
