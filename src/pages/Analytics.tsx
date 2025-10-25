@@ -3,7 +3,6 @@ import { TopBar } from "@/components/TopBar";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
 
 export default function Analytics() {
   const [firstName, setFirstName] = useState<string>("");
@@ -40,27 +39,17 @@ export default function Analytics() {
       <main className="flex-1 md:ml-64 p-8 md:p-12">
         <div className="max-w-5xl mx-auto space-y-8">
           {/* Header */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="bg-white rounded-3xl p-8 md:p-12"
-          >
+          <div className="bg-white rounded-3xl p-8 md:p-12">
             <h1 className="text-4xl md:text-5xl font-bold mb-4 text-primary">
               Performance Analytics
             </h1>
             <p className="text-xl text-foreground">
               Track your growth and engagement based on your AIDE activity.
             </p>
-          </motion.div>
+          </div>
 
           {/* Metrics Grid */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-6"
-          >
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             <div className="bg-white rounded-3xl p-6">
               <h3 className="text-sm font-medium text-muted-foreground mb-2">
                 Assessment Completed
@@ -88,15 +77,10 @@ export default function Analytics() {
               </h3>
               <p className="text-5xl font-bold text-foreground">0<span className="text-2xl">%</span></p>
             </div>
-          </motion.div>
+          </div>
 
           {/* Goal Tracker */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-            className="bg-white rounded-3xl p-8 md:p-12"
-          >
+          <div className="bg-white rounded-3xl p-8 md:p-12">
             <div className="flex items-center gap-3 mb-4">
               <svg className="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -109,15 +93,10 @@ export default function Analytics() {
             <div className="relative w-full h-6 bg-secondary rounded-full overflow-hidden">
               <div className="absolute top-0 left-0 h-full w-4 bg-primary rounded-full" />
             </div>
-          </motion.div>
+          </div>
 
           {/* Recent Activity */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.8 }}
-            className="bg-white rounded-3xl p-8 md:p-12"
-          >
+          <div className="bg-white rounded-3xl p-8 md:p-12">
             <div className="flex items-center gap-3 mb-6">
               <svg className="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -129,7 +108,7 @@ export default function Analytics() {
               <li>• Attended "Execution Workshop" - 1 week ago</li>
               <li>• Set new personal goal: "Launch my plan" - 3 days ago</li>
             </ul>
-          </motion.div>
+          </div>
         </div>
       </main>
     </div>

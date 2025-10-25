@@ -5,28 +5,6 @@
   text-align: center;
 }
 
-/* === Font Imports === */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Poppins:wght@400;500;600&display=swap');
-
-/* === Global Font Setup === */
-:root {
-  --font-heading: 'Montserrat', sans-serif;
-  --font-body: 'Poppins', sans-serif;
-}
-
-body {
-  font-family: var(--font-body);
-}
-
-/* Optional: Utility classes for headings */
-.font-heading {
-  font-family: var(--font-heading);
-}
-
-.font-body {
-  font-family: var(--font-body);
-}
-
 .logo {
   height: 6em;
   padding: 1.5em;
