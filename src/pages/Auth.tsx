@@ -124,7 +124,6 @@ export default function Auth() {
     }
   };
 
-  // Animation presets
   const sectionVariants = {
     hidden: { opacity: 0, y: 80, scale: 0.98 },
     visible: {
@@ -204,26 +203,22 @@ export default function Auth() {
                          placeholder:text-[19px] placeholder:font-normal
                          placeholder:text-[#DF1516] focus-visible:ring-[#DF1516]"
             />
-            <div className="relative">
+            <div className="relative flex border border-[#DF1516]">
               <Input
                 type="password"
                 placeholder="Password"
                 value={signInPassword}
                 onChange={(e) => setSignInPassword(e.target.value)}
-                className="h-[83px] sm:h-[70px] rounded-[0px] border border-[#DF1516] 
-                           pr-[150px] text-[24px] font-normal font-['Poppins']
-                           placeholder:text-[19px] placeholder:font-normal
-                           placeholder:text-[#DF1516]"
+                className="flex-1 h-[70px] border-none rounded-none text-[24px] font-normal font-['Poppins']
+                           placeholder:text-[19px] placeholder:font-normal placeholder:text-[#DF1516]"
               />
               <Button
                 type="submit"
                 disabled={loading}
-                className="absolute right-[2px] top-[2px] bottom-[2px] 
-                           h-[61px] sm:h-[66px] px-10 rounded-[0px] 
-                           bg-[#DF1516] text-white font-semibold 
-                           hover:bg-[#DF1516]/90 text-[18px]"
+                className="h-[70px] w-[140px] rounded-none bg-[#DF1516] text-white 
+                           font-semibold text-[18px] hover:bg-[#DF1516]/90 transition-all"
               >
-                {loading ? "SIGNING IN..." : "SIGN IN"}
+                {loading ? "..." : "SIGN IN"}
               </Button>
             </div>
 
@@ -258,16 +253,24 @@ export default function Auth() {
             Create an Account
           </motion.h2>
 
-          <Button
-            type="button"
-            onClick={handleGoogleSignIn}
-            disabled={loading}
-            className="w-full h-[85px] sm:h-[90px] rounded-[0px] bg-white text-[#DF1516] 
-                       font-semibold hover:bg-white/90 flex items-center justify-center gap-2 text-[18px]"
-          >
-            <FcGoogle size={36} />
-            Continue With Google
-          </Button>
+          {/* New Google Connect buttons */}
+          <div className="flex w-[85%] sm:w-[80%] mx-auto mb-10 border border-[#DF1516] rounded-none overflow-hidden">
+            <button
+              onClick={handleGoogleSignIn}
+              disabled={loading}
+              className="flex items-center justify-center bg-white w-[80px] border-r border-[#DF1516]"
+            >
+              <FcGoogle size={32} />
+            </button>
+            <Button
+              type="button"
+              disabled={loading}
+              className="flex-1 h-[75px] bg-white text-[#DF1516] 
+                         font-medium text-[18px] font-['Poppins'] hover:bg-white/90 rounded-none"
+            >
+              Continue With Google
+            </Button>
+          </div>
 
           <p className="text-white text-center my-10 font-['Poppins'] text-[20px]">
             or use your Email for registration
