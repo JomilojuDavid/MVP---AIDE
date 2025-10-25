@@ -25,15 +25,15 @@ export default function Quiz() {
   return (
     <div className="flex min-h-screen font-['Poppins']">
       {/* Sidebar */}
-      <div className="hidden md:flex flex-col justify-between bg-white w-[280px] rounded-r-[40px] p-8">
+      <div className="hidden md:flex flex-col justify-between bg-white w-[240px] rounded-r-[40px] p-6 shadow-lg">
         {/* Logo and tagline */}
         <div className="flex flex-col items-center text-center">
           <img
             src={aideLogo}
             alt="AIDE Logo"
-            className="h-16 md:h-20 mb-3"
+            className="h-14 md:h-16 mb-3"
           />
-          <p className="text-sm text-gray-800 font-medium leading-tight">
+          <p className="text-[13px] md:text-sm text-gray-800 font-semibold leading-tight">
             Where mindset mastery <br /> meets business growth
           </p>
         </div>
@@ -43,20 +43,20 @@ export default function Quiz() {
           <img
             src="https://randomuser.me/api/portraits/women/44.jpg"
             alt="Support"
-            className="w-10 h-10 rounded-full object-cover"
+            className="w-9 h-9 rounded-full object-cover"
           />
-          <span className="text-base font-medium text-gray-800">Support</span>
+          <span className="text-sm font-semibold text-gray-800">Support</span>
         </div>
       </div>
 
       {/* Collapsed top bar (mobile only) */}
-      <div className="md:hidden bg-white w-full p-4 flex justify-between items-center border-b border-gray-200">
+      <div className="md:hidden bg-white w-full p-4 flex justify-between items-center border-b border-gray-200 shadow-md">
         <img src={aideLogo} alt="AIDE Logo" className="h-10" />
-        <span className="text-sm text-gray-700 font-medium">Support</span>
+        <span className="text-sm text-gray-700 font-semibold">Support</span>
       </div>
 
       {/* Main quiz section */}
-      <div className="flex-1 bg-primary relative p-8 md:p-12">
+      <div className="flex-1 bg-primary relative p-6 md:p-12">
         {/* Top Bar */}
         <div className="absolute top-8 left-8 right-8 flex items-center justify-between z-10">
           <div className="hidden md:block" /> {/* keeps layout spacing */}
@@ -69,18 +69,19 @@ export default function Quiz() {
           </Button>
         </div>
 
-        <div className="max-w-5xl mx-auto pt-28">
+        {/* Quiz container */}
+        <div className="max-w-4xl mx-auto pt-24">
           {/* Quiz Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="bg-white rounded-3xl p-8 md:p-12 mb-8"
+            className="bg-white rounded-3xl p-8 md:p-10 mb-8 shadow-md"
           >
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-foreground text-center">
               AIDE Onboarding Quiz
             </h1>
-            <p className="text-lg md:text-xl text-muted-foreground">
+            <p className="text-lg md:text-xl text-muted-foreground text-center">
               Answer a few quick questions so we can personalize your roadmap.
             </p>
           </motion.div>
@@ -90,7 +91,7 @@ export default function Quiz() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="bg-white rounded-3xl p-8 md:p-12"
+            className="bg-white rounded-3xl p-8 md:p-10 shadow-md"
           >
             <div className="space-y-10">
               {/* Question 1 */}
@@ -104,10 +105,10 @@ export default function Quiz() {
                       key={option}
                       onClick={() => setQuestion1(option)}
                       className={cn(
-                        "h-14 px-8 text-lg font-medium rounded-lg transition-all",
+                        "h-14 px-8 text-lg font-medium rounded-lg transition-all border-2 border-input",
                         question1 === option
-                          ? "bg-secondary text-foreground hover:bg-secondary/90"
-                          : "bg-white border-2 border-input text-foreground hover:bg-muted"
+                          ? "bg-secondary text-foreground"
+                          : "bg-white text-foreground hover:bg-[#F3C17E]"
                       )}
                     >
                       {option}
@@ -127,10 +128,10 @@ export default function Quiz() {
                       key={option}
                       onClick={() => setQuestion2(option)}
                       className={cn(
-                        "h-14 px-8 text-lg font-medium rounded-lg transition-all",
+                        "h-14 px-8 text-lg font-medium rounded-lg transition-all border-2 border-input",
                         question2 === option
-                          ? "bg-secondary text-foreground hover:bg-secondary/90"
-                          : "bg-white border-2 border-input text-foreground hover:bg-muted"
+                          ? "bg-secondary text-foreground"
+                          : "bg-white text-foreground hover:bg-[#F3C17E]"
                       )}
                     >
                       {option}
@@ -168,4 +169,3 @@ export default function Quiz() {
     </div>
   );
 }
-
