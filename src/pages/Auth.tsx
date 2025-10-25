@@ -144,46 +144,48 @@ export default function Auth() {
 
         {/* Sign In Form */}
         <motion.form
-          onSubmit={handleSignIn}
-          className="mt-10 w-[80%] flex flex-col gap-4"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5, duration: 0.6 }}
-        >
-          <Input
-            type="email"
-            placeholder="Your Email"
-            value={signInEmail}
-            onChange={(e) => setSignInEmail(e.target.value)}
-            className="h-12 rounded-xl border border-[#DF1516]/60 text-[18px] placeholder:text-[#DF1516]/70 px-5"
-          />
+  onSubmit={handleSignIn}
+  className="mt-10 w-[80%] flex flex-col gap-4"
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  transition={{ delay: 0.5, duration: 0.6 }}
+>
+  <Input
+    type="email"
+    placeholder="Your Email"
+    value={signInEmail}
+    onChange={(e) => setSignInEmail(e.target.value)}
+    className="h-12 rounded-xl border border-[#DF1516]/60 text-[18px] placeholder:text-[#DF1516]/70 px-5"
+  />
 
-          <div className="flex items-center gap-2 border border-[#DF1516]/60 rounded-xl h-12 pr-2">
-            <Input
-              type="password"
-              placeholder="Password"
-              value={signInPassword}
-              onChange={(e) => setSignInPassword(e.target.value)}
-              className="h-full w-full border-0 text-[18px] placeholder:text-[#DF1516]/70 focus:ring-0 focus:outline-none"
-            />
-            <Button
-              type="submit"
-              disabled={loading}
-              className="bg-[#DF1516] text-white rounded-xl h-10 px-8 text-[16px] font-semibold hover:bg-[#c91213]"
-            >
-              {loading ? "SIGNING IN..." : "SIGN IN"}
-            </Button>
-          </div>
+  {/* Password field + Sign In button combo */}
+  <div className="flex items-center border border-[#DF1516]/60 rounded-xl h-12 overflow-hidden">
+    <Input
+      type="password"
+      placeholder="Password"
+      value={signInPassword}
+      onChange={(e) => setSignInPassword(e.target.value)}
+      className="h-full w-full border-0 text-[18px] placeholder:text-[#DF1516]/70 focus:ring-0 focus:outline-none px-5"
+    />
+    <Button
+      type="submit"
+      disabled={loading}
+      className="bg-[#DF1516] text-white h-full px-8 text-[16px] font-semibold hover:bg-[#c91213] rounded-none"
+    >
+      {loading ? "SIGNING IN..." : "SIGN IN"}
+    </Button>
+  </div>
 
-          <motion.button
-            type="button"
-            onClick={() => navigate("/reset-password")}
-            className="text-black text-[16px] font-semibold mt-3 self-center hover:text-[#DF1516] transition-colors"
-          >
-            Forgot Password?
-          </motion.button>
-        </motion.form>
-      </motion.div>
+  {/* Forgot Password */}
+  <motion.button
+    type="button"
+    onClick={() => navigate('/reset-password')}
+    className="text-black text-[16px] font-semibold mt-3 pl-1 hover:text-[#DF1516] transition-colors self-start"
+  >
+    Forgot Password?
+  </motion.button>
+</motion.form>
+     </motion.div>
 
       {/* Right Panel - Sign Up (Red, 65%) */}
       <motion.div
