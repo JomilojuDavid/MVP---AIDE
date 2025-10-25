@@ -199,7 +199,7 @@ export default function Auth() {
               placeholder="Your Email"
               value={signInEmail}
               onChange={(e) => setSignInEmail(e.target.value)}
-              className="h-[65px] sm:h-[70px] rounded-[30px] border border-[#DF1516] text-[20px] font-semibold font-['Poppins'] focus-visible:ring-[#DF1516]"
+              className="h-[65px] sm:h-[70px] rounded-[5px] border border-[#DF1516] text-[24px] font-semibold font-['Poppins'] focus-visible:ring-[#DF1516]"
             />
             <div className="relative">
               <Input
@@ -207,7 +207,7 @@ export default function Auth() {
                 placeholder="Password"
                 value={signInPassword}
                 onChange={(e) => setSignInPassword(e.target.value)}
-                className="h-[65px] sm:h-[70px] rounded-[30px] border border-[#DF1516] pr-[150px] text-[20px] font-semibold font-['Poppins']"
+                className="h-[65px] sm:h-[70px] rounded-[50px] border border-[#DF1516] pr-[150px] text-[24px] font-semibold font-['Poppins']"
               />
               <Button
                 type="submit"
@@ -252,9 +252,9 @@ export default function Auth() {
             type="button"
             onClick={handleGoogleSignIn}
             disabled={loading}
-            className="w-full h-[65px] sm:h-[70px] rounded-[30px] bg-white text-[#DF1516] font-semibold hover:bg-white/90 flex items-center justify-center gap-3"
+            className="w-full h-[65px] sm:h-[70px] rounded-[5px] bg-white text-[#DF1516] font-semibold hover:bg-white/90 flex items-center justify-center gap-3"
           >
-            <FcGoogle size={24} />
+            <FcGoogle size={30} />
             Continue With Google
           </Button>
 
@@ -269,14 +269,14 @@ export default function Auth() {
                 placeholder="Full Name"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                className="h-[75px] sm:h-[83px] rounded-[30px] border border-white bg-white/95 text-black placeholder:text-gray-500 text-[20px] font-semibold font-['Poppins']"
+                className="h-[75px] sm:h-[83px] rounded-[5px] border border-white bg-white/95 text-black placeholder:text-gray-500 text-[24px] font-semibold font-['Poppins']"
               />
               <Input
                 type="email"
                 placeholder="Your Email"
                 value={signUpEmail}
                 onChange={(e) => setSignUpEmail(e.target.value)}
-                className="h-[75px] sm:h-[83px] rounded-[30px] border border-white bg-white/95 text-black placeholder:text-gray-500 text-[20px] font-semibold font-['Poppins']"
+                className="h-[75px] sm:h-[83px] rounded-[5px] border border-white bg-white/95 text-black placeholder:text-gray-500 text-[24px] font-semibold font-['Poppins']"
               />
             </div>
 
@@ -285,13 +285,13 @@ export default function Auth() {
               placeholder="Password"
               value={signUpPassword}
               onChange={(e) => setSignUpPassword(e.target.value)}
-              className="h-[75px] sm:h-[83px] w-full rounded-[30px] border border-white bg-white/95 text-black placeholder:text-gray-500 text-[20px] font-semibold font-['Poppins']"
+              className="h-[75px] sm:h-[83px] w-full rounded-[5px] border border-white bg-white/95 text-black placeholder:text-gray-500 text-[24px] font-semibold font-['Poppins']"
             />
 
             <Button
               type="submit"
               disabled={loading}
-              className="w-full h-[75px] sm:h-[83px] rounded-[30px] bg-white text-[#DF1516] font-bold text-lg hover:bg-white/90 font-['Poppins']"
+              className="w-full h-[75px] sm:h-[83px] rounded-[5px] bg-white text-[#DF1516] font-bold text-lg hover:bg-white/90 font-['Poppins']"
             >
               {loading ? "SIGNING UP..." : "SIGN UP"}
             </Button>
