@@ -1,226 +1,321 @@
-import React, { useState, useEffect, useRef } from "react";
-import { motion, useAnimation } from "framer-motion";
-import { supabase } from "../supabaseClient";
+import { useState, useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { FcGoogle } from "react-icons/fc";
+import aideLogo from "@/assets/aide-logo.png";
+import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
-// ✅ Correct font imports (no version-specific paths)
-import "@fontsource/montserrat";
-import "@fontsource/poppins";
-
-// Custom hook for scroll-triggered animation
-const useScrollAnimation = () => {
-  const controls = useAnimation();
-  const ref = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    const node = ref.current;
-    if (!node) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) controls.start("visible");
-      },
-      { threshold: 0.2 }
-    );
-
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, [controls]);
-
-  return { ref, controls };
+// ✅ Import Google Fonts via CDN using Helmet alternative (direct injection)
+const addGoogleFonts = () => {
+  const link = document.createElement("link");
+  link.href =
+    "https://fonts.googleapis.com/css2?family=Montserrat:wght@400;800&family=Poppins:wght@400;600&display=swap";
+  link.rel = "stylesheet";
+  document.head.appendChild(link);
 };
 
-const Auth: React.FC = () => {
-  const [isSignUp, setIsSignUp] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+export default function Auth() {
   const [fullName, setFullName] = useState("");
+  const [signUpEmail, setSignUpEmail] = useState("");
+  const [signUpPassword, setSignUpPassword] = useState("");
+  const [signInEmail, setSignInEmail] = useState("");
+  const [signInPassword, setSignInPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { toast } = useToast();
 
-  const handleSignIn = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
+  // Add Google Fonts
+  useEffect(() => {
+    addGoogleFonts();
+  }, []);
+
+  // Scroll animation using IntersectionObserver
+  const sectionsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const [visibleSections, setVisibleSections] = useState<boolean[]>([]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry, index) => {
+          if (entry.isIntersecting) {
+            setVisibleSections((prev) => {
+              const updated = [...prev];
+              updated[index] = true;
+              return updated;
+            });
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    sectionsRef.current.forEach((section) => {
+      if (section) observer.observe(section);
     });
-    if (error) alert(error.message);
-  };
+
+    return () => {
+      sectionsRef.current.forEach((section) => {
+        if (section) observer.unobserve(section);
+      });
+    };
+  }, []);
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: { data: { full_name: fullName } },
-    });
-    if (error) alert(error.message);
+    setLoading(true);
+    try {
+      const nameParts = fullName.trim().split(" ");
+      const firstName = nameParts[0] || "";
+      const lastName = nameParts.slice(1).join(" ") || "";
+
+      const { error } = await supabase.auth.signUp({
+        email: signUpEmail,
+        password: signUpPassword,
+        options: {
+          emailRedirectTo: `${window.location.origin}/dashboard`,
+          data: {
+            first_name: firstName,
+            last_name: lastName,
+          },
+        },
+      });
+
+      if (error) throw error;
+      toast({
+        title: "Account created successfully!",
+        description: "Redirecting to dashboard...",
+      });
+      navigate("/dashboard");
+    } catch (error: any) {
+      toast({
+        title: "Sign up failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // Animation variants
-  const fadeUp = {
-    hidden: { opacity: 0, y: 40 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
+  const handleSignIn = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: signInEmail,
+        password: signInPassword,
+      });
+      if (error) throw error;
+
+      toast({
+        title: "Welcome back!",
+        description: "Redirecting to dashboard...",
+      });
+      navigate("/dashboard");
+    } catch (error: any) {
+      toast({
+        title: "Sign in failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const leftRef = useScrollAnimation();
-  const rightRef = useScrollAnimation();
+  const handleGoogleSignIn = async () => {
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: `${window.location.origin}/dashboard`,
+        },
+      });
+      if (error) throw error;
+    } catch (error: any) {
+      toast({
+        title: "Google sign in failed",
+        description: error.message,
+        variant: "destructive",
+      });
+      setLoading(false);
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: { delay: 0.2 + i * 0.1, duration: 0.5 },
+    }),
+  };
 
   return (
-    <div className="min-h-screen flex flex-row overflow-hidden font-[Poppins]">
-      {/* ===================== LEFT PANEL - SIGN IN ===================== */}
+    <div className="min-h-screen flex flex-col md:flex-row overflow-hidden">
+      {/* --- Sign In Side (40%) --- */}
       <motion.div
-        ref={leftRef.ref}
-        initial="hidden"
-        animate={leftRef.controls}
-        variants={fadeUp}
-        className="w-[40%] bg-white flex items-center justify-center p-8 md:p-14"
+        ref={(el) => (sectionsRef.current[0] = el)}
+        initial={{ opacity: 0, x: -60 }}
+        animate={visibleSections[0] ? { opacity: 1, x: 0 } : {}}
+        transition={{ duration: 1, ease: "easeOut" }}
+        className="flex-[0.4] bg-white flex flex-col items-center justify-center p-12"
+        style={{
+          fontFamily: "Poppins, sans-serif",
+        }}
       >
-        <div className="w-full max-w-[480px] flex flex-col items-center">
-          {/* Logo */}
-          <div className="w-[259px] h-[125px] mb-6 self-start">
-            <img src="/logo.png" alt="Logo" className="object-contain w-full h-full" />
-          </div>
+        <img
+          src={aideLogo}
+          alt="AIDE Logo"
+          style={{
+            width: "180px",
+            height: "auto",
+            position: "absolute",
+            top: "35px",
+            left: "50px",
+          }}
+        />
 
-          {/* Headline */}
+        <div className="w-full max-w-md text-center mt-32">
           <h1
-            className="font-[Montserrat] font-extrabold text-[40px] text-center leading-[100%] text-black mb-6"
-            style={{ letterSpacing: "0%" }}
+            className="font-extrabold text-[#DF1516] mb-4"
+            style={{
+              fontFamily: "Montserrat, sans-serif",
+              fontSize: "40px",
+              lineHeight: "100%",
+              letterSpacing: "0%",
+            }}
           >
-            Hello Friend
+            Hello, Friend!
           </h1>
 
-          {/* Body text */}
           <p
-            className="font-[Poppins] text-[20px] font-normal text-center leading-[100%] text-black mb-10"
-            style={{ letterSpacing: "0%" }}
+            className="mb-10 text-[#000000]"
+            style={{
+              fontFamily: "Poppins, sans-serif",
+              fontWeight: 400,
+              fontSize: "20px",
+              lineHeight: "100%",
+              letterSpacing: "0%",
+            }}
           >
-            Welcome back to{" "}
-            <span className="font-semibold text-black">AIDE</span>. Sign in to
-            continue your journey.
+            Sign in to continue your personalized journey with{" "}
+            <span className="font-semibold text-black">AIDE</span>—where
+            mindset mastery meets business growth.
           </p>
 
-          {/* Sign-In Form */}
-          <form
-            onSubmit={handleSignIn}
-            className="w-full flex flex-col gap-4 items-center"
-          >
-            <div className="w-full flex flex-col">
-              <label className="text-[20px] font-[Poppins] font-normal mb-2 text-black">
-                Email Address
-              </label>
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="border border-gray-300 rounded-[20px] h-[60px] px-4 text-[18px] font-[Poppins] focus:outline-none"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+          <form onSubmit={handleSignIn} className="space-y-5">
+            <Input
+              type="email"
+              placeholder="Your Email"
+              value={signInEmail}
+              onChange={(e) => setSignInEmail(e.target.value)}
+              className="h-[70px] rounded-[25px] border border-[#DF1516] text-[18px] px-6"
+            />
+            <div className="relative flex items-center">
+              <Input
+                type="password"
+                placeholder="Password"
+                value={signInPassword}
+                onChange={(e) => setSignInPassword(e.target.value)}
+                className="h-[70px] w-full rounded-[25px] border border-[#DF1516] text-[18px] px-6"
               />
-            </div>
-
-            <div className="w-full flex flex-col relative">
-              <label className="text-[20px] font-[Poppins] font-normal mb-2 text-black">
-                Password
-              </label>
-              <div className="relative flex items-center">
-                <input
-                  type="password"
-                  placeholder="Enter your password"
-                  className="border border-gray-300 rounded-[20px] h-[60px] px-4 text-[18px] font-[Poppins] w-full pr-[110px] focus:outline-none"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-                <button
-                  type="submit"
-                  className="absolute right-0 top-0 bottom-0 bg-[#DF1516] text-white rounded-r-[20px] px-8 font-[Poppins] text-[18px] font-semibold transition-all hover:bg-red-700"
-                >
-                  Sign In
-                </button>
-              </div>
-            </div>
-
-            <div className="w-full flex justify-start mt-2">
-              <button
-                type="button"
-                onClick={() => (window.location.href = "/reset-password")}
-                className="font-[Poppins] font-semibold text-[16px] text-black hover:underline"
+              <Button
+                type="submit"
+                disabled={loading}
+                className="absolute right-0 h-[70px] rounded-[25px] bg-[#DF1516] text-white px-8 font-semibold hover:bg-[#c01314]"
               >
-                Forgot Password?
-              </button>
+                {loading ? "SIGNING IN..." : "SIGN IN"}
+              </Button>
             </div>
+
+            <button
+              type="button"
+              className="text-black font-semibold mt-2 text-[16px] text-left ml-1"
+            >
+              Forgot Password
+            </button>
           </form>
         </div>
       </motion.div>
 
-      {/* ===================== RIGHT PANEL - SIGN UP ===================== */}
+      {/* --- Sign Up Side (60%) --- */}
       <motion.div
-        ref={rightRef.ref}
-        initial="hidden"
-        animate={rightRef.controls}
-        variants={fadeUp}
-        className="w-[60%] bg-[#DF1516] flex items-center justify-center p-8 md:p-12"
+        ref={(el) => (sectionsRef.current[1] = el)}
+        initial={{ opacity: 0, x: 60 }}
+        animate={visibleSections[1] ? { opacity: 1, x: 0 } : {}}
+        transition={{ duration: 1, ease: "easeOut" }}
+        className="flex-[0.6] bg-[#DF1516] flex items-center justify-center p-16"
       >
-        <div className="w-full max-w-[700px] flex flex-col items-center scale-[0.85]">
-          <h2 className="font-[Montserrat] font-extrabold text-[40px] text-white text-center mb-6">
+        <div className="w-full max-w-lg text-center">
+          <h2
+            className="text-4xl font-extrabold text-white mb-8"
+            style={{ fontFamily: "Montserrat, sans-serif" }}
+          >
             Create an Account
           </h2>
-          <p className="font-[Poppins] text-[20px] font-normal text-center text-white mb-10">
-            Join <span className="font-semibold">AIDE</span> and start your experience.
+
+          <Button
+            type="button"
+            onClick={handleGoogleSignIn}
+            disabled={loading}
+            className="w-full h-[70px] rounded-[25px] bg-white text-[#DF1516] font-semibold hover:bg-white/90 flex items-center justify-center gap-3"
+          >
+            <FcGoogle size={24} />
+            Continue With Google
+          </Button>
+
+          <p
+            className="text-white text-center my-6"
+            style={{
+              fontFamily: "Poppins, sans-serif",
+              fontWeight: 400,
+              fontSize: "20px",
+            }}
+          >
+            or use your Email for registration
           </p>
 
-          <form
-            onSubmit={handleSignUp}
-            className="w-full flex flex-col gap-4 items-center"
-          >
-            <div className="flex flex-row gap-6 w-full justify-center">
-              <div className="flex flex-col">
-                <label className="text-white font-[Poppins] text-[20px] mb-2">
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  placeholder="Enter full name"
-                  className="border border-white rounded-[30px] h-[83px] w-[283px] px-4 text-[18px] font-[Poppins] bg-transparent text-white focus:outline-none"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                />
-              </div>
-
-              <div className="flex flex-col">
-                <label className="text-white font-[Poppins] text-[20px] mb-2">
-                  Email Address
-                </label>
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="border border-white rounded-[30px] h-[83px] w-[283px] px-4 text-[18px] font-[Poppins] bg-transparent text-white focus:outline-none"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-            </div>
-
-            <div className="w-full flex flex-col items-center mt-4">
-              <label className="text-white font-[Poppins] text-[20px] mb-2">
-                Password
-              </label>
-              <input
-                type="password"
-                placeholder="Enter your password"
-                className="border border-white rounded-[30px] h-[83px] w-[603px] px-4 text-[18px] font-[Poppins] bg-transparent text-white focus:outline-none"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+          <form onSubmit={handleSignUp} className="space-y-5">
+            <div className="grid grid-cols-2 gap-4">
+              <Input
+                type="text"
+                placeholder="Full Name"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                className="h-[83px] rounded-[30px] border border-white/70 text-[18px] px-6 bg-white/95"
+              />
+              <Input
+                type="email"
+                placeholder="Your Email"
+                value={signUpEmail}
+                onChange={(e) => setSignUpEmail(e.target.value)}
+                className="h-[83px] rounded-[30px] border border-white/70 text-[18px] px-6 bg-white/95"
               />
             </div>
 
-            <button
+            <Input
+              type="password"
+              placeholder="Password"
+              value={signUpPassword}
+              onChange={(e) => setSignUpPassword(e.target.value)}
+              className="h-[83px] w-full rounded-[30px] border border-white/70 text-[18px] px-6 bg-white/95"
+            />
+
+            <Button
               type="submit"
-              className="mt-8 bg-white text-[#DF1516] px-12 py-4 rounded-[30px] font-[Poppins] font-semibold text-[20px] transition-all hover:bg-gray-100"
+              disabled={loading}
+              className="w-full h-[83px] rounded-[30px] bg-white text-[#DF1516] font-bold text-lg hover:bg-white/90"
             >
-              Sign Up
-            </button>
+              {loading ? "SIGNING UP..." : "SIGN UP"}
+            </Button>
           </form>
         </div>
       </motion.div>
     </div>
   );
-};
-
-export default Auth;
+}
