@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, useAnimation } from "framer-motion";
 import { supabase } from "../supabaseClient";
-import "@fontsource/montserrat/800.css";
-import "@fontsource/poppins/400.css";
-import "@fontsource/poppins/600.css";
+
+// ✅ Correct font imports (no version-specific paths)
+import "@fontsource/montserrat";
+import "@fontsource/poppins";
 
 // Custom hook for scroll-triggered animation
 const useScrollAnimation = () => {
@@ -59,12 +60,11 @@ const Auth: React.FC = () => {
     visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
   };
 
-  // Scroll-trigger hooks
   const leftRef = useScrollAnimation();
   const rightRef = useScrollAnimation();
 
   return (
-    <div className="min-h-screen flex flex-row overflow-hidden">
+    <div className="min-h-screen flex flex-row overflow-hidden font-[Poppins]">
       {/* ===================== LEFT PANEL - SIGN IN ===================== */}
       <motion.div
         ref={leftRef.ref}
