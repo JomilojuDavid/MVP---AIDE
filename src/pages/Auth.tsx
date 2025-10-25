@@ -1,25 +1,35 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, useAnimation } from "framer-motion";
-import { useInView } from "react-intersection-observer";
 import { supabase } from "../supabaseClient";
 import "@fontsource/montserrat/800.css";
 import "@fontsource/poppins/400.css";
 import "@fontsource/poppins/600.css";
 
-const Auth: React.FC = () => {
-  const [isSignUp, setIsSignUp] = useState(false);
+// Custom hook for scroll-triggered animation
+const useScrollAnimation = () => {
   const controls = useAnimation();
-  const { ref, inView } = useInView({ threshold: 0.2 });
+  const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (inView) {
-      controls.start({ opacity: 1, y: 0, transition: { duration: 1, ease: "easeOut" } });
-    } else {
-      controls.start({ opacity: 0, y: 40 });
-    }
-  }, [controls, inView]);
+    const node = ref.current;
+    if (!node) return;
 
-  // --- Supabase Auth Logic ---
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) controls.start("visible");
+      },
+      { threshold: 0.2 }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [controls]);
+
+  return { ref, controls };
+};
+
+const Auth: React.FC = () => {
+  const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
@@ -38,27 +48,32 @@ const Auth: React.FC = () => {
     const { error } = await supabase.auth.signUp({
       email,
       password,
-      options: {
-        data: { full_name: fullName },
-      },
+      options: { data: { full_name: fullName } },
     });
     if (error) alert(error.message);
   };
+
+  // Animation variants
+  const fadeUp = {
+    hidden: { opacity: 0, y: 40 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
+  };
+
+  // Scroll-trigger hooks
+  const leftRef = useScrollAnimation();
+  const rightRef = useScrollAnimation();
 
   return (
     <div className="min-h-screen flex flex-row overflow-hidden">
       {/* ===================== LEFT PANEL - SIGN IN ===================== */}
       <motion.div
-        initial={{ opacity: 0, x: -60 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 1 }}
+        ref={leftRef.ref}
+        initial="hidden"
+        animate={leftRef.controls}
+        variants={fadeUp}
         className="w-[40%] bg-white flex items-center justify-center p-8 md:p-14"
       >
-        <motion.div
-          ref={ref}
-          animate={controls}
-          className="w-full max-w-[480px] flex flex-col items-center"
-        >
+        <div className="w-full max-w-[480px] flex flex-col items-center">
           {/* Logo */}
           <div className="w-[259px] h-[125px] mb-6 self-start">
             <img src="/logo.png" alt="Logo" className="object-contain w-full h-full" />
@@ -131,21 +146,18 @@ const Auth: React.FC = () => {
               </button>
             </div>
           </form>
-        </motion.div>
+        </div>
       </motion.div>
 
       {/* ===================== RIGHT PANEL - SIGN UP ===================== */}
       <motion.div
-        initial={{ opacity: 0, x: 60 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 1.2 }}
+        ref={rightRef.ref}
+        initial="hidden"
+        animate={rightRef.controls}
+        variants={fadeUp}
         className="w-[60%] bg-[#DF1516] flex items-center justify-center p-8 md:p-12"
       >
-        <motion.div
-          ref={ref}
-          animate={controls}
-          className="w-full max-w-[700px] flex flex-col items-center scale-[0.85]"
-        >
+        <div className="w-full max-w-[700px] flex flex-col items-center scale-[0.85]">
           <h2 className="font-[Montserrat] font-extrabold text-[40px] text-white text-center mb-6">
             Create an Account
           </h2>
@@ -205,7 +217,7 @@ const Auth: React.FC = () => {
               Sign Up
             </button>
           </form>
-        </motion.div>
+        </div>
       </motion.div>
     </div>
   );
