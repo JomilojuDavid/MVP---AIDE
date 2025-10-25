@@ -122,74 +122,105 @@ export default function Auth() {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row overflow-hidden">
-      {/* --- Sign In Side (40%) --- */}
+      {/* Left Panel - Sign In (White) */}
+<motion.div
+  initial={{ opacity: 0, x: -60, scale: 0.95 }}
+  animate={{ opacity: 1, x: 0, scale: 1 }}
+  transition={{ duration: 1, delay: 0.3 }}
+  className="flex-[0.4] bg-white flex items-center justify-center p-8 md:p-16 relative"
+>
+  <div className="w-full max-w-md">
+    <motion.img
+      src={aideLogo}
+      alt="AIDE Logo"
+      className="h-14 mb-10 absolute top-10 left-10"
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.5, duration: 0.6 }}
+    />
+
+    <motion.h1
+      className="text-center text-4xl font-extrabold text-[#DF1516] mb-5 font-['Montserrat']"
+      initial={{ opacity: 0, y: 25 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.6, duration: 0.6 }}
+    >
+      Hello, Friend!
+    </motion.h1>
+
+    <motion.p
+      className="text-center text-[22px] font-normal leading-tight text-gray-800 mb-10 font-['Poppins']"
+      initial={{ opacity: 0, y: 25 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.75, duration: 0.6 }}
+    >
+      Sign in to continue your personalized journey with{" "}
+      <span className="font-semibold text-black">AIDE</span> — where mindset mastery meets business growth.
+    </motion.p>
+
+    <motion.form
+      onSubmit={handleSignIn}
+      className="space-y-4"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 0.8, duration: 0.6 }}
+    >
+      {/* Email */}
       <motion.div
-        ref={(el) => (sectionsRef.current[0] = el)}
-        initial={{ opacity: 0, x: -60 }}
-        animate={visibleSections[0] ? { opacity: 1, x: 0 } : {}}
-        transition={{ duration: 1, ease: "easeOut" }}
-        className="flex-[0.4] bg-white flex flex-col items-center justify-center p-12 relative"
-        style={{ fontFamily: "Poppins, sans-serif" }}
+        custom={0}
+        variants={itemVariants}
+        initial="hidden"
+        animate="visible"
       >
-        <img
-          src={aideLogo}
-          alt="AIDE Logo"
-          style={{ width: "180px", position: "absolute", top: "35px", left: "50px" }}
+        <Input
+          type="email"
+          placeholder="Your Email"
+          value={signInEmail}
+          onChange={(e) => setSignInEmail(e.target.value)}
+          className="h-[70px] rounded-[30px] border border-[#DF1516] bg-white text-foreground placeholder:text-[#DF1516]/60 focus-visible:ring-[#DF1516] font-['Poppins'] text-[20px]"
         />
+      </motion.div>
 
-        <div className="w-full max-w-md text-center mt-32">
-          <h1
-            className="font-extrabold text-[#DF1516] mb-4"
-            style={{ fontFamily: "Montserrat, sans-serif", fontSize: "40px", lineHeight: "100%" }}
+      {/* Password + Sign In Button */}
+      <motion.div
+        custom={1}
+        variants={itemVariants}
+        initial="hidden"
+        animate="visible"
+        className="relative"
+      >
+        <div className="flex items-center relative">
+          <Input
+            type="password"
+            placeholder="Password"
+            value={signInPassword}
+            onChange={(e) => setSignInPassword(e.target.value)}
+            className="h-[70px] w-full rounded-[30px] border border-[#DF1516] pr-[150px] text-[20px] font-['Poppins']"
+          />
+          <Button
+            type="submit"
+            disabled={loading}
+            className="absolute right-[2px] top-[2px] bottom-[2px] h-[66px] px-10 rounded-[28px] bg-[#DF1516] text-white font-semibold hover:bg-[#DF1516]/90 transition-all duration-300 font-['Poppins'] text-[20px]"
           >
-            Hello, Friend!
-          </h1>
-
-          <p
-            className="mb-10 text-[#000000]"
-            style={{ fontFamily: "Poppins, sans-serif", fontWeight: 400, fontSize: "20px" }}
-          >
-            Sign in to continue your personalized journey with{" "}
-            <span className="font-semibold text-black">AIDE</span>—where mindset mastery meets
-            business growth.
-          </p>
-
-          <form onSubmit={handleSignIn} className="space-y-5">
-            <Input
-              type="email"
-              placeholder="Your Email"
-              value={signInEmail}
-              onChange={(e) => setSignInEmail(e.target.value)}
-              className="h-[70px] rounded-[25px] border border-[#DF1516] text-[18px] px-6"
-            />
-            <div className="relative flex items-center">
-              <Input
-                type="password"
-                placeholder="Password"
-                value={signInPassword}
-                onChange={(e) => setSignInPassword(e.target.value)}
-                className="h-[70px] w-full rounded-[25px] border border-[#DF1516] text-[18px] px-6 pr-40"
-              />
-              {/* extended button overlapping slightly inside */}
-              <Button
-                type="submit"
-                disabled={loading}
-                className="absolute right-[-15px] h-[70px] rounded-[25px] bg-[#DF1516] text-white px-10 font-semibold hover:bg-[#c01314]"
-              >
-                {loading ? "SIGNING IN..." : "SIGN IN"}
-              </Button>
-            </div>
-
-            <button
-              type="button"
-              onClick={() => navigate("/reset-password")}
-              className="text-black font-semibold mt-2 text-[16px] text-left ml-1"
-            >
-              Forgot Password
-            </button>
-          </form>
+            {loading ? "SIGNING IN..." : "SIGN IN"}
+          </Button>
         </div>
       </motion.div>
+
+      {/* Forgot Password */}
+      <motion.button
+        type="button"
+        className="text-black hover:text-[#DF1516] transition-colors font-semibold text-[16px] font-['Poppins'] pl-[10px]" // left padding aligns it under password label
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1.1, duration: 0.6, ease: 'easeOut' }}
+        onClick={() => navigate('/reset-password')}
+      >
+        Forgot Password?
+      </motion.button>
+    </motion.form>
+  </div>
+</motion.div>
 
       {/* --- Sign Up Side (60%) --- */}
       <motion.div
