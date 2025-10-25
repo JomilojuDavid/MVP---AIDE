@@ -1,284 +1,214 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { FcGoogle } from "react-icons/fc";
-import aideLogo from "@/assets/aide-logo.png";
-import { supabase } from "@/integrations/supabase/client";
-import { useNavigate } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
+import React, { useState, useEffect } from "react";
+import { motion, useAnimation } from "framer-motion";
+import { useInView } from "react-intersection-observer";
+import { supabase } from "../supabaseClient";
+import "@fontsource/montserrat/800.css";
+import "@fontsource/poppins/400.css";
+import "@fontsource/poppins/600.css";
 
-export default function Auth() {
-  const [fullName, setFullName] = useState("");
-  const [signUpEmail, setSignUpEmail] = useState("");
-  const [signUpPassword, setSignUpPassword] = useState("");
-  const [signInEmail, setSignInEmail] = useState("");
-  const [signInPassword, setSignInPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
-  const { toast } = useToast();
+const Auth: React.FC = () => {
+  const [isSignUp, setIsSignUp] = useState(false);
+  const controls = useAnimation();
+  const { ref, inView } = useInView({ threshold: 0.2 });
 
-  const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      const nameParts = fullName.trim().split(" ");
-      const firstName = nameParts[0] || "";
-      const lastName = nameParts.slice(1).join(" ") || "";
-
-      const { error } = await supabase.auth.signUp({
-        email: signUpEmail,
-        password: signUpPassword,
-        options: {
-          emailRedirectTo: `${window.location.origin}/dashboard`,
-          data: { first_name: firstName, last_name: lastName },
-        },
-      });
-
-      if (error) throw error;
-
-      toast({
-        title: "Account created successfully!",
-        description: "Redirecting to dashboard...",
-      });
-      navigate("/dashboard");
-    } catch (error: any) {
-      toast({
-        title: "Sign up failed",
-        description: error.message,
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
+  useEffect(() => {
+    if (inView) {
+      controls.start({ opacity: 1, y: 0, transition: { duration: 1, ease: "easeOut" } });
+    } else {
+      controls.start({ opacity: 0, y: 40 });
     }
-  };
+  }, [controls, inView]);
+
+  // --- Supabase Auth Logic ---
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [fullName, setFullName] = useState("");
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email: signInEmail,
-        password: signInPassword,
-      });
-      if (error) throw error;
-      toast({
-        title: "Welcome back!",
-        description: "Redirecting to dashboard...",
-      });
-      navigate("/dashboard");
-    } catch (error: any) {
-      toast({
-        title: "Sign in failed",
-        description: error.message,
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    if (error) alert(error.message);
   };
 
-  const handleGoogleSignIn = async () => {
-    setLoading(true);
-    try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
-        options: { redirectTo: `${window.location.origin}/dashboard` },
-      });
-      if (error) throw error;
-    } catch (error: any) {
-      toast({
-        title: "Google sign in failed",
-        description: error.message,
-        variant: "destructive",
-      });
-      setLoading(false);
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: { delay: 0.2 + i * 0.1, duration: 0.5 },
-    }),
+  const handleSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { full_name: fullName },
+      },
+    });
+    if (error) alert(error.message);
   };
 
   return (
-    <div className="min-h-screen flex flex-row overflow-hidden bg-white font-[Poppins]">
-      {/* Left Panel - Sign In (White, 35%) */}
+    <div className="min-h-screen flex flex-row overflow-hidden">
+      {/* ===================== LEFT PANEL - SIGN IN ===================== */}
       <motion.div
         initial={{ opacity: 0, x: -60 }}
         animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 1, ease: "easeOut" }}
-        className="w-[35%] flex flex-col justify-start items-center p-12 relative"
+        transition={{ duration: 1 }}
+        className="w-[40%] bg-white flex items-center justify-center p-8 md:p-14"
       >
-        {/* Logo */}
-        <img
-          src={aideLogo}
-          alt="AIDE Logo"
-          className="absolute top-9 left-12 w-[150px] h-auto"
-        />
-
-        {/* Headings */}
-        <motion.h1
-          className="text-[#DF1516] font-[Montserrat] font-extrabold text-[42px] mt-40 text-center leading-[100%]"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.5 }}
+        <motion.div
+          ref={ref}
+          animate={controls}
+          className="w-full max-w-[480px] flex flex-col items-center"
         >
-          Hello, Friend!
-        </motion.h1>
+          {/* Logo */}
+          <div className="w-[259px] h-[125px] mb-6 self-start">
+            <img src="/logo.png" alt="Logo" className="object-contain w-full h-full" />
+          </div>
 
-        <motion.p
-          className="text-black font-[Poppins] font-normal text-[20px] leading-[100%] mt-6 text-center max-w-[90%]"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.5 }}
+          {/* Headline */}
+          <h1
+            className="font-[Montserrat] font-extrabold text-[40px] text-center leading-[100%] text-black mb-6"
+            style={{ letterSpacing: "0%" }}
+          >
+            Hello Friend
+          </h1>
+
+          {/* Body text */}
+          <p
+            className="font-[Poppins] text-[20px] font-normal text-center leading-[100%] text-black mb-10"
+            style={{ letterSpacing: "0%" }}
+          >
+            Welcome back to{" "}
+            <span className="font-semibold text-black">AIDE</span>. Sign in to
+            continue your journey.
+          </p>
+
+          {/* Sign-In Form */}
+          <form
+            onSubmit={handleSignIn}
+            className="w-full flex flex-col gap-4 items-center"
+          >
+            <div className="w-full flex flex-col">
+              <label className="text-[20px] font-[Poppins] font-normal mb-2 text-black">
+                Email Address
+              </label>
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="border border-gray-300 rounded-[20px] h-[60px] px-4 text-[18px] font-[Poppins] focus:outline-none"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+
+            <div className="w-full flex flex-col relative">
+              <label className="text-[20px] font-[Poppins] font-normal mb-2 text-black">
+                Password
+              </label>
+              <div className="relative flex items-center">
+                <input
+                  type="password"
+                  placeholder="Enter your password"
+                  className="border border-gray-300 rounded-[20px] h-[60px] px-4 text-[18px] font-[Poppins] w-full pr-[110px] focus:outline-none"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <button
+                  type="submit"
+                  className="absolute right-0 top-0 bottom-0 bg-[#DF1516] text-white rounded-r-[20px] px-8 font-[Poppins] text-[18px] font-semibold transition-all hover:bg-red-700"
+                >
+                  Sign In
+                </button>
+              </div>
+            </div>
+
+            <div className="w-full flex justify-start mt-2">
+              <button
+                type="button"
+                onClick={() => (window.location.href = "/reset-password")}
+                className="font-[Poppins] font-semibold text-[16px] text-black hover:underline"
+              >
+                Forgot Password?
+              </button>
+            </div>
+          </form>
+        </motion.div>
+      </motion.div>
+
+      {/* ===================== RIGHT PANEL - SIGN UP ===================== */}
+      <motion.div
+        initial={{ opacity: 0, x: 60 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 1.2 }}
+        className="w-[60%] bg-[#DF1516] flex items-center justify-center p-8 md:p-12"
+      >
+        <motion.div
+          ref={ref}
+          animate={controls}
+          className="w-full max-w-[700px] flex flex-col items-center scale-[0.85]"
         >
-          Sign in to continue your personalized journey with{" "}
-          <span className="font-semibold text-black">AIDE</span> — where mindset
-          mastery meets business growth.
-        </motion.p>
+          <h2 className="font-[Montserrat] font-extrabold text-[40px] text-white text-center mb-6">
+            Create an Account
+          </h2>
+          <p className="font-[Poppins] text-[20px] font-normal text-center text-white mb-10">
+            Join <span className="font-semibold">AIDE</span> and start your experience.
+          </p>
 
-        {/* Sign In Form */}
-        <motion.form
-  onSubmit={handleSignIn}
-  className="mt-10 w-[80%] flex flex-col gap-4"
-  initial={{ opacity: 0 }}
-  animate={{ opacity: 1 }}
-  transition={{ delay: 0.5, duration: 0.6 }}
->
-  <Input
-    type="email"
-    placeholder="Your Email"
-    value={signInEmail}
-    onChange={(e) => setSignInEmail(e.target.value)}
-    className="h-12 rounded-xl border border-[#DF1516]/60 text-[18px] placeholder:text-[#DF1516]/70 px-5"
-  />
+          <form
+            onSubmit={handleSignUp}
+            className="w-full flex flex-col gap-4 items-center"
+          >
+            <div className="flex flex-row gap-6 w-full justify-center">
+              <div className="flex flex-col">
+                <label className="text-white font-[Poppins] text-[20px] mb-2">
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter full name"
+                  className="border border-white rounded-[30px] h-[83px] w-[283px] px-4 text-[18px] font-[Poppins] bg-transparent text-white focus:outline-none"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                />
+              </div>
 
-  {/* Password field + Sign In button combo */}
-  <div className="flex items-center border border-[#DF1516]/60 rounded-xl h-12 overflow-hidden">
-    <Input
-      type="password"
-      placeholder="Password"
-      value={signInPassword}
-      onChange={(e) => setSignInPassword(e.target.value)}
-      className="h-full w-full border-0 text-[18px] placeholder:text-[#DF1516]/70 focus:ring-0 focus:outline-none px-5"
-    />
-    <Button
-      type="submit"
-      disabled={loading}
-      className="bg-[#DF1516] text-white h-full px-8 text-[16px] font-semibold hover:bg-[#c91213] rounded-none"
-    >
-      {loading ? "SIGNING IN..." : "SIGN IN"}
-    </Button>
-  </div>
+              <div className="flex flex-col">
+                <label className="text-white font-[Poppins] text-[20px] mb-2">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  className="border border-white rounded-[30px] h-[83px] w-[283px] px-4 text-[18px] font-[Poppins] bg-transparent text-white focus:outline-none"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+            </div>
 
-  {/* Forgot Password */}
-  <motion.button
-    type="button"
-    onClick={() => navigate('/reset-password')}
-    className="text-black text-[16px] font-semibold mt-3 pl-1 hover:text-[#DF1516] transition-colors self-start"
-  >
-    Forgot Password?
-  </motion.button>
-</motion.form>
-     </motion.div>
+            <div className="w-full flex flex-col items-center mt-4">
+              <label className="text-white font-[Poppins] text-[20px] mb-2">
+                Password
+              </label>
+              <input
+                type="password"
+                placeholder="Enter your password"
+                className="border border-white rounded-[30px] h-[83px] w-[603px] px-4 text-[18px] font-[Poppins] bg-transparent text-white focus:outline-none"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
 
-     {/* Right Panel - Sign Up (Red) */}
-<motion.div
-  initial={{ opacity: 0, x: 60, scale: 0.95 }}
-  animate={{ opacity: 1, x: 0, scale: 1 }}
-  transition={{ duration: 1.1, delay: 0.5 }}
-  className="flex-1 bg-[#DF1516] flex items-center justify-center p-8 md:p-12"
->
-  <div className="w-full max-w-[700px] flex flex-col items-center scale-[0.85]">
-    {/* Heading */}
-    <motion.h2
-      className="text-[44px] font-extrabold text-white font-['Montserrat'] text-center leading-[100%] mb-3"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.8, duration: 0.6 }}
-    >
-      Create an Account
-    </motion.h2>
-
-    {/* Google Sign-in */}
-    <motion.div
-      className="mt-5 mb-4 w-[580px]"
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ delay: 0.9, duration: 0.4 }}
-    >
-      <Button
-        type="button"
-        onClick={handleGoogleSignIn}
-        disabled={loading}
-        className="w-full h-[76px] rounded-[28px] bg-white text-[#DF1516] font-semibold text-[20px] hover:bg-white/90 flex items-center justify-center gap-3"
-      >
-        <FcGoogle size={26} />
-        Continue With Google
-      </Button>
-    </motion.div>
-
-    {/* Divider Text */}
-    <motion.p
-      className="text-white text-center font-['Poppins'] text-[20px] mt-1 mb-4 leading-[100%]"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 1, duration: 0.5 }}
-    >
-      or use your Email for registration
-    </motion.p>
-
-    {/* Sign Up Form */}
-    <motion.form
-      onSubmit={handleSignUp}
-      className="flex flex-col items-center gap-3"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 1.1, duration: 0.6, ease: 'easeOut' }}
-    >
-      {/* Row: Full Name + Email */}
-      <div className="flex gap-3">
-        <Input
-          type="text"
-          placeholder="Full Name"
-          value={fullName}
-          onChange={(e) => setFullName(e.target.value)}
-          className="w-[260px] h-[76px] rounded-[26px] border border-white/60 bg-white/95 text-[#000] text-[20px] font-['Poppins'] placeholder:text-[#000000]/60 px-5 focus:outline-none focus:ring-0"
-        />
-        <Input
-          type="email"
-          placeholder="Your Email"
-          value={signUpEmail}
-          onChange={(e) => setSignUpEmail(e.target.value)}
-          className="w-[260px] h-[76px] rounded-[26px] border border-white/60 bg-white/95 text-[#000] text-[20px] font-['Poppins'] placeholder:text-[#000000]/60 px-5 focus:outline-none focus:ring-0"
-        />
-      </div>
-
-      {/* Password Field */}
-      <Input
-        type="password"
-        placeholder="Password"
-        value={signUpPassword}
-        onChange={(e) => setSignUpPassword(e.target.value)}
-        className="w-[560px] h-[76px] rounded-[26px] border border-white/60 bg-white/95 text-[#000] text-[20px] font-['Poppins'] placeholder:text-[#000000]/60 px-5 focus:outline-none focus:ring-0"
-      />
-
-      {/* Sign Up Button */}
-      <Button
-        type="submit"
-        disabled={loading}
-        className="mt-2 w-[560px] h-[76px] bg-white text-[#DF1516] text-[20px] font-semibold rounded-[26px] hover:bg-white/90 transition-all duration-300"
-      >
-        {loading ? "CREATING ACCOUNT..." : "SIGN UP"}
-      </Button>
-    </motion.form>
-  </div>
-</motion.div>
+            <button
+              type="submit"
+              className="mt-8 bg-white text-[#DF1516] px-12 py-4 rounded-[30px] font-[Poppins] font-semibold text-[20px] transition-all hover:bg-gray-100"
+            >
+              Sign Up
+            </button>
+          </form>
+        </motion.div>
+      </motion.div>
     </div>
   );
-}
+};
+
+export default Auth;
