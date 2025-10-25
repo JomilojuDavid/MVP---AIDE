@@ -28,10 +28,10 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/auth" element={<Auth />} />
-          <Route path="/dashboard" element={<Dashboard showQuizPrompt={true} />} />
-          <Route path="/dashboard-full" element={<Dashboard showQuizPrompt={false} />} />
           <Route path="/quiz" element={<Quiz />} />
           <Route path="/submission" element={<Submission />} />
+          <Route path="/dashboard" element={<Dashboard showQuizPrompt={true} />} />
+          <Route path="/dashboard-full" element={<Dashboard showQuizPrompt={false} />} />
           <Route path="/assessment" element={<Assessment />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/tasks" element={<Tasks />} />
