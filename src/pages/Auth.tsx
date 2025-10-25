@@ -199,7 +199,10 @@ export default function Auth() {
               placeholder="Your Email"
               value={signInEmail}
               onChange={(e) => setSignInEmail(e.target.value)}
-              className="h-[65px] sm:h-[70px] rounded-[0px] border border-[#DF1516] text-[30px] font-semibold font-['Poppins'] focus-visible:ring-[#DF1516]"
+              className="h-[65px] sm:h-[70px] rounded-[0px] border border-[#DF1516] 
+                         text-[30px] font-semibold font-['Poppins'] 
+                         placeholder:text-[32px] placeholder:font-semibold 
+                         focus-visible:ring-[#DF1516]"
             />
             <div className="relative">
               <Input
@@ -207,12 +210,17 @@ export default function Auth() {
                 placeholder="Password"
                 value={signInPassword}
                 onChange={(e) => setSignInPassword(e.target.value)}
-                className="h-[65px] sm:h-[70px] rounded-[0px] border border-[#DF1516] pr-[150px] text-[30px] font-semibold font-['Poppins']"
+                className="h-[65px] sm:h-[70px] rounded-[0px] border border-[#DF1516] 
+                           pr-[150px] text-[30px] font-semibold font-['Poppins'] 
+                           placeholder:text-[32px] placeholder:font-semibold"
               />
               <Button
                 type="submit"
                 disabled={loading}
-                className="absolute right-[2px] top-[2px] bottom-[2px] h-[61px] sm:h-[66px] px-10 rounded-[0px] bg-[#DF1516] text-white font-semibold hover:bg-[#DF1516]/90 text-[18px]"
+                className="absolute right-[2px] top-[2px] bottom-[2px] 
+                           h-[61px] sm:h-[66px] px-10 rounded-[0px] 
+                           bg-[#DF1516] text-white font-semibold 
+                           hover:bg-[#DF1516]/90 text-[18px]"
               >
                 {loading ? "SIGNING IN..." : "SIGN IN"}
               </Button>
@@ -221,7 +229,8 @@ export default function Auth() {
             <button
               type="button"
               onClick={() => navigate("/reset-password")}
-              className="text-black hover:text-[#DF1516] transition-colors font-semibold text-[18px] font-['Poppins'] pl-[10px]"
+              className="text-black hover:text-[#DF1516] transition-colors 
+                         font-semibold text-[18px] font-['Poppins'] pl-[10px]"
             >
               Forgot Password?
             </button>
@@ -252,7 +261,8 @@ export default function Auth() {
             type="button"
             onClick={handleGoogleSignIn}
             disabled={loading}
-            className="w-full h-[65px] sm:h-[70px] rounded-[0px] bg-white text-[#DF1516] font-semibold hover:bg-white/90 flex items-center justify-center gap-1"
+            className="w-full h-[65px] sm:h-[70px] rounded-[0px] bg-white text-[#DF1516] 
+                       font-semibold hover:bg-white/90 flex items-center justify-center gap-1"
           >
             <FcGoogle size={30} />
             Continue With Google
@@ -269,14 +279,20 @@ export default function Auth() {
                 placeholder="Full Name"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                className="h-[75px] sm:h-[83px] rounded-[0px] border border-white bg-white/95 text-black placeholder:text-gray-500 text-[30px] font-semibold font-['Poppins']"
+                className="h-[75px] sm:h-[83px] rounded-[0px] border border-white 
+                           bg-white/95 text-black placeholder:text-gray-500 
+                           text-[26px] font-semibold font-['Poppins'] 
+                           placeholder:text-[22px] placeholder:font-semibold"
               />
               <Input
                 type="email"
                 placeholder="Your Email"
                 value={signUpEmail}
                 onChange={(e) => setSignUpEmail(e.target.value)}
-                className="h-[75px] sm:h-[83px] rounded-[0px] border border-white bg-white/95 text-black placeholder:text-gray-500 text-[30px] font-semibold font-['Poppins']"
+                className="h-[75px] sm:h-[83px] rounded-[0px] border border-white 
+                           bg-white/95 text-black placeholder:text-gray-500 
+                           text-[26px] font-semibold font-['Poppins'] 
+                           placeholder:text-[22px] placeholder:font-semibold"
               />
             </div>
 
@@ -285,13 +301,17 @@ export default function Auth() {
               placeholder="Password"
               value={signUpPassword}
               onChange={(e) => setSignUpPassword(e.target.value)}
-              className="h-[75px] sm:h-[83px] w-full rounded-[0px] border border-white bg-white/95 text-black placeholder:text-gray-500 text-[30px] font-semibold font-['Poppins']"
+              className="h-[75px] sm:h-[83px] w-full rounded-[0px] border border-white 
+                         bg-white/95 text-black placeholder:text-gray-500 
+                         text-[26px] font-semibold font-['Poppins'] 
+                         placeholder:text-[22px] placeholder:font-semibold"
             />
 
             <Button
               type="submit"
               disabled={loading}
-              className="w-full h-[75px] sm:h-[83px] rounded-[px] bg-white text-[#DF1516] font-bold text-lg hover:bg-white/90 font-['Poppins']"
+              className="w-full h-[75px] sm:h-[83px] rounded-[0px] bg-white text-[#DF1516] 
+                         font-bold text-lg hover:bg-white/90 font-['Poppins']"
             >
               {loading ? "SIGNING UP..." : "SIGN UP"}
             </Button>
