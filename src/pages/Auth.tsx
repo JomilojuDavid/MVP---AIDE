@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import aideLogo from "@/assets/aide-logo.png";
+import tabMockup from "@/assets/tab-mockup.png"; // <-- add your artwork file in /assets
 
 export default function Auth() {
   const [isSignIn, setIsSignIn] = useState(false);
@@ -9,9 +10,7 @@ export default function Auth() {
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsVisible(entry.isIntersecting);
-      },
+      ([entry]) => setIsVisible(entry.isIntersecting),
       { threshold: 0.2 }
     );
     if (containerRef.current) observer.observe(containerRef.current);
@@ -36,9 +35,9 @@ export default function Auth() {
       >
         {/* Sign In Section */}
         <div
-          className={`transition-all duration-700 ease-in-out ${
+          className={`transition-all duration-700 ease-in-out relative ${
             isSignIn ? "w-[40%] opacity-100" : "w-0 opacity-0 pointer-events-none"
-          } flex flex-col items-center justify-center bg-white text-center px-12 relative`}
+          } flex flex-col items-center justify-center bg-white text-center px-12`}
         >
           {isSignIn && (
             <motion.div
@@ -58,9 +57,11 @@ export default function Auth() {
                   }}
                 />
               </div>
+
               <h1 className="text-[40px] font-extrabold font-['Montserrat'] text-[#DF1516] mt-52">
                 Hello, Friend!
               </h1>
+
               <p className="text-[20px] leading-[100%] mt-4 text-center">
                 Sign in to continue your personalized journey <br />
                 with <span className="font-semibold text-black">AIDE</span>—where mindset
@@ -71,22 +72,23 @@ export default function Auth() {
                 <input
                   type="email"
                   placeholder="Your Email"
-                  className="border border-[#DF1516] text-[#DF1516] rounded-[20px] py-4 px-6 text-lg font-normal focus:outline-none"
+                  className="border border-[#DF1516] text-[#DF1516] rounded-[20px] py-4 px-6 text-[20px] font-semibold placeholder:font-semibold placeholder:text-[#DF1516] focus:outline-none"
                 />
                 <div className="flex w-full border border-[#DF1516] rounded-[20px] overflow-hidden">
                   <input
                     type="password"
                     placeholder="Password"
-                    className="flex-1 py-4 px-6 text-[#DF1516] text-lg font-normal focus:outline-none"
+                    className="flex-1 py-4 px-6 text-[#DF1516] text-[20px] font-semibold placeholder:font-semibold placeholder:text-[#DF1516] focus:outline-none"
                   />
                   <button
                     type="submit"
-                    className="bg-[#DF1516] text-white font-semibold text-lg px-8"
+                    className="bg-[#DF1516] text-white font-semibold text-[20px] px-8 flex items-center justify-center"
                   >
                     SIGN IN
                   </button>
                 </div>
-                <div className="flex justify-between items-center text-sm font-semibold text-black">
+
+                <div className="flex justify-start text-sm font-semibold text-black ml-2">
                   <span
                     className="cursor-pointer hover:underline"
                     onClick={() => alert("Forgot Password flow")}
@@ -117,9 +119,16 @@ export default function Auth() {
 
         {/* Sign Up Section */}
         <div
-          className={`flex flex-col justify-center items-center bg-[#DF1516] text-white w-full transition-all duration-700 ease-in-out ${
+          className={`flex flex-col justify-center items-center text-white transition-all duration-700 ease-in-out relative ${
             isSignIn ? "w-[60%]" : "w-full"
           }`}
+          style={{
+            backgroundColor: "#DF1516",
+            backgroundImage: `url(${tabMockup})`,
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center right 80px",
+            backgroundSize: "contain",
+          }}
         >
           {!isSignIn && (
             <motion.div
