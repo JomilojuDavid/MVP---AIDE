@@ -47,20 +47,13 @@ export default function Auth() {
       });
 
       navigate("/dashboard");
-    } catch (error: unknown) {
-  let description = "An unknown error occurred";
-
-  if (error instanceof Error) {
-    description = error.message;
-  }
-
-  toast({
-    title: "Sign up failed",
-    description,
-    variant: "destructive",
-  });
-}
- finally {
+    } catch (error: any) {
+      toast({
+        title: "Sign up failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
       setLoading(false);
     }
   };
@@ -83,20 +76,13 @@ export default function Auth() {
       });
 
       navigate("/dashboard");
-    } catch (error: unknown) {
-  let description = "An unknown error occurred";
-
-  if (error instanceof Error) {
-    description = error.message;
-  }
-
-  toast({
-    title: "Sign in failed",
-    description,
-    variant: "destructive",
-  });
-}
- finally {
+    } catch (error: any) {
+      toast({
+        title: "Sign in failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
       setLoading(false);
     }
   };
@@ -112,21 +98,14 @@ export default function Auth() {
       });
 
       if (error) throw error;
-    } catch (error: unknown) {
-  let description = "An unknown error occurred";
-
-  if (error instanceof Error) {
-    description = error.message;
-  }
-
-  toast({
-    title: "Google sign in failed",
-    description,
-    variant: "destructive",
-  });
-
-  setLoading(false);
-}
+    } catch (error: any) {
+      toast({
+        title: "Google sign in failed",
+        description: error.message,
+        variant: "destructive",
+      });
+      setLoading(false);
+    }
   };
 
   // Motion variants
