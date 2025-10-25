@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useState, FormEvent } from "react";
+import { motion, Variants, Transition } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { FcGoogle } from "react-icons/fc";
@@ -18,7 +18,28 @@ export default function Auth() {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const handleSignUp = async (e: React.FormEvent) => {
+  // ✅ Shared animation configuration
+  const slideTransition: Transition = {
+    duration: 0.9,
+    ease: [0.4, 0, 0.2, 1],
+  };
+
+  const panelVariants: Variants = {
+    hiddenLeft: { opacity: 0, x: -100, scale: 0.96 },
+    hiddenRight: { opacity: 0, x: 100, scale: 0.96 },
+    visible: { opacity: 1, x: 0, scale: 1, transition: slideTransition },
+  };
+
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: { delay: 0.25 + i * 0.08, duration: 0.5 },
+    }),
+  };
+
+  const handleSignUp = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
 
@@ -32,10 +53,7 @@ export default function Auth() {
         password: signUpPassword,
         options: {
           emailRedirectTo: `${window.location.origin}/dashboard`,
-          data: {
-            first_name: firstName,
-            last_name: lastName,
-          },
+          data: { first_name: firstName, last_name: lastName },
         },
       });
 
@@ -47,10 +65,11 @@ export default function Auth() {
       });
 
       navigate("/dashboard");
-    } catch (error: any) {
+    } catch (error) {
+      const err = error as { message: string };
       toast({
         title: "Sign up failed",
-        description: error.message,
+        description: err.message,
         variant: "destructive",
       });
     } finally {
@@ -58,7 +77,7 @@ export default function Auth() {
     }
   };
 
-  const handleSignIn = async (e: React.FormEvent) => {
+  const handleSignIn = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
 
@@ -76,10 +95,11 @@ export default function Auth() {
       });
 
       navigate("/dashboard");
-    } catch (error: any) {
+    } catch (error) {
+      const err = error as { message: string };
       toast({
         title: "Sign in failed",
-        description: error.message,
+        description: err.message,
         variant: "destructive",
       });
     } finally {
@@ -92,40 +112,29 @@ export default function Auth() {
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
-        options: {
-          redirectTo: `${window.location.origin}/dashboard`,
-        },
+        options: { redirectTo: `${window.location.origin}/dashboard` },
       });
 
       if (error) throw error;
-    } catch (error: any) {
+    } catch (error) {
+      const err = error as { message: string };
       toast({
         title: "Google sign in failed",
-        description: error.message,
+        description: err.message,
         variant: "destructive",
       });
       setLoading(false);
     }
   };
 
-  // Motion variants
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: { delay: 0.2 + i * 0.1, duration: 0.5 },
-    }),
-  };
-
   return (
-    <div className="min-h-screen flex flex-col md:flex-row overflow-hidden">
+    <div className="min-h-screen flex flex-row overflow-hidden">
       {/* Left Panel - Sign In (White) */}
       <motion.div
-        initial={{ opacity: 0, x: -60, scale: 0.95 }}
-        animate={{ opacity: 1, x: 0, scale: 1 }}
-        transition={{ duration: 1, delay: 0.3 }}
-        className="flex-1 bg-white flex items-center justify-center p-8 md:p-16"
+        variants={panelVariants}
+        initial="hiddenLeft"
+        animate="visible"
+        className="flex-1 bg-white flex items-center justify-center p-16"
       >
         <div className="w-full max-w-md">
           <motion.img
@@ -134,26 +143,26 @@ export default function Auth() {
             className="h-20 mb-12"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.6 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
           />
-          
+
           <motion.h1
-            className="text-4xl md:text-5xl font-bold text-primary mb-6"
+            className="text-5xl font-bold text-primary mb-6 font-['Montserrat']"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.6 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
           >
             Hello, Friend!
           </motion.h1>
-          
+
           <motion.p
-            className="text-foreground mb-8 leading-relaxed"
+            className="text-foreground mb-8 leading-relaxed font-['Poppins']"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7, duration: 0.6 }}
+            transition={{ delay: 0.5, duration: 0.6 }}
           >
             Sign in to continue your personalized journey with{" "}
-            <span className="font-bold">AIDE</span>—where mindset mastery meets business growth.
+            <span className="font-bold">AIDE</span> — where mindset mastery meets business growth.
           </motion.p>
 
           <motion.form
@@ -161,7 +170,7 @@ export default function Auth() {
             className="space-y-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.8, duration: 0.6 }}
+            transition={{ delay: 0.6, duration: 0.6 }}
           >
             <motion.div
               custom={0}
@@ -206,7 +215,7 @@ export default function Auth() {
               className="text-foreground hover:text-primary transition-colors"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 1.2 }}
+              transition={{ delay: 0.8 }}
             >
               Forgot Password
             </motion.button>
@@ -216,17 +225,17 @@ export default function Auth() {
 
       {/* Right Panel - Sign Up (Red) */}
       <motion.div
-        initial={{ opacity: 0, x: 60, scale: 0.95 }}
-        animate={{ opacity: 1, x: 0, scale: 1 }}
-        transition={{ duration: 1.1, delay: 0.5 }}
-        className="flex-1 bg-primary flex items-center justify-center p-8 md:p-16"
+        variants={panelVariants}
+        initial="hiddenRight"
+        animate="visible"
+        className="flex-1 bg-primary flex items-center justify-center p-16"
       >
         <div className="w-full max-w-md">
           <motion.h2
-            className="text-4xl md:text-5xl font-bold text-white mb-8 text-center"
+            className="text-5xl font-bold text-white mb-8 text-center font-['Montserrat']"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8, duration: 0.6 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
           >
             Create an Account
           </motion.h2>
@@ -235,7 +244,7 @@ export default function Auth() {
             className="mb-6"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.9, duration: 0.4 }}
+            transition={{ delay: 0.5, duration: 0.4 }}
           >
             <Button
               type="button"
@@ -249,10 +258,10 @@ export default function Auth() {
           </motion.div>
 
           <motion.p
-            className="text-white text-center mb-6"
+            className="text-white text-center mb-6 font-['Poppins']"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 1, duration: 0.5 }}
+            transition={{ delay: 0.6, duration: 0.5 }}
           >
             or use your Email for registration
           </motion.p>
@@ -262,14 +271,14 @@ export default function Auth() {
             className="space-y-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 1.1, duration: 0.6 }}
+            transition={{ delay: 0.7, duration: 0.6 }}
           >
             <motion.div
               custom={0}
               variants={itemVariants}
               initial="hidden"
               animate="visible"
-              className="grid grid-cols-1 md:grid-cols-2 gap-4"
+              className="grid grid-cols-2 gap-4"
             >
               <Input
                 type="text"
@@ -308,7 +317,7 @@ export default function Auth() {
               initial="hidden"
               animate="visible"
             >
-            <Button
+              <Button
                 type="submit"
                 disabled={loading}
                 className="w-full h-14 rounded-full bg-white text-primary font-bold text-lg hover:bg-white/90"
