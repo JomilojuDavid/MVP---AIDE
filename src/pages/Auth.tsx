@@ -218,10 +218,9 @@ export default function Auth() {
       >
         Forgot Password?
       </motion.button>
-    </motion.form>
-  </div>
-</motion.div>
-
+      </motion.form>
+    </div>
+  </motion.div>
       {/* --- Sign Up Side (60%) --- */}
       <motion.div
         ref={(el) => (sectionsRef.current[1] = el)}
