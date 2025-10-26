@@ -28,11 +28,7 @@ export default function Quiz() {
       <div className="hidden md:flex flex-col justify-between bg-white w-[240px] rounded-r-[40px] p-6 shadow-lg">
         {/* Logo and tagline */}
         <div className="flex flex-col items-center text-center">
-          <img
-            src={aideLogo}
-            alt="AIDE Logo"
-            className="h-14 md:h-16 mb-3"
-          />
+          <img src={aideLogo} alt="AIDE Logo" className="h-14 md:h-16 mb-3" />
           <p className="text-[13px] md:text-sm text-gray-800 font-semibold leading-tight">
             Where mindset mastery <br /> meets business growth
           </p>
@@ -57,7 +53,7 @@ export default function Quiz() {
 
       {/* Main Quiz Area */}
       <div className="flex-1 bg-primary relative flex flex-col justify-center items-center p-6 md:p-12">
-        {/* Settings button */}
+        {/* Settings Button */}
         <div className="absolute top-8 right-8 z-10">
           <Button
             variant="ghost"
@@ -68,17 +64,21 @@ export default function Quiz() {
           </Button>
         </div>
 
-        {/* Two stacked white containers */}
+        {/* Quiz Layout Container */}
         <div
           className="flex flex-col justify-between items-center"
-          style={{ width: "calc(100% - 240px - 140px)", height: "85vh" }}
+          style={{
+            width: "calc(100% - 240px - 140px)",
+            height: "85vh",
+            gap: "24px",
+          }}
         >
-          {/* Header Box */}
+          {/* Title Box */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="bg-white rounded-3xl p-8 md:p-10 w-full shadow-md mb-6"
+            className="bg-white rounded-3xl p-8 md:p-10 w-full shadow-[0_4px_30px_rgba(0,0,0,0.1)]"
           >
             <h1 className="text-4xl md:text-5xl font-bold mb-4 text-foreground text-center">
               AIDE Onboarding Quiz
@@ -88,14 +88,24 @@ export default function Quiz() {
             </p>
           </motion.div>
 
-          {/* Questions Box */}
+          {/* Question Box */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: 0.97 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="bg-white rounded-3xl p-8 md:p-10 w-full shadow-md flex flex-col justify-between flex-1"
+            className="bg-white rounded-3xl p-8 md:p-10 w-full flex flex-col justify-between shadow-[0_4px_30px_rgba(0,0,0,0.1)]"
+            style={{
+              flex: "1",
+              overflow: "hidden",
+            }}
           >
-            <div className="space-y-6 overflow-hidden">
+            <div
+              className="grid gap-6"
+              style={{
+                flexGrow: 1,
+                overflow: "hidden",
+              }}
+            >
               {/* Question 1 */}
               <div>
                 <h3 className="text-2xl font-bold mb-6 text-foreground">
@@ -125,20 +135,22 @@ export default function Quiz() {
                   2. What's your biggest challenge right now?
                 </h3>
                 <div className="flex flex-wrap gap-4">
-                  {["Focus", "Execution", "Strategy", "Commitment"].map((option) => (
-                    <Button
-                      key={option}
-                      onClick={() => setQuestion2(option)}
-                      className={cn(
-                        "h-14 px-8 text-lg font-medium rounded-lg transition-all border-2 border-input",
-                        question2 === option
-                          ? "bg-secondary text-foreground"
-                          : "bg-white text-foreground hover:bg-[#F3C17E]"
-                      )}
-                    >
-                      {option}
-                    </Button>
-                  ))}
+                  {["Focus", "Execution", "Strategy", "Commitment"].map(
+                    (option) => (
+                      <Button
+                        key={option}
+                        onClick={() => setQuestion2(option)}
+                        className={cn(
+                          "h-14 px-8 text-lg font-medium rounded-lg transition-all border-2 border-input",
+                          question2 === option
+                            ? "bg-secondary text-foreground"
+                            : "bg-white text-foreground hover:bg-[#F3C17E]"
+                        )}
+                      >
+                        {option}
+                      </Button>
+                    )
+                  )}
                 </div>
               </div>
 
@@ -151,13 +163,13 @@ export default function Quiz() {
                   value={question3}
                   onChange={(e) => setQuestion3(e.target.value)}
                   placeholder="Write here..."
-                  className="min-h-32 bg-white text-foreground placeholder:text-muted-foreground border-2 border-input text-lg rounded-2xl resize-none"
+                  className="min-h-28 bg-white text-foreground placeholder:text-muted-foreground border-2 border-input text-lg rounded-2xl resize-none"
                 />
               </div>
             </div>
 
-            {/* Submit Button */}
-            <div className="flex justify-end mt-8">
+            {/* Next Button */}
+            <div className="flex justify-end mt-4">
               <button
                 onClick={handleSubmit}
                 className="text-primary text-xl font-bold hover:underline"
