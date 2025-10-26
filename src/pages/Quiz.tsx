@@ -100,7 +100,7 @@ export default function Quiz() {
             }}
           >
             <div
-              className="grid gap-6"
+              className="grid gap-5"
               style={{
                 flexGrow: 1,
                 overflow: "hidden",
@@ -108,16 +108,16 @@ export default function Quiz() {
             >
               {/* Question 1 */}
               <div>
-                <h3 className="text-2xl font-bold mb-6 text-foreground">
+                <h3 className="text-[1.7rem] font-semibold mb-5 text-foreground">
                   1. What stage best describes your business?
                 </h3>
-                <div className="flex flex-wrap gap-4">
+                <div className="flex flex-wrap gap-3">
                   {["Ideal Stage", "Early Growth", "Scaling"].map((option) => (
                     <Button
                       key={option}
                       onClick={() => setQuestion1(option)}
                       className={cn(
-                        "h-14 px-8 text-lg font-medium rounded-lg transition-all border-2 border-input",
+                        "h-12 px-6 text-[1rem] font-medium rounded-lg transition-all border-2 border-input",
                         question1 === option
                           ? "bg-secondary text-foreground"
                           : "bg-white text-foreground hover:bg-[#F3C17E]"
@@ -131,17 +131,17 @@ export default function Quiz() {
 
               {/* Question 2 */}
               <div>
-                <h3 className="text-2xl font-bold mb-6 text-foreground">
+                <h3 className="text-[1.7rem] font-semibold mb-5 text-foreground">
                   2. What's your biggest challenge right now?
                 </h3>
-                <div className="flex flex-wrap gap-4">
+                <div className="flex flex-wrap gap-3">
                   {["Focus", "Execution", "Strategy", "Commitment"].map(
                     (option) => (
                       <Button
                         key={option}
                         onClick={() => setQuestion2(option)}
                         className={cn(
-                          "h-14 px-8 text-lg font-medium rounded-lg transition-all border-2 border-input",
+                          "h-12 px-6 text-[1rem] font-medium rounded-lg transition-all border-2 border-input",
                           question2 === option
                             ? "bg-secondary text-foreground"
                             : "bg-white text-foreground hover:bg-[#F3C17E]"
@@ -156,23 +156,23 @@ export default function Quiz() {
 
               {/* Question 3 */}
               <div>
-                <h3 className="text-2xl font-bold mb-6 text-foreground">
+                <h3 className="text-[1.7rem] font-semibold mb-5 text-foreground">
                   3. What's your main goal for the next 90 days?
                 </h3>
                 <Textarea
                   value={question3}
                   onChange={(e) => setQuestion3(e.target.value)}
                   placeholder="Write here..."
-                  className="min-h-28 bg-white text-foreground placeholder:text-muted-foreground border-2 border-input text-lg rounded-2xl resize-none"
+                  className="min-h-24 bg-white text-foreground placeholder:text-muted-foreground border-2 border-input text-[1rem] rounded-2xl resize-none"
                 />
               </div>
             </div>
 
             {/* Next Button */}
-            <div className="flex justify-end mt-4">
+            <div className="flex justify-end mt-3">
               <button
                 onClick={handleSubmit}
-                className="text-primary text-xl font-bold hover:underline"
+                className="text-primary text-lg font-bold hover:underline"
               >
                 NEXT&gt;&gt;
               </button>
