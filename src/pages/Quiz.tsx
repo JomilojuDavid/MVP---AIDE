@@ -49,17 +49,16 @@ export default function Quiz() {
         </div>
       </div>
 
-      {/* Collapsed top bar (mobile only) */}
+      {/* Mobile Top Bar */}
       <div className="md:hidden bg-white w-full p-4 flex justify-between items-center border-b border-gray-200 shadow-md">
         <img src={aideLogo} alt="AIDE Logo" className="h-10" />
         <span className="text-sm text-gray-700 font-semibold">Support</span>
       </div>
 
-      {/* Main quiz section */}
-      <div className="flex-1 bg-primary relative p-6 md:p-12 flex justify-center items-center">
-        {/* Top Bar */}
-        <div className="absolute top-8 left-8 right-8 flex items-center justify-between z-10">
-          <div className="hidden md:block" /> {/* keeps layout spacing */}
+      {/* Main Quiz Area */}
+      <div className="flex-1 bg-primary relative flex flex-col justify-center items-center p-6 md:p-12">
+        {/* Settings button */}
+        <div className="absolute top-8 right-8 z-10">
           <Button
             variant="ghost"
             size="icon"
@@ -69,19 +68,17 @@ export default function Quiz() {
           </Button>
         </div>
 
-        {/* Quiz container */}
+        {/* Two stacked white containers */}
         <div
-          className="max-w-4xl mx-auto bg-white rounded-3xl p-8 md:p-10 shadow-md flex flex-col justify-between"
-          style={{
-            width: "calc(100% - 240px - 140px)", // Sidebar width + 140px gap
-            height: "85vh", // fits viewport height neatly
-          }}
+          className="flex flex-col justify-between items-center"
+          style={{ width: "calc(100% - 240px - 140px)", height: "85vh" }}
         >
-          {/* Quiz Header */}
+          {/* Header Box */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
+            className="bg-white rounded-3xl p-8 md:p-10 w-full shadow-md mb-6"
           >
             <h1 className="text-4xl md:text-5xl font-bold mb-4 text-foreground text-center">
               AIDE Onboarding Quiz
@@ -91,82 +88,84 @@ export default function Quiz() {
             </p>
           </motion.div>
 
-          {/* Quiz Questions */}
+          {/* Questions Box */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="flex-1 flex flex-col justify-center gap-6"
+            className="bg-white rounded-3xl p-8 md:p-10 w-full shadow-md flex flex-col justify-between flex-1"
           >
-            {/* Question 1 */}
-            <div>
-              <h3 className="text-2xl font-bold mb-6 text-foreground">
-                1. What stage best describes your business?
-              </h3>
-              <div className="flex flex-wrap gap-4">
-                {["Ideal Stage", "Early Growth", "Scaling"].map((option) => (
-                  <Button
-                    key={option}
-                    onClick={() => setQuestion1(option)}
-                    className={cn(
-                      "h-14 px-8 text-lg font-medium rounded-lg transition-all border-2 border-input",
-                      question1 === option
-                        ? "bg-secondary text-foreground"
-                        : "bg-white text-foreground hover:bg-[#F3C17E]"
-                    )}
-                  >
-                    {option}
-                  </Button>
-                ))}
+            <div className="space-y-6 overflow-hidden">
+              {/* Question 1 */}
+              <div>
+                <h3 className="text-2xl font-bold mb-6 text-foreground">
+                  1. What stage best describes your business?
+                </h3>
+                <div className="flex flex-wrap gap-4">
+                  {["Ideal Stage", "Early Growth", "Scaling"].map((option) => (
+                    <Button
+                      key={option}
+                      onClick={() => setQuestion1(option)}
+                      className={cn(
+                        "h-14 px-8 text-lg font-medium rounded-lg transition-all border-2 border-input",
+                        question1 === option
+                          ? "bg-secondary text-foreground"
+                          : "bg-white text-foreground hover:bg-[#F3C17E]"
+                      )}
+                    >
+                      {option}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Question 2 */}
+              <div>
+                <h3 className="text-2xl font-bold mb-6 text-foreground">
+                  2. What's your biggest challenge right now?
+                </h3>
+                <div className="flex flex-wrap gap-4">
+                  {["Focus", "Execution", "Strategy", "Commitment"].map((option) => (
+                    <Button
+                      key={option}
+                      onClick={() => setQuestion2(option)}
+                      className={cn(
+                        "h-14 px-8 text-lg font-medium rounded-lg transition-all border-2 border-input",
+                        question2 === option
+                          ? "bg-secondary text-foreground"
+                          : "bg-white text-foreground hover:bg-[#F3C17E]"
+                      )}
+                    >
+                      {option}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Question 3 */}
+              <div>
+                <h3 className="text-2xl font-bold mb-6 text-foreground">
+                  3. What's your main goal for the next 90 days?
+                </h3>
+                <Textarea
+                  value={question3}
+                  onChange={(e) => setQuestion3(e.target.value)}
+                  placeholder="Write here..."
+                  className="min-h-32 bg-white text-foreground placeholder:text-muted-foreground border-2 border-input text-lg rounded-2xl resize-none"
+                />
               </div>
             </div>
 
-            {/* Question 2 */}
-            <div>
-              <h3 className="text-2xl font-bold mb-6 text-foreground">
-                2. What's your biggest challenge right now?
-              </h3>
-              <div className="flex flex-wrap gap-4">
-                {["Focus", "Execution", "Strategy", "Commitment"].map((option) => (
-                  <Button
-                    key={option}
-                    onClick={() => setQuestion2(option)}
-                    className={cn(
-                      "h-14 px-8 text-lg font-medium rounded-lg transition-all border-2 border-input",
-                      question2 === option
-                        ? "bg-secondary text-foreground"
-                        : "bg-white text-foreground hover:bg-[#F3C17E]"
-                    )}
-                  >
-                    {option}
-                  </Button>
-                ))}
-              </div>
-            </div>
-
-            {/* Question 3 */}
-            <div>
-              <h3 className="text-2xl font-bold mb-6 text-foreground">
-                3. What's your main goal for the next 90 days?
-              </h3>
-              <Textarea
-                value={question3}
-                onChange={(e) => setQuestion3(e.target.value)}
-                placeholder="Write here..."
-                className="min-h-32 bg-white text-foreground placeholder:text-muted-foreground border-2 border-input text-lg rounded-2xl resize-none"
-              />
+            {/* Submit Button */}
+            <div className="flex justify-end mt-8">
+              <button
+                onClick={handleSubmit}
+                className="text-primary text-xl font-bold hover:underline"
+              >
+                NEXT&gt;&gt;
+              </button>
             </div>
           </motion.div>
-
-          {/* Submit Button */}
-          <div className="flex justify-end mt-8">
-            <button
-              onClick={handleSubmit}
-              className="text-primary text-xl font-bold hover:underline"
-            >
-              NEXT&gt;&gt;
-            </button>
-          </div>
         </div>
       </div>
     </div>
