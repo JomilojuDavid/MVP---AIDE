@@ -19,7 +19,7 @@ export default function Quiz() {
       toast.error("Please answer all questions");
       return;
     }
-    navigate("/submission");
+    navigate("/quiz-step-2");
   };
 
   return (
