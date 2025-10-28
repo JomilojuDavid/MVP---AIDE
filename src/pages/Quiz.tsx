@@ -54,7 +54,7 @@ export default function Quiz() {
       </div>
 
       {/* Main Quiz Area */}
-      <div className="flex-1 bg-primary relative flex flex-col justify-center items-center p-4 sm:p-8 md:p-12">
+      <div className="flex-1 bg-primary relative flex flex-col justify-center items-center p-4 sm:p-8 md:p-12 overflow-auto">
         {/* Settings Button */}
         <div className="absolute top-6 sm:top-8 right-6 sm:right-8 z-10">
           <Button
@@ -71,8 +71,8 @@ export default function Quiz() {
           className="flex flex-col justify-between items-center w-full transition-all"
           style={{
             width: "clamp(600px, 70vw, 1000px)",
-            height: "85vh",
-            gap: "2.2rem",
+            minHeight: "85vh",
+            gap: "2rem",
           }}
         >
           {/* Title Box */}
@@ -95,22 +95,16 @@ export default function Quiz() {
             initial={{ opacity: 0, scale: 0.97 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="bg-white rounded-3xl p-6 sm:p-8 md:p-10 w-full flex flex-col justify-between shadow-[0_4px_30px_rgba(0,0,0,0.1)]"
+            className="bg-white rounded-3xl p-6 sm:p-8 md:p-10 w-full flex flex-col shadow-[0_4px_30px_rgba(0,0,0,0.1)]"
             style={{
               flex: "1",
-              overflow: "hidden",
+              maxHeight: "auto",
             }}
           >
-            <div
-              className="grid gap-5 md:gap-6"
-              style={{
-                flexGrow: 1,
-                overflow: "hidden",
-              }}
-            >
+            <div className="flex flex-col gap-6 sm:gap-7 md:gap-8">
               {/* Question 1 */}
               <div>
-                <h3 className="text-[1.4rem] sm:text-[1.6rem] font-semibold mb-5 text-foreground">
+                <h3 className="text-[1.3rem] sm:text-[1.5rem] font-semibold mb-5 text-foreground">
                   1. What stage best describes your business?
                 </h3>
                 <div className="flex flex-wrap gap-3">
@@ -133,7 +127,7 @@ export default function Quiz() {
 
               {/* Question 2 */}
               <div>
-                <h3 className="text-[1.4rem] sm:text-[1.6rem] font-semibold mb-5 text-foreground">
+                <h3 className="text-[1.3rem] sm:text-[1.5rem] font-semibold mb-5 text-foreground">
                   2. What's your biggest challenge right now?
                 </h3>
                 <div className="flex flex-wrap gap-3">
@@ -158,28 +152,28 @@ export default function Quiz() {
 
               {/* Question 3 */}
               <div>
-                <h3 className="text-[1.4rem] sm:text-[1.6rem] font-semibold mb-4 text-foreground">
+                <h3 className="text-[1.3rem] sm:text-[1.5rem] font-semibold mb-4 text-foreground">
                   3. What's your main goal for the next 90 days?
                 </h3>
                 <Textarea
                   value={question3}
                   onChange={(e) => setQuestion3(e.target.value)}
-                  placeholder="Write here..."
-                  className="min-h-24 bg-white text-foreground placeholder:text-muted-foreground border-2 border-input text-[0.95rem] rounded-2xl resize-none mb-3"
+                  placeholder="Write your goal here..."
+                  className="min-h-[120px] bg-white text-foreground placeholder:text-muted-foreground border-2 border-input text-[1rem] rounded-2xl resize-none mb-3"
                 />
 
                 <Input
                   type="text"
                   value={question3Short}
                   onChange={(e) => setQuestion3Short(e.target.value)}
-                  placeholder="Summarize your goal in one line..."
-                  className="bg-white text-foreground border-2 border-input text-[0.95rem] rounded-xl h-11 placeholder:text-muted-foreground"
+                  placeholder="Summarize your goal in one sentence..."
+                  className="bg-white text-foreground border-2 border-input text-[1rem] rounded-xl h-12 placeholder:text-muted-foreground"
                 />
               </div>
             </div>
 
             {/* Next Button */}
-            <div className="flex justify-end mt-3">
+            <div className="flex justify-end mt-5">
               <button
                 onClick={handleSubmit}
                 className="text-primary text-lg font-bold hover:underline"
