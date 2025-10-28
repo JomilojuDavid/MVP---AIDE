@@ -158,17 +158,10 @@ export default function Quiz() {
                 <Textarea
                   value={question3}
                   onChange={(e) => setQuestion3(e.target.value)}
-                  placeholder="Write your goal here..."
+                  placeholder="Write here..."
                   className="min-h-[120px] bg-white text-foreground placeholder:text-muted-foreground border-2 border-input text-[1rem] rounded-2xl resize-none mb-3"
                 />
-
-                <Input
-                  type="text"
-                  value={question3Short}
-                  onChange={(e) => setQuestion3Short(e.target.value)}
-                  placeholder="Summarize your goal in one sentence..."
-                  className="bg-white text-foreground border-2 border-input text-[1rem] rounded-xl h-12 placeholder:text-muted-foreground"
-                />
+                
               </div>
             </div>
 
