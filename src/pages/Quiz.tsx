@@ -10,16 +10,16 @@ import { motion } from "framer-motion";
 
 export default function Quiz() {
   const navigate = useNavigate();
-  const [entrepreneurType, setEntrepreneurType] = useState("");
-  const [goals, setGoals] = useState("");
-  const [challenge, setChallenge] = useState("");
+  const [question1, setQuestion1] = useState("");
+  const [question2, setQuestion2] = useState("");
+  const [question3, setQuestion3] = useState("");
 
-  const handleNext = () => {
-    if (!entrepreneurType || !goals || !challenge) {
+  const handleSubmit = () => {
+    if (!question1 || !question2 || !question3) {
       toast.error("Please answer all questions");
       return;
     }
-    navigate("/quizstep2");
+    navigate("/submission");
   };
 
   return (
@@ -35,7 +35,7 @@ export default function Quiz() {
 
         <div className="flex items-center gap-3 justify-center">
           <img
-            src="https://randomuser.me/api/portraits/women/45.jpg"
+            src="https://randomuser.me/api/portraits/women/44.jpg"
             alt="Support"
             className="w-8 h-8 rounded-full object-cover"
           />
@@ -43,7 +43,7 @@ export default function Quiz() {
         </div>
       </div>
 
-      {/* Main Content */}
+      {/* Main Area */}
       <motion.div
         initial={{ opacity: 0, y: 25 }}
         animate={{ opacity: 1, y: 0 }}
@@ -51,7 +51,11 @@ export default function Quiz() {
         className="flex-1 bg-primary relative flex flex-col justify-center items-center p-4 sm:p-6 md:p-10 overflow-hidden"
       >
         <div className="absolute top-5 right-6">
-          <Button variant="ghost" size="icon" className="w-9 h-9 text-white hover:text-white/80">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="w-9 h-9 text-white hover:text-white/80"
+          >
             <Settings className="w-6 h-6" />
           </Button>
         </div>
@@ -73,7 +77,7 @@ export default function Quiz() {
               AIDE Onboarding Quiz
             </h1>
             <p className="text-base sm:text-lg text-muted-foreground text-center">
-              Let's get to know you a bit better.
+              Answer a few quick questions so we can personalize your roadmap.
             </p>
           </motion.div>
 
@@ -87,21 +91,21 @@ export default function Quiz() {
             {/* Q1 */}
             <div>
               <h3 className="text-[1.2rem] sm:text-[1.3rem] font-semibold mb-4 text-foreground">
-                What type of entrepreneur best describes you?
+                1. What stage best describes your business?
               </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {["Visionary", "Strategist", "Builder", "Creative"].map((type) => (
+              <div className="flex flex-wrap gap-3">
+                {["Idea Stage", "Early Growth", "Scaling"].map((option) => (
                   <Button
-                    key={type}
-                    onClick={() => setEntrepreneurType(type)}
+                    key={option}
+                    onClick={() => setQuestion1(option)}
                     className={cn(
-                      "h-auto min-h-[70px] px-5 py-4 text-[0.9rem] font-medium transition-all border-2 border-[#ff000033] whitespace-normal text-left rounded-[2px]",
-                      entrepreneurType === type
+                      "h-10 sm:h-11 px-5 text-[0.9rem] font-medium rounded-lg transition-all border-2 border-[#ff000033]",
+                      question1 === option
                         ? "bg-secondary text-foreground"
                         : "bg-white text-foreground hover:bg-[#F3C17E]"
                     )}
                   >
-                    {type}
+                    {option}
                   </Button>
                 ))}
               </div>
@@ -109,44 +113,51 @@ export default function Quiz() {
 
             {/* Q2 */}
             <div>
-              <h3 className="text-[1.2rem] sm:text-[1.3rem] font-semibold mb-3 text-foreground">
-                What’s your biggest goal for joining AIDE?
+              <h3 className="text-[1.2rem] sm:text-[1.3rem] font-semibold mb-4 text-foreground">
+                2. What's your biggest challenge right now?
               </h3>
-              <Textarea
-                value={goals}
-                onChange={(e) => setGoals(e.target.value)}
-                placeholder="Write here..."
-                className="bg-transparent border-0 border-b-2 border-[#ff000033] text-[0.95rem] rounded-none focus:ring-0 focus:border-[#ff000066] placeholder:text-muted-foreground min-h-[60px]"
-              />
+              <div className="flex flex-wrap gap-3">
+                {["Focus", "Execution", "Strategy", "Commitment"].map(
+                  (option) => (
+                    <Button
+                      key={option}
+                      onClick={() => setQuestion2(option)}
+                      className={cn(
+                        "h-10 sm:h-11 px-5 text-[0.9rem] font-medium rounded-lg transition-all border-2 border-[#ff000033]",
+                        question2 === option
+                          ? "bg-secondary text-foreground"
+                          : "bg-white text-foreground hover:bg-[#F3C17E]"
+                      )}
+                    >
+                      {option}
+                    </Button>
+                  )
+                )}
+              </div>
             </div>
 
             {/* Q3 */}
             <div>
               <h3 className="text-[1.2rem] sm:text-[1.3rem] font-semibold mb-3 text-foreground">
-                What’s the biggest challenge you’re facing right now?
+                3. What's your main goal for the next 90 days?
               </h3>
               <Textarea
-                value={challenge}
-                onChange={(e) => setChallenge(e.target.value)}
+                value={question3}
+                onChange={(e) => setQuestion3(e.target.value)}
                 placeholder="Write here..."
-                className="bg-transparent border-0 border-b-2 border-[#ff000033] text-[0.95rem] rounded-none focus:ring-0 focus:border-[#ff000066] placeholder:text-muted-foreground min-h-[60px]"
+                className="min-h-[100px] bg-white text-foreground placeholder:text-muted-foreground border-2 border-[#ff000033] text-[0.95rem] rounded-2xl resize-none"
               />
             </div>
 
-            {/* Next */}
-            <motion.div
-              initial={{ opacity: 0, y: 25 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.9, ease: "easeOut" }}
-              className="flex justify-end mt-4"
-            >
+            {/* Submit */}
+            <div className="flex justify-end mt-4">
               <button
-                onClick={handleNext}
-                className="text-primary text-lg font-bold hover:underline transition-transform hover:scale-[1.03]"
+                onClick={handleSubmit}
+                className="text-primary text-lg font-bold hover:underline"
               >
                 NEXT &gt;&gt;
               </button>
-            </motion.div>
+            </div>
           </motion.div>
         </motion.div>
       </motion.div>
