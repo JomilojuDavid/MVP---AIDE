@@ -130,7 +130,7 @@ export default function Auth() {
       opacity: 1,
       y: 0,
       scale: 1,
-      transition: { duration: 1.2, ease: "easeOut" },
+      transition: { duration: 1.2 },
     },
   };
 
