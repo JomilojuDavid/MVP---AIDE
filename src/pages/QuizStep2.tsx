@@ -117,7 +117,7 @@ export default function QuizStep2() {
                     key={title}
                     onClick={() => setAideStage(title)}
                     className={cn(
-                      "h-auto min-h-[70px] px-5 py-4 text-[0.9rem] font-medium rounded-lg transition-all border-2 border-[#ff000033] whitespace-normal text-left",
+                      "h-auto min-h-[70px] px-5 py-4 text-[0.9rem] font-medium rounded-[2px] transition-all border-2 border-[#ff000033] whitespace-normal text-left",
                       aideStage === title
                         ? "bg-secondary text-foreground"
                         : "bg-white text-foreground hover:bg-[#F3C17E]"
@@ -140,7 +140,7 @@ export default function QuizStep2() {
                 value={improvement}
                 onChange={(e) => setImprovement(e.target.value)}
                 placeholder="Write here..."
-                className="min-h-[100px] bg-white text-foreground placeholder:text-muted-foreground border-2 border-[#ff000033] text-[0.95rem] rounded-2xl resize-none"
+                className="bg-transparent border-0 border-b-2 border-[#ff000033] text-[0.95rem] rounded-none focus:ring-0 focus:border-[#ff000066] placeholder:text-muted-foreground min-h-[60px]"
               />
             </div>
 

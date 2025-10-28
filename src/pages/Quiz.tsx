@@ -116,7 +116,7 @@ export default function Quiz() {
                 value={goals}
                 onChange={(e) => setGoals(e.target.value)}
                 placeholder="Write here..."
-                className="bg-transparent border-0 border-b-2 border-[#ff000033] text-[0.95rem] rounded-none focus:ring-0 focus:border-[#ff000066] placeholder:text-muted-foreground"
+                className="bg-transparent border-0 border-b-2 border-[#ff000033] text-[0.95rem] rounded-none focus:ring-0 focus:border-[#ff000066] placeholder:text-muted-foreground min-h-[60px]"
               />
             </div>
 
@@ -129,7 +129,7 @@ export default function Quiz() {
                 value={challenge}
                 onChange={(e) => setChallenge(e.target.value)}
                 placeholder="Write here..."
-                className="bg-transparent border-0 border-b-2 border-[#ff000033] text-[0.95rem] rounded-none focus:ring-0 focus:border-[#ff000066] placeholder:text-muted-foreground"
+                className="bg-transparent border-0 border-b-2 border-[#ff000033] text-[0.95rem] rounded-none focus:ring-0 focus:border-[#ff000066] placeholder:text-muted-foreground min-h-[60px]"
               />
             </div>
 
