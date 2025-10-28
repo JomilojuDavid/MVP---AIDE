@@ -8,18 +8,17 @@ import { Settings } from "lucide-react";
 import aideLogo from "@/assets/aide-logo.png";
 import { motion } from "framer-motion";
 
-export default function Quiz() {
+export default function QuizStep2() {
   const navigate = useNavigate();
-  const [question1, setQuestion1] = useState("");
-  const [question2, setQuestion2] = useState("");
-  const [question3, setQuestion3] = useState("");
+  const [aideStage, setAideStage] = useState("");
+  const [improvement, setImprovement] = useState("");
 
   const handleSubmit = () => {
-    if (!question1 || !question2 || !question3) {
+    if (!aideStage || !improvement) {
       toast.error("Please answer all questions");
       return;
     }
-    navigate("/quiz-step-2");
+    navigate("/submission");
   };
 
   return (
@@ -109,59 +108,72 @@ export default function Quiz() {
               {/* Question 1 */}
               <div>
                 <h3 className="text-[1.7rem] font-semibold mb-5 text-foreground">
-                  1. What stage best describes your business?
+                  Which of the AIDE stages do you feel you need to strengthen most?
                 </h3>
-                <div className="flex flex-wrap gap-3">
-                  {["Ideal Stage", "Early Growth", "Scaling"].map((option) => (
-                    <Button
-                      key={option}
-                      onClick={() => setQuestion1(option)}
-                      className={cn(
-                        "h-12 px-6 text-[1rem] font-medium rounded-lg transition-all border-2 border-input",
-                        question1 === option
-                          ? "bg-secondary text-foreground"
-                          : "bg-white text-foreground hover:bg-[#F3C17E]"
-                      )}
-                    >
-                      {option}
-                    </Button>
-                  ))}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <Button
+                    onClick={() => setAideStage("Awareness")}
+                    className={cn(
+                      "h-auto min-h-[80px] px-6 py-4 text-[0.95rem] font-medium rounded-lg transition-all border-2 border-input whitespace-normal text-left",
+                      aideStage === "Awareness"
+                        ? "bg-secondary text-foreground"
+                        : "bg-white text-foreground hover:bg-[#F3C17E]"
+                    )}
+                  >
+                    <span className="block">
+                      <span className="font-semibold">Awareness</span> {"{I need clarity on what's really holding me back}"}
+                    </span>
+                  </Button>
+                  <Button
+                    onClick={() => setAideStage("Intention")}
+                    className={cn(
+                      "h-auto min-h-[80px] px-6 py-4 text-[0.95rem] font-medium rounded-lg transition-all border-2 border-input whitespace-normal text-left",
+                      aideStage === "Intention"
+                        ? "bg-secondary text-foreground"
+                        : "bg-white text-foreground hover:bg-[#F3C17E]"
+                    )}
+                  >
+                    <span className="block">
+                      <span className="font-semibold">Intention</span> — I need stronger goals and focus
+                    </span>
+                  </Button>
+                  <Button
+                    onClick={() => setAideStage("Decisiveness")}
+                    className={cn(
+                      "h-auto min-h-[80px] px-6 py-4 text-[0.95rem] font-medium rounded-lg transition-all border-2 border-input whitespace-normal text-left",
+                      aideStage === "Decisiveness"
+                        ? "bg-secondary text-foreground"
+                        : "bg-white text-foreground hover:bg-[#F3C17E]"
+                    )}
+                  >
+                    <span className="block">
+                      <span className="font-semibold">Decisiveness</span> — I need to stop hesitating and make moves
+                    </span>
+                  </Button>
+                  <Button
+                    onClick={() => setAideStage("Execution")}
+                    className={cn(
+                      "h-auto min-h-[80px] px-6 py-4 text-[0.95rem] font-medium rounded-lg transition-all border-2 border-input whitespace-normal text-left",
+                      aideStage === "Execution"
+                        ? "bg-secondary text-foreground"
+                        : "bg-white text-foreground hover:bg-[#F3C17E]"
+                    )}
+                  >
+                    <span className="block">
+                      <span className="font-semibold">Execution</span> — I need consistency and follow-through
+                    </span>
+                  </Button>
                 </div>
               </div>
 
               {/* Question 2 */}
               <div>
                 <h3 className="text-[1.7rem] font-semibold mb-5 text-foreground">
-                  2. What's your biggest challenge right now?
-                </h3>
-                <div className="flex flex-wrap gap-3">
-                  {["Focus", "Execution", "Strategy", "Commitment"].map(
-                    (option) => (
-                      <Button
-                        key={option}
-                        onClick={() => setQuestion2(option)}
-                        className={cn(
-                          "h-12 px-6 text-[1rem] font-medium rounded-lg transition-all border-2 border-input",
-                          question2 === option
-                            ? "bg-secondary text-foreground"
-                            : "bg-white text-foreground hover:bg-[#F3C17E]"
-                        )}
-                      >
-                        {option}
-                      </Button>
-                    )
-                  )}
-                </div>
-              </div>
-
-              {/* Question 3 */}
-              <div>
-                <h3 className="text-[1.7rem] font-semibold mb-5 text-foreground">
-                  3. What's your main goal for the next 90 days?
+                  What's one thing you'd like to see improve in your business or life right now?
                 </h3>
                 <Textarea
-                  value={question3}
-                  onChange={(e) => setQuestion3(e.target.value)}
+                  value={improvement}
+                  onChange={(e) => setImprovement(e.target.value)}
                   placeholder="Write here..."
                   className="min-h-24 bg-white text-foreground placeholder:text-muted-foreground border-2 border-input text-[1rem] rounded-2xl resize-none"
                 />
