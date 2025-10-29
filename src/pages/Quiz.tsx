@@ -15,10 +15,17 @@ export default function Quiz() {
   const [question3, setQuestion3] = useState("");
 
   const handleSubmit = () => {
-    if (!question1 || !question2 || !question3) {
+    if (!question1 || !question2 || !question3.trim()) {
       toast.error("Please answer all questions");
       return;
     }
+
+    // ✅ Save responses to localStorage
+    localStorage.setItem(
+      "quizStep1",
+      JSON.stringify({ question1, question2, question3 })
+    );
+
     navigate("/quiz-step-2");
   };
 
@@ -57,7 +64,7 @@ export default function Quiz() {
           </Button>
         </div>
 
-        {/* Layout Box */}
+        {/* Layout Container */}
         <div className="flex flex-col justify-between items-center w-full max-w-[850px] min-h-[85vh] gap-6">
 
           {/* Title Block */}
@@ -73,9 +80,14 @@ export default function Quiz() {
             <p className="text-lg text-muted-foreground text-center">
               Answer a few quick questions so we can personalize your roadmap.
             </p>
+
+            {/* ✅ Progress Indicator */}
+            <p className="text-center text-sm text-gray-500 mt-2 font-medium">
+              Step <span className="text-primary font-bold">1</span> of 2
+            </p>
           </motion.div>
 
-          {/* Question Box */}
+          {/* Questions Box */}
           <motion.div
             initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
@@ -95,7 +107,7 @@ export default function Quiz() {
                       key={option}
                       onClick={() => setQuestion1(option)}
                       className={cn(
-                        "h-12 px-6 text-[0.95rem] rounded-[2px] border-2 border-[#ff000033] transition-all",
+                        "h-12 px-6 text-[0.95rem] rounded-[2px] border-[1.5px] border-[#ff000033] transition-all",
                         question1 === option
                           ? "bg-secondary text-foreground"
                           : "bg-white text-foreground hover:bg-[#F3C17E]"
@@ -118,7 +130,7 @@ export default function Quiz() {
                       key={option}
                       onClick={() => setQuestion2(option)}
                       className={cn(
-                        "h-12 px-6 text-[0.95rem] rounded-[2px] border-2 border-[#ff000033] transition-all",
+                        "h-12 px-6 text-[0.95rem] rounded-[2px] border-[1.5px] border-[#ff000033] transition-all",
                         question2 === option
                           ? "bg-secondary text-foreground"
                           : "bg-white text-foreground hover:bg-[#F3C17E]"
@@ -136,17 +148,17 @@ export default function Quiz() {
                   3. What's your main goal for the next 90 days?
                 </h3>
 
-                {/* UNDERLINE TEXTAREA */}
+                {/* ✅ UNDERLINE ONLY — NO BOX */}
                 <Textarea
                   value={question3}
                   onChange={(e) => setQuestion3(e.target.value)}
                   placeholder="Write here..."
-                  className="bg-transparent border-b-2 border-[#ff000033] rounded-none focus-visible:ring-0 focus-visible:border-red-400 text-[1rem] px-1 placeholder:text-muted-foreground"
+                  className="w-full px-1 bg-transparent border-0 border-b-[1.5px] border-[#ff000033] focus-visible:ring-0 focus-visible:border-red-400 text-[1rem] rounded-none resize-none"
                 />
               </div>
             </div>
 
-            {/* Submit Button */}
+            {/* Next Button */}
             <div className="flex justify-end mt-5">
               <button
                 onClick={handleSubmit}
