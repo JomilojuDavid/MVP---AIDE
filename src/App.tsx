@@ -24,29 +24,28 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
+
       <BrowserRouter>
-        <BrowserRouter>
-  <Routes>
-    <Route path="/" element={<Index />} />
-    <Route path="/reset-password" element={<ResetPassword />} />
-    <Route path="/auth" element={<Auth />} />
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/quiz-step2" element={<QuizStep2 />} /> {/* ✅ Make step2 first */}
+          <Route path="/quiz" element={<Quiz />} />
+          <Route path="/submission" element={<Submission />} />
+          <Route path="/dashboard" element={<Dashboard showQuizPrompt={true} />} />
+          <Route path="/dashboard-full" element={<Dashboard showQuizPrompt={false} />} />
+          <Route path="/assessment" element={<Assessment />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/tasks" element={<Tasks />} />
+          <Route path="/resources" element={<Resources />} />
+          <Route path="/analytics" element={<Analytics />} />
 
-    {/* ✅ Quiz flow */}
-    <Route path="/quiz-step-2" element={<QuizStep2 />} />
-    <Route path="/quiz" element={<Quiz />} />
+          {/* Catch-all */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
 
-    <Route path="/submission" element={<Submission />} />
-    <Route path="/dashboard" element={<Dashboard showQuizPrompt={true} />} />
-    <Route path="/dashboard-full" element={<Dashboard showQuizPrompt={false} />} />
-    <Route path="/assessment" element={<Assessment />} />
-    <Route path="/settings" element={<Settings />} />
-    <Route path="/tasks" element={<Tasks />} />
-    <Route path="/resources" element={<Resources />} />
-    <Route path="/analytics" element={<Analytics />} />
-
-    <Route path="*" element={<NotFound />} />
-  </Routes>
-</BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
 );
