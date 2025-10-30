@@ -67,7 +67,7 @@ export default function Auth() {
         description: "Redirecting to dashboard...",
       });
 
-      navigate("/quiz");
+      navigate("/quiz-step2");
     } catch (error: any) {
       toast({
         title: "Sign up failed",
