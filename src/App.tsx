@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import ResetPassword from "./pages/ResetPassword";
@@ -22,6 +23,7 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
+
       <Toaster />
       <Sonner />
 
@@ -30,9 +32,13 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/auth" element={<Auth />} />
-          <Route path="/quiz-step2" element={<QuizStep2 />} /> {/* ✅ Make step2 first */}
+
+          {/* Quiz flow */}
+          <Route path="/quiz-step2" element={<QuizStep2 />} />
           <Route path="/quiz" element={<Quiz />} />
           <Route path="/submission" element={<Submission />} />
+
+          {/* Dashboard pages */}
           <Route path="/dashboard" element={<Dashboard showQuizPrompt={true} />} />
           <Route path="/dashboard-full" element={<Dashboard showQuizPrompt={false} />} />
           <Route path="/assessment" element={<Assessment />} />
@@ -41,7 +47,6 @@ const App = () => (
           <Route path="/resources" element={<Resources />} />
           <Route path="/analytics" element={<Analytics />} />
 
-          {/* Catch-all */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
