@@ -18,7 +18,7 @@ export default function QuizStep2() {
       toast.error("Please answer all questions");
       return;
     }
-    navigate("/quiz"); // <-- Goes to Quiz.tsx next
+    navigate("/quiz"); // ✅ Goes to Quiz.tsx next
   };
 
   return (
@@ -53,12 +53,14 @@ export default function QuizStep2() {
         </div>
 
         {/* Content Wrapper */}
-        <div className="flex flex-col justify-between items-center w-full"
+        <div
+          className="flex flex-col justify-between items-center w-full"
           style={{
             width: "calc(100% - 240px - 140px)",
             height: "85vh",
             gap: "24px",
-          }}>
+          }}
+        >
 
           {/* Title Box */}
           <motion.div
@@ -120,7 +122,7 @@ export default function QuizStep2() {
                   What’s one thing you’d like to improve in your business or life right now?
                 </h3>
 
-                {/* UNDERLINE INPUT INSTEAD OF BOX */}
+                {/* Underlined Textarea */}
                 <Textarea
                   value={improvement}
                   onChange={(e) => setImprovement(e.target.value)}
@@ -130,12 +132,14 @@ export default function QuizStep2() {
               </div>
             </div>
 
-            {/* Next */}
+            {/* Next Button */}
             <div className="flex justify-end mt-5">
-              const navigate = useNavigate();
-
-            <Button onClick={() => navigate("/quiz")}>Next</Button>
-
+              <Button
+                onClick={handleSubmit}
+                className="text-primary text-lg font-bold hover:underline"
+              >
+                NEXT &gt;&gt;
+              </Button>
             </div>
           </motion.div>
         </div>
