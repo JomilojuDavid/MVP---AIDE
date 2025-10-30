@@ -132,12 +132,10 @@ export default function QuizStep2() {
 
             {/* Next */}
             <div className="flex justify-end mt-5">
-              <button
-                onClick={handleSubmit}
-                className="text-primary text-lg font-bold hover:underline"
-              >
-                NEXT &gt;&gt;
-              </button>
+              const navigate = useNavigate();
+
+            <Button onClick={() => navigate("/quiz")}>Next</Button>
+
             </div>
           </motion.div>
         </div>
