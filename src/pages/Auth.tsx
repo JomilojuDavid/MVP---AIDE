@@ -189,3 +189,109 @@ export default function Auth() {
             className="text-[22px] text-gray-800 text-center mb-10 leading-snug"
           >
             Sign in to continue your personalized journey with{" "}
+            <span className="font-semibold text-black">AIDE</span>.
+          </motion.p>
+
+          <motion.form variants={fadeItem} custom={2} onSubmit={handleSignIn} className="space-y-4">
+            <Input
+              type="email"
+              placeholder="Your Email"
+              className="h-[65px] border border-[#DF1516] rounded-none text-[24px]"
+              value={signInEmail}
+              onChange={(e) => setSignInEmail(e.target.value)}
+            />
+
+            <div className="flex border border-[#DF1516] rounded-none">
+              <Input
+                type="password"
+                placeholder="Password"
+                className="h-[65px] border-none text-[24px] flex-1"
+                value={signInPassword}
+                onChange={(e) => setSignInPassword(e.target.value)}
+              />
+              <Button className="h-[65px] w-[130px] bg-[#DF1516] text-white rounded-none text-[20px]">
+                {loading ? "..." : "SIGN IN"}
+              </Button>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => navigate("/reset-password")}
+              className="text-[20px] font-semibold hover:text-[#DF1516]"
+            >
+              Forgot Password?
+            </button>
+          </motion.form>
+        </div>
+      </motion.div>
+
+      {/* ---------- RIGHT PANEL (SIGN UP) ----------- */}
+      <motion.div
+        ref={rightRef}
+        variants={sectionVariants}
+        initial="hidden"
+        animate={rightControls}
+        className="w-[60%] bg-[#DF1516] flex items-center justify-center p-20"
+      >
+        <div className="scale-[0.8] w-full max-w-2xl">
+          <motion.h2
+            variants={fadeItem}
+            custom={0}
+            className="text-[48px] text-white font-extrabold text-center mb-12"
+          >
+            Create an Account
+          </motion.h2>
+
+          <div className="flex w-[80%] mx-auto mb-10 border border-white rounded-none">
+            <button
+              onClick={handleGoogle}
+              className="bg-white w-[80px] flex items-center justify-center border-r border-white"
+            >
+              <FcGoogle size={32} />
+            </button>
+
+            <Button className="flex-1 h-[75px] bg-white text-[#DF1516] text-[20px] rounded-none">
+              Continue With Google
+            </Button>
+          </div>
+
+          <p className="text-white text-center text-[22px] mb-8">or use your Email</p>
+
+          <motion.form variants={fadeItem} custom={1} onSubmit={handleSignUp} className="space-y-6">
+            <div className="grid grid-cols-2 gap-6">
+              <Input
+                type="text"
+                placeholder="Full Name"
+                className="h-[75px] rounded-none text-[24px]"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+              />
+              <Input
+                type="email"
+                placeholder="Your Email"
+                className="h-[75px] rounded-none text-[24px]"
+                value={signUpEmail}
+                onChange={(e) => setSignUpEmail(e.target.value)}
+              />
+            </div>
+
+            <Input
+              type="password"
+              placeholder="Password"
+              className="h-[75px] rounded-none text-[24px]"
+              value={signUpPassword}
+              onChange={(e) => setSignUpPassword(e.target.value)}
+            />
+
+            <Button
+              type="submit"
+              className="w-full h-[85px] bg-white text-[#DF1516] text-[24px] font-bold rounded-none"
+            >
+              {loading ? "..." : "SIGN UP"}
+            </Button>
+          </motion.form>
+        </div>
+      </motion.div>
+    </div>
+  );
+}
