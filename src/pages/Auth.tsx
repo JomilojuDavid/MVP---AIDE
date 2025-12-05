@@ -144,27 +144,27 @@ export default function Auth() {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row overflow-hidden bg-white">
-
       {/* Left Panel - Sign In */}
       <motion.div
         ref={leftRef}
         variants={sectionVariants}
         initial="hidden"
         animate={leftControls}
-        className="md:flex-[0.4] bg-white flex items-center justify-center p-6 sm:p-8 md:p-14 relative"
+        className="md:flex-[0.4] bg-white flex flex-col items-center justify-center p-6 sm:p-8 md:p-14 relative"
       >
-        {/* 80% Scaling Wrapper */}
-        <div className="scale-[0.8] transform origin-center w-full max-w-md mx-auto relative">
-          <motion.img
-            src={aideLogo}
-            alt="AIDE Logo"
-            onClick={() => navigate("/dashboard")}
-            className="h-[74px] md:h-[84px] absolute top-6 left-6 md:top-10 md:left-10 cursor-pointer"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.7 }}
-          />
+        {/* Logo stays absolute at original position */}
+        <motion.img
+          src={aideLogo}
+          alt="AIDE Logo"
+          onClick={() => navigate("/dashboard")}
+          className="h-[74px] md:h-[84px] absolute top-6 left-6 md:top-10 md:left-10 cursor-pointer"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.7 }}
+        />
 
+        {/* Scale content only */}
+        <div className="scale-[0.8] transform origin-center mt-20 md:mt-0 w-full max-w-md mx-auto">
           <motion.h1
             className="text-center text-[42px] sm:text-[46px] md:text-[48px] font-extrabold text-[#DF1516] mb-5 font-['Montserrat']"
             variants={fadeItem}
@@ -244,7 +244,7 @@ export default function Auth() {
         animate={rightControls}
         className="md:flex-[0.6] bg-[#DF1516] flex items-center justify-center p-10 sm:p-14 md:p-24"
       >
-        {/* 80% Scaling Wrapper */}
+        {/* Scale content only */}
         <div className="scale-[0.8] transform origin-center w-full max-w-2xl mx-auto">
           <motion.h2
             className="text-[44px] sm:text-[48px] font-extrabold text-white mb-12 text-center font-['Montserrat']"
