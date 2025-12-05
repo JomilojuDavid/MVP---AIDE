@@ -152,19 +152,19 @@ export default function Auth() {
         animate={leftControls}
         className="md:flex-[0.4] bg-white flex flex-col items-center justify-center p-6 sm:p-8 md:p-14 relative"
       >
-        {/* Logo stays absolute, clickable */}
+        {/* Logo */}
         <motion.img
           src={aideLogo}
           alt="AIDE Logo"
           onClick={() => navigate("/dashboard")}
-          className="h-[74px] md:h-[84px] absolute top-6 left-6 md:top-10 md:left-10 cursor-pointer"
+          className="h-[64px] sm:h-[70px] md:h-[84px] absolute top-6 left-6 md:top-10 md:left-10 cursor-pointer"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.7 }}
         />
 
-        {/* Scaled content only */}
-        <div className="scale-[0.8] transform origin-center flex flex-col w-full max-w-md mt-20 md:mt-0">
+        {/* Responsive scaling */}
+        <div className="transform scale-80 sm:scale-90 md:scale-100 origin-center flex flex-col w-full max-w-md mt-20 md:mt-0">
           <motion.h1
             className="text-center text-[42px] sm:text-[46px] md:text-[48px] font-extrabold text-[#DF1516] mb-5 font-['Montserrat']"
             variants={fadeItem}
@@ -244,7 +244,7 @@ export default function Auth() {
         animate={rightControls}
         className="md:flex-[0.6] bg-[#DF1516] flex items-center justify-center p-10 sm:p-14 md:p-24"
       >
-        <div className="scale-[0.8] transform origin-center flex flex-col w-full max-w-2xl">
+        <div className="transform scale-80 sm:scale-90 md:scale-100 origin-center flex flex-col w-full max-w-2xl">
           <motion.h2
             className="text-[44px] sm:text-[48px] font-extrabold text-white mb-12 text-center font-['Montserrat']"
             variants={fadeItem}
