@@ -14,29 +14,44 @@ export default function QuizStep2() {
   const [improvement, setImprovement] = useState("");
 
   const handleSubmit = () => {
-    if (!aideStage || !improvement) {
+    if (!aideStage || !improvement.trim()) {
       toast.error("Please answer all questions");
       return;
     }
     navigate("/quiz");
   };
 
+  const STAGES = [
+    {
+      label: "Awareness — I need clarity on what’s really holding me back",
+      value: "Awareness",
+    },
+    {
+      label: "Intention — I need stronger goals and focus",
+      value: "Intention",
+    },
+    {
+      label: "Decisiveness — I need to stop hesitating and make moves",
+      value: "Decisiveness",
+    },
+    {
+      label: "Execution — I need consistency and follow-through",
+      value: "Execution",
+    },
+  ];
+
   return (
-    <div className="flex h-screen font-['Poppins'] overflow-hidden bg-primary">
-
-      {/* LEFT SIDEBAR (Matches screenshot exactly) */}
-      <div className="hidden md:flex flex-col bg-white w-[200px] pl-10 pt-10 pb-10 rounded-r-[45px] justify-between">
-
-        {/* LOGO – positioned EXACTLY like screenshot */}
-        <div>
-          <img src={aideLogo} alt="AIDE Logo" className="h-16 mb-3" />
-          <p className="text-[11px] text-gray-900 font-medium leading-tight">
+    <div className="min-h-screen flex font-['Poppins'] bg-[#DF1516]">
+      {/* LEFT SIDEBAR */}
+      <aside className="hidden md:flex flex-col justify-between bg-white w-56 p-6 rounded-r-[28px]">
+        <div className="pt-2">
+          <img src={aideLogo} alt="AIDE Logo" className="h-16" />
+          <p className="mt-3 text-[11px] text-gray-800 font-medium leading-tight">
             Where mindset mastery <br /> meets business growth
           </p>
         </div>
 
-        {/* SUPPORT SECTION */}
-        <div className="flex items-center gap-3 mb-5">
+        <div className="flex items-center gap-3">
           <img
             src="https://randomuser.me/api/portraits/women/44.jpg"
             alt="Support"
@@ -44,112 +59,108 @@ export default function QuizStep2() {
           />
           <span className="text-sm font-semibold text-gray-800">Support</span>
         </div>
-      </div>
+      </aside>
 
-      {/* MAIN CONTENT AREA */}
-      <div className="flex-1 relative p-6 md:p-12 flex flex-col items-center overflow-auto">
-
-        {/* SETTINGS ICON */}
-        <div className="absolute top-8 right-8">
+      {/* MAIN AREA */}
+      <main className="flex-1 relative overflow-auto">
+        {/* Settings icon - top-right inside red area */}
+        <div className="absolute top-6 right-6 z-20">
           <Settings className="w-6 h-6 text-white" />
         </div>
 
-        {/* PAGE WRAPPER (Matches screenshot total width) */}
-        <div className="w-full max-w-[1000px] flex flex-col gap-10">
-
-          {/* HEADER BOX (matches screenshot EXACT SPACING AND WIDTH) */}
-          <motion.div
-            initial={{ opacity: 0, y: 25 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="bg-white p-10 rounded-[15px] shadow-lg"
+        {/* center column */}
+        <div className="w-full h-full flex justify-center items-start py-12 px-6 md:px-12">
+          <div
+            className="w-full max-w-[980px] flex flex-col gap-8"
+            style={{ minHeight: "72vh" }}
           >
-            <h1 className="text-4xl font-bold text-center">
-              AIDE Onboarding Quiz
-            </h1>
-            <p className="text-lg text-center mt-2 text-gray-600">
-              Answer a few quick questions so we can personalize your roadmap.
-            </p>
-          </motion.div>
+            {/* Header card */}
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45 }}
+              className="bg-white rounded-xl p-8 md:p-10 shadow-[0_8px_20px_rgba(0,0,0,0.15)]"
+            >
+              <h1 className="text-4xl md:text-5xl font-bold text-center text-black">
+                AIDE Onboarding Quiz
+              </h1>
+              <p className="mt-3 text-lg md:text-xl text-center text-gray-700">
+                Answer a few quick questions so we can personalize your roadmap.
+              </p>
+            </motion.div>
 
-          {/* MAIN QUESTION CARD */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 0.15 }}
-            className="bg-white rounded-[15px] p-10 shadow-lg flex flex-col"
-          >
-            <div className="flex flex-col gap-10">
+            {/* Question card */}
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.08 }}
+              className="bg-white rounded-xl p-8 md:p-10 shadow-[0_8px_30px_rgba(0,0,0,0.12)] flex flex-col"
+              style={{ flex: 1 }}
+            >
+              <div className="flex flex-col h-full">
+                {/* Q1 */}
+                <div className="mb-8">
+                  <h3 className="text-[1.6rem] md:text-[1.8rem] font-semibold text-gray-900 mb-6">
+                    Which of the AIDE stages do you feel you need to strengthen most?
+                  </h3>
 
-              {/* QUESTION 1 */}
-              <div>
-                <h3 className="text-2xl font-semibold mb-5 text-gray-900">
-                  Which of the AIDE stages do you feel you need to strengthen most?
-                </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {STAGES.map((s) => {
+                      const selected = aideStage === s.value;
+                      return (
+                        <button
+                          key={s.value}
+                          type="button"
+                          onClick={() => setAideStage(s.value)}
+                          className={cn(
+                            "w-full text-left px-6 py-5 border rounded-sm transition-shadow",
+                            "shadow-[0_4px_10px_rgba(0,0,0,0.06)]",
+                            selected
+                              ? "bg-[#F3C17E] border-[#E3A85B] font-semibold"
+                              : "bg-white border-[#F0D3A8] hover:bg-[#fff6ee]"
+                          )}
+                        >
+                          <span className="block text-[1rem] leading-snug">
+                            {s.label}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {[
-                    {
-                      label: "Awareness — I need clarity on what’s really holding me back",
-                      value: "Awareness",
-                    },
-                    {
-                      label: "Intention — I need stronger goals and focus",
-                      value: "Intention",
-                    },
-                    {
-                      label: "Decisiveness — I need to stop hesitating and make moves",
-                      value: "Decisiveness",
-                    },
-                    {
-                      label: "Execution — I need consistency and follow-through",
-                      value: "Execution",
-                    },
-                  ].map((item) => (
-                    <Button
-                      key={item.value}
-                      onClick={() => setAideStage(item.value)}
-                      className={cn(
-                        "h-auto py-5 px-6 text-[1rem] rounded-[6px] border border-[#E5B780] bg-white text-left shadow-sm transition-all",
-                        aideStage === item.value
-                          ? "bg-[#F3C17E] font-semibold"
-                          : "hover:bg-[#F9D8A5]"
-                      )}
-                    >
-                      {item.label}
-                    </Button>
-                  ))}
+                {/* Q2 */}
+                <div className="flex-1">
+                  <h3 className="text-[1.6rem] md:text-[1.8rem] font-semibold text-gray-900 mb-4">
+                    What’s one thing you’d like to see improve in your business or life right now?
+                  </h3>
+
+                  <div className="pt-2 pb-6">
+                    {/* Underline textarea: full width, thin underline, spacing like screenshot */}
+                    <Textarea
+                      value={improvement}
+                      onChange={(e) => setImprovement(e.target.value)}
+                      placeholder="Write here..."
+                      className="w-full bg-transparent resize-none text-lg md:text-xl placeholder:text-gray-400 focus-visible:ring-0 border-0 border-b-2 border-[#E5B780] rounded-none pb-2"
+                      rows={3}
+                    />
+                  </div>
+                </div>
+
+                {/* NEXT button at bottom-right */}
+                <div className="flex justify-end">
+                  <button
+                    onClick={handleSubmit}
+                    className="text-[#DF1516] font-bold text-lg md:text-xl tracking-wide hover:underline bg-transparent"
+                  >
+                    NEXT &gt;&gt;
+                  </button>
                 </div>
               </div>
-
-              {/* QUESTION 2 */}
-              <div>
-                <h3 className="text-2xl font-semibold mb-3 text-gray-900">
-                  What’s one thing you’d like to see improve in your business or life right now?
-                </h3>
-
-                {/* Underlined textarea (matches width + thickness from screenshot) */}
-                <Textarea
-                  value={improvement}
-                  onChange={(e) => setImprovement(e.target.value)}
-                  placeholder="Write here..."
-                  className="border-0 border-b-2 border-[#E5B780] bg-transparent rounded-none focus-visible:ring-0 text-lg pb-2"
-                />
-              </div>
-            </div>
-
-            {/* NEXT BUTTON */}
-            <div className="flex justify-end mt-8">
-              <Button
-                onClick={handleSubmit}
-                className="text-primary text-lg font-bold bg-transparent hover:bg-transparent hover:underline"
-              >
-                NEXT &gt;&gt;
-              </Button>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }
