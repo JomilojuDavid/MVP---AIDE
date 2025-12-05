@@ -18,23 +18,25 @@ export default function QuizStep2() {
       toast.error("Please answer all questions");
       return;
     }
-    navigate("/quiz"); // ✅ Goes to Quiz.tsx next
+    navigate("/quiz");
   };
 
   return (
-    <div className="flex h-screen font-['Poppins'] overflow-hidden">
-      {/* Sidebar */}
-      <div className="hidden md:flex flex-col justify-between bg-white w-[240px] rounded-r-[40px] p-6 shadow-lg">
-        {/* Logo + tagline */}
-        <div className="flex flex-col items-center text-center">
-          <img src={aideLogo} alt="AIDE Logo" className="h-14 md:h-16 mb-3" />
-          <p className="text-[11px] md:text-[12px] text-gray-800 font-medium leading-tight">
+    <div className="flex h-screen font-['Poppins'] overflow-hidden bg-primary">
+
+      {/* LEFT SIDEBAR (Matches screenshot exactly) */}
+      <div className="hidden md:flex flex-col bg-white w-[200px] pl-10 pt-10 pb-10 rounded-r-[45px] justify-between">
+
+        {/* LOGO – positioned EXACTLY like screenshot */}
+        <div>
+          <img src={aideLogo} alt="AIDE Logo" className="h-16 mb-3" />
+          <p className="text-[11px] text-gray-900 font-medium leading-tight">
             Where mindset mastery <br /> meets business growth
           </p>
         </div>
 
-        {/* Support section */}
-        <div className="flex items-center gap-3 justify-center">
+        {/* SUPPORT SECTION */}
+        <div className="flex items-center gap-3 mb-5">
           <img
             src="https://randomuser.me/api/portraits/women/44.jpg"
             alt="Support"
@@ -44,99 +46,103 @@ export default function QuizStep2() {
         </div>
       </div>
 
-      {/* Main Quiz Area */}
-      <div className="flex-1 bg-primary relative flex flex-col justify-center items-center p-6 md:p-12">
+      {/* MAIN CONTENT AREA */}
+      <div className="flex-1 relative p-6 md:p-12 flex flex-col items-center overflow-auto">
 
-        {/* Settings Icon */}
-        <div className="absolute top-8 right-8 z-10">
+        {/* SETTINGS ICON */}
+        <div className="absolute top-8 right-8">
           <Settings className="w-6 h-6 text-white" />
         </div>
 
-        {/* Content Wrapper */}
-        <div
-          className="flex flex-col justify-between items-center w-full"
-          style={{
-            width: "calc(100% - 240px - 140px)",
-            height: "85vh",
-            gap: "24px",
-          }}
-        >
+        {/* PAGE WRAPPER (Matches screenshot total width) */}
+        <div className="w-full max-w-[1000px] flex flex-col gap-10">
 
-          {/* Title Box */}
+          {/* HEADER BOX (matches screenshot EXACT SPACING AND WIDTH) */}
           <motion.div
             initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="bg-white rounded-3xl p-8 md:p-10 w-full shadow-[0_4px_30px_rgba(0,0,0,0.10)]"
+            className="bg-white p-10 rounded-[15px] shadow-lg"
           >
-            <h1 className="text-4xl md:text-5xl font-bold mb-3 text-center">
+            <h1 className="text-4xl font-bold text-center">
               AIDE Onboarding Quiz
             </h1>
-            <p className="text-lg md:text-xl text-center text-muted-foreground">
-              Answer the question so we can personalize your roadmap.
+            <p className="text-lg text-center mt-2 text-gray-600">
+              Answer a few quick questions so we can personalize your roadmap.
             </p>
           </motion.div>
 
-          {/* Question Box */}
+          {/* MAIN QUESTION CARD */}
           <motion.div
-            initial={{ opacity: 0, y: 35 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 0.2 }}
-            className="bg-white rounded-3xl p-8 md:p-10 w-full shadow-[0_4px_30px_rgba(0,0,0,0.10)] flex flex-col justify-between"
-            style={{
-              flex: "1",
-              overflow: "hidden",
-            }}
+            transition={{ duration: 0.55, delay: 0.15 }}
+            className="bg-white rounded-[15px] p-10 shadow-lg flex flex-col"
           >
             <div className="flex flex-col gap-10">
 
-              {/* Question 1 */}
+              {/* QUESTION 1 */}
               <div>
-                <h3 className="text-[1.6rem] font-semibold mb-5 text-foreground">
+                <h3 className="text-2xl font-semibold mb-5 text-gray-900">
                   Which of the AIDE stages do you feel you need to strengthen most?
                 </h3>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {["Awareness", "Intention", "Decisiveness", "Execution"].map(
-                    (stage) => (
-                      <Button
-                        key={stage}
-                        onClick={() => setAideStage(stage)}
-                        className={cn(
-                          "h-auto px-6 py-4 text-[1rem] rounded-[2px] transition-all border border-red-300 text-left whitespace-normal",
-                          aideStage === stage
-                            ? "bg-secondary text-foreground"
-                            : "bg-white hover:bg-[#F3C17E]"
-                        )}
-                      >
-                        <span className="font-semibold">{stage}</span>
-                      </Button>
-                    )
-                  )}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {[
+                    {
+                      label: "Awareness — I need clarity on what’s really holding me back",
+                      value: "Awareness",
+                    },
+                    {
+                      label: "Intention — I need stronger goals and focus",
+                      value: "Intention",
+                    },
+                    {
+                      label: "Decisiveness — I need to stop hesitating and make moves",
+                      value: "Decisiveness",
+                    },
+                    {
+                      label: "Execution — I need consistency and follow-through",
+                      value: "Execution",
+                    },
+                  ].map((item) => (
+                    <Button
+                      key={item.value}
+                      onClick={() => setAideStage(item.value)}
+                      className={cn(
+                        "h-auto py-5 px-6 text-[1rem] rounded-[6px] border border-[#E5B780] bg-white text-left shadow-sm transition-all",
+                        aideStage === item.value
+                          ? "bg-[#F3C17E] font-semibold"
+                          : "hover:bg-[#F9D8A5]"
+                      )}
+                    >
+                      {item.label}
+                    </Button>
+                  ))}
                 </div>
               </div>
 
-              {/* Question 2 */}
+              {/* QUESTION 2 */}
               <div>
-                <h3 className="text-[1.6rem] font-semibold mb-3 text-foreground">
-                  What’s one thing you’d like to improve in your business or life right now?
+                <h3 className="text-2xl font-semibold mb-3 text-gray-900">
+                  What’s one thing you’d like to see improve in your business or life right now?
                 </h3>
 
-                {/* Underlined Textarea */}
+                {/* Underlined textarea (matches width + thickness from screenshot) */}
                 <Textarea
                   value={improvement}
                   onChange={(e) => setImprovement(e.target.value)}
                   placeholder="Write here..."
-                  className="border-0 border-b border-red-300 rounded-none bg-transparent text-lg focus-visible:ring-0 focus-visible:border-red-400"
+                  className="border-0 border-b-2 border-[#E5B780] bg-transparent rounded-none focus-visible:ring-0 text-lg pb-2"
                 />
               </div>
             </div>
 
-            {/* Next Button */}
-            <div className="flex justify-end mt-5">
+            {/* NEXT BUTTON */}
+            <div className="flex justify-end mt-8">
               <Button
                 onClick={handleSubmit}
-                className="text-primary text-lg font-bold hover:underline"
+                className="text-primary text-lg font-bold bg-transparent hover:bg-transparent hover:underline"
               >
                 NEXT &gt;&gt;
               </Button>
