@@ -152,7 +152,7 @@ export default function Auth() {
         animate={leftControls}
         className="md:flex-[0.4] bg-white flex flex-col items-center justify-center p-6 sm:p-8 md:p-14 relative"
       >
-        {/* Logo stays absolute at original position */}
+        {/* Logo stays absolute, clickable */}
         <motion.img
           src={aideLogo}
           alt="AIDE Logo"
@@ -163,8 +163,8 @@ export default function Auth() {
           transition={{ delay: 0.4, duration: 0.7 }}
         />
 
-        {/* Scale content only */}
-        <div className="scale-[0.8] transform origin-center mt-20 md:mt-0 w-full max-w-md mx-auto">
+        {/* Scaled content only */}
+        <div className="scale-[0.8] transform origin-center flex flex-col w-full max-w-md mt-20 md:mt-0">
           <motion.h1
             className="text-center text-[42px] sm:text-[46px] md:text-[48px] font-extrabold text-[#DF1516] mb-5 font-['Montserrat']"
             variants={fadeItem}
@@ -244,8 +244,7 @@ export default function Auth() {
         animate={rightControls}
         className="md:flex-[0.6] bg-[#DF1516] flex items-center justify-center p-10 sm:p-14 md:p-24"
       >
-        {/* Scale content only */}
-        <div className="scale-[0.8] transform origin-center w-full max-w-2xl mx-auto">
+        <div className="scale-[0.8] transform origin-center flex flex-col w-full max-w-2xl">
           <motion.h2
             className="text-[44px] sm:text-[48px] font-extrabold text-white mb-12 text-center font-['Montserrat']"
             variants={fadeItem}
