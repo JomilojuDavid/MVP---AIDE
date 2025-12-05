@@ -64,7 +64,7 @@ export default function Auth() {
 
       toast({
         title: "Account created successfully!",
-        description: "Redirecting to dashboard...",
+        description: "Redirecting...",
       });
 
       navigate("/quiz-step2");
@@ -91,7 +91,7 @@ export default function Auth() {
 
       toast({
         title: "Welcome back!",
-        description: "Redirecting to dashboard...",
+        description: "Redirecting...",
       });
 
       navigate("/quiz");
@@ -144,10 +144,12 @@ export default function Auth() {
   };
 
   return (
-    <>
-      {/* Everything scaled to 80% */}
-      <div className="scale-[0.8] origin-top-left w-full">
-        <div className="min-h-screen flex flex-col md:flex-row overflow-hidden bg-white">
+    <div className="min-h-screen flex items-center justify-center bg-white">
+
+      {/* Center-scaled AUTH CARD only */}
+      <div className="scale-[0.8] origin-center w-full flex justify-center items-center">
+
+        <div className="flex flex-col md:flex-row overflow-hidden">
 
           {/* Left Panel - Sign In */}
           <motion.div
@@ -155,20 +157,21 @@ export default function Auth() {
             variants={sectionVariants}
             initial="hidden"
             animate={leftControls}
-            className="md:flex-[0.4] bg-white flex flex-col items-center justify-center p-6 sm:p-8 md:p-14 relative"
+            className="md:flex-[0.4] bg-white relative flex flex-col items-center justify-center p-10"
           >
             <motion.img
               src={aideLogo}
               alt="AIDE Logo"
-              className="h-[74px] md:h-[84px] mb-6 absolute top-6 left-6 md:top-10 md:left-10"
+              onClick={() => navigate("/dashboard")}
+              className="h-[74px] md:h-[84px] mb-6 absolute top-6 left-6 cursor-pointer"
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.7 }}
             />
 
-            <div className="w-full max-w-md mt-20 md:mt-0">
+            <div className="w-full max-w-md mt-24">
               <motion.h1
-                className="text-center text-3xl sm:text-4xl md:text-[40px] font-extrabold text-[#DF1516] mb-5 font-['Montserrat']"
+                className="text-center text-4xl font-extrabold text-[#DF1516] mb-5 font-['Montserrat']"
                 variants={fadeItem}
                 custom={0}
                 initial="hidden"
@@ -178,15 +181,14 @@ export default function Auth() {
               </motion.h1>
 
               <motion.p
-                className="text-center text-[18px] sm:text-[20px] md:text-[22px] font-normal leading-tight text-gray-800 mb-10 font-['Poppins']"
+                className="text-center text-[20px] font-normal text-gray-800 mb-10 font-['Poppins']"
                 variants={fadeItem}
                 custom={1}
                 initial="hidden"
                 animate="visible"
               >
                 Sign in to continue your personalized journey with{" "}
-                <span className="font-semibold text-black">AIDE</span> — where
-                mindset mastery meets business growth.
+                <span className="font-semibold">AIDE</span>.
               </motion.p>
 
               <motion.form
@@ -202,25 +204,21 @@ export default function Auth() {
                   placeholder="Your Email"
                   value={signInEmail}
                   onChange={(e) => setSignInEmail(e.target.value)}
-                  className="h-[65px] sm:h-[70px] rounded-[0px] border border-[#DF1516]
-                             text-[24px] font-normal font-['Poppins'] 
-                             placeholder:text-[19px] placeholder:font-normal
-                             placeholder:text-[#DF1516] focus-visible:ring-[#DF1516]"
+                  className="h-[65px] border border-[#DF1516] rounded-none text-[20px]"
                 />
-                <div className="relative flex border border-[#DF1516]">
+
+                <div className="flex border border-[#DF1516]">
                   <Input
                     type="password"
                     placeholder="Password"
                     value={signInPassword}
                     onChange={(e) => setSignInPassword(e.target.value)}
-                    className="flex-1 h-[70px] border-none rounded-none text-[24px] font-normal font-['Poppins']
-                               placeholder:text-[19px] placeholder:font-normal placeholder:text-[#DF1516]"
+                    className="flex-1 h-[70px] border-none rounded-none text-[20px]"
                   />
                   <Button
                     type="submit"
                     disabled={loading}
-                    className="h-[70px] w-[140px] rounded-none bg-[#DF1516] text-white 
-                               font-semibold text-[18px] hover:bg-[#DF1516]/90 transition-all"
+                    className="h-[70px] w-[140px] bg-[#DF1516] text-white rounded-none"
                   >
                     {loading ? "..." : "SIGN IN"}
                   </Button>
@@ -229,8 +227,7 @@ export default function Auth() {
                 <button
                   type="button"
                   onClick={() => navigate("/reset-password")}
-                  className="text-black hover:text-[#DF1516] transition-colors 
-                             font-semibold text-[18px] font-['Poppins'] pl-[10px]"
+                  className="text-black hover:text-[#DF1516] text-[18px]"
                 >
                   Forgot Password?
                 </button>
@@ -244,11 +241,11 @@ export default function Auth() {
             variants={sectionVariants}
             initial="hidden"
             animate={rightControls}
-            className="md:flex-[0.6] bg-[#DF1516] flex items-center justify-center p-10 sm:p-14 md:p-24"
+            className="md:flex-[0.6] bg-[#DF1516] flex items-center justify-center p-20"
           >
             <div className="w-full max-w-2xl">
               <motion.h2
-                className="text-4xl sm:text-5xl font-extrabold text-white mb-12 text-center font-['Montserrat']"
+                className="text-5xl text-white font-extrabold text-center mb-12"
                 variants={fadeItem}
                 custom={0}
                 initial="hidden"
@@ -257,25 +254,21 @@ export default function Auth() {
                 Create an Account
               </motion.h2>
 
-              <div className="flex w-[85%] sm:w-[80%] mx-auto mb-10 border border-[#DF1516] rounded-none overflow-hidden">
+              <div className="flex w-[80%] mx-auto mb-10 border border-[#DF1516] overflow-hidden">
                 <button
                   onClick={handleGoogleSignIn}
                   disabled={loading}
-                  className="flex items-center justify-center bg-white w-[80px] border-r border-[#DF1516]"
+                  className="w-[80px] bg-white flex items-center justify-center border-r border-[#DF1516]"
                 >
                   <FcGoogle size={32} />
                 </button>
-                <Button
-                  type="button"
-                  disabled={loading}
-                  className="flex-1 h-[75px] bg-white text-[#DF1516] 
-                             font-medium text-[18px] font-['Poppins'] hover:bg-white/90 rounded-none"
-                >
+
+                <Button className="flex-1 bg-white text-[#DF1516] rounded-none h-[75px]">
                   Continue With Google
                 </Button>
               </div>
 
-              <p className="text-white text-center my-10 font-['Poppins'] text-[20px]">
+              <p className="text-center text-white text-[20px] mb-10">
                 or use your Email for registration
               </p>
 
@@ -286,20 +279,14 @@ export default function Auth() {
                     placeholder="Full Name"
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
-                    className="h-[75px] rounded-[0px] border border-white 
-                               bg-white/95 text-black placeholder:text-gray-500 
-                               text-[24px] font-normal font-['Poppins'] 
-                               placeholder:text-[20px] placeholder:font-normal"
+                    className="h-[75px] rounded-none bg-white text-black"
                   />
                   <Input
                     type="email"
                     placeholder="Your Email"
                     value={signUpEmail}
                     onChange={(e) => setSignUpEmail(e.target.value)}
-                    className="h-[75px] rounded-[0px] border border-white 
-                               bg-white/95 text-black placeholder:text-gray-500 
-                               text-[24px] font-normal font-['Poppins'] 
-                               placeholder:text-[20px] placeholder:font-normal"
+                    className="h-[75px] rounded-none bg-white text-black"
                   />
                 </div>
 
@@ -308,17 +295,13 @@ export default function Auth() {
                   placeholder="Password"
                   value={signUpPassword}
                   onChange={(e) => setSignUpPassword(e.target.value)}
-                  className="h-[75px] w-full rounded-[0px] border border-white 
-                             bg-white/95 text-black placeholder:text-gray-500 
-                             text-[24px] font-normal font-['Poppins'] 
-                             placeholder:text-[20px] placeholder:font-normal"
+                  className="h-[75px] bg-white text-black rounded-none"
                 />
 
                 <Button
                   type="submit"
                   disabled={loading}
-                  className="w-full h-[85px] sm:h-[90px] rounded-[0px] bg-white text-[#DF1516] 
-                             font-bold text-2xl hover:bg-white/90 font-['Poppins']"
+                  className="w-full h-[85px] bg-white text-[#DF1516] text-2xl rounded-none"
                 >
                   {loading ? "SIGNING UP..." : "SIGN UP"}
                 </Button>
@@ -328,6 +311,6 @@ export default function Auth() {
 
         </div>
       </div>
-    </>
+    </div>
   );
 }
