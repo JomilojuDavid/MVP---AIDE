@@ -144,7 +144,8 @@ export default function Auth() {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row overflow-hidden bg-white">
-      {/* Left Panel Background */}
+
+      {/* Left Panel - Sign In */}
       <motion.div
         ref={leftRef}
         variants={sectionVariants}
@@ -153,19 +154,19 @@ export default function Auth() {
         className="md:flex-[0.4] bg-white flex items-center justify-center p-6 sm:p-8 md:p-14 relative"
       >
         {/* 80% Scaling Wrapper */}
-        <div className="scale-[0.8] transform origin-center mx-auto w-full max-w-md">
+        <div className="scale-[0.8] transform origin-center w-full max-w-md mx-auto relative">
           <motion.img
             src={aideLogo}
             alt="AIDE Logo"
             onClick={() => navigate("/dashboard")}
-            className="h-[74px] md:h-[84px] mb-6 absolute top-6 left-6 md:top-10 md:left-10 cursor-pointer"
+            className="h-[74px] md:h-[84px] absolute top-6 left-6 md:top-10 md:left-10 cursor-pointer"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.7 }}
           />
 
           <motion.h1
-            className="text-center text-3xl sm:text-4xl md:text-[40px] font-extrabold text-[#DF1516] mb-5 font-['Montserrat']"
+            className="text-center text-[42px] sm:text-[46px] md:text-[48px] font-extrabold text-[#DF1516] mb-5 font-['Montserrat']"
             variants={fadeItem}
             custom={0}
             initial="hidden"
@@ -175,14 +176,15 @@ export default function Auth() {
           </motion.h1>
 
           <motion.p
-            className="text-center text-[18px] sm:text-[20px] md:text-[22px] font-normal leading-tight text-gray-800 mb-10 font-['Poppins']"
+            className="text-center text-[20px] sm:text-[22px] md:text-[24px] font-normal leading-tight text-gray-800 mb-10 font-['Poppins']"
             variants={fadeItem}
             custom={1}
             initial="hidden"
             animate="visible"
           >
             Sign in to continue your personalized journey with{" "}
-            <span className="font-semibold text-black">AIDE</span>.
+            <span className="font-semibold text-black">AIDE</span> — where
+            mindset mastery meets business growth.
           </motion.p>
 
           <motion.form
@@ -198,21 +200,25 @@ export default function Auth() {
               placeholder="Your Email"
               value={signInEmail}
               onChange={(e) => setSignInEmail(e.target.value)}
-              className="h-[65px] border border-[#DF1516] text-[24px] placeholder:text-[#DF1516]"
+              className="h-[65px] sm:h-[70px] rounded-[0px] border border-[#DF1516]
+                         text-[26px] font-normal font-['Poppins'] 
+                         placeholder:text-[21px] placeholder:font-normal
+                         placeholder:text-[#DF1516] focus-visible:ring-[#DF1516]"
             />
-
             <div className="relative flex border border-[#DF1516]">
               <Input
                 type="password"
                 placeholder="Password"
                 value={signInPassword}
                 onChange={(e) => setSignInPassword(e.target.value)}
-                className="flex-1 h-[70px] border-none text-[24px] placeholder:text-[#DF1516]"
+                className="flex-1 h-[70px] border-none rounded-none text-[26px] font-normal font-['Poppins']
+                           placeholder:text-[21px] placeholder:font-normal placeholder:text-[#DF1516]"
               />
               <Button
                 type="submit"
                 disabled={loading}
-                className="h-[70px] w-[140px] bg-[#DF1516] text-white text-[18px]"
+                className="h-[70px] w-[140px] rounded-none bg-[#DF1516] text-white 
+                           font-semibold text-[20px] hover:bg-[#DF1516]/90 transition-all"
               >
                 {loading ? "..." : "SIGN IN"}
               </Button>
@@ -221,7 +227,8 @@ export default function Auth() {
             <button
               type="button"
               onClick={() => navigate("/reset-password")}
-              className="text-black hover:text-[#DF1516] text-[18px]"
+              className="text-black hover:text-[#DF1516] transition-colors 
+                         font-semibold text-[20px] font-['Poppins'] pl-[10px]"
             >
               Forgot Password?
             </button>
@@ -229,7 +236,7 @@ export default function Auth() {
         </div>
       </motion.div>
 
-      {/* Right Panel Background */}
+      {/* Right Panel - Sign Up */}
       <motion.div
         ref={rightRef}
         variants={sectionVariants}
@@ -238,9 +245,9 @@ export default function Auth() {
         className="md:flex-[0.6] bg-[#DF1516] flex items-center justify-center p-10 sm:p-14 md:p-24"
       >
         {/* 80% Scaling Wrapper */}
-        <div className="scale-[0.8] transform origin-center mx-auto w-full max-w-2xl">
+        <div className="scale-[0.8] transform origin-center w-full max-w-2xl mx-auto">
           <motion.h2
-            className="text-4xl sm:text-5xl font-extrabold text-white mb-12 text-center"
+            className="text-[44px] sm:text-[48px] font-extrabold text-white mb-12 text-center font-['Montserrat']"
             variants={fadeItem}
             custom={0}
             initial="hidden"
@@ -249,25 +256,25 @@ export default function Auth() {
             Create an Account
           </motion.h2>
 
-          <div className="flex w-[80%] mx-auto mb-10 border border-white rounded-none overflow-hidden">
+          <div className="flex w-[85%] sm:w-[80%] mx-auto mb-10 border border-[#DF1516] rounded-none overflow-hidden">
             <button
               onClick={handleGoogleSignIn}
               disabled={loading}
-              className="flex items-center justify-center bg-white w-[80px] border-r border-white"
+              className="flex items-center justify-center bg-white w-[80px] border-r border-[#DF1516]"
             >
               <FcGoogle size={32} />
             </button>
-
             <Button
               type="button"
               disabled={loading}
-              className="flex-1 h-[75px] bg-white text-[#DF1516] text-[18px]"
+              className="flex-1 h-[75px] bg-white text-[#DF1516] 
+                         font-medium text-[20px] font-['Poppins'] hover:bg-white/90 rounded-none"
             >
               Continue With Google
             </Button>
           </div>
 
-          <p className="text-white text-center my-10 text-[20px]">
+          <p className="text-white text-center my-10 font-['Poppins'] text-[22px]">
             or use your Email for registration
           </p>
 
@@ -278,14 +285,20 @@ export default function Auth() {
                 placeholder="Full Name"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                className="h-[75px] bg-white text-black text-[24px]"
+                className="h-[75px] rounded-[0px] border border-white 
+                           bg-white/95 text-black placeholder:text-gray-500 
+                           text-[26px] font-normal font-['Poppins'] 
+                           placeholder:text-[22px] placeholder:font-normal"
               />
               <Input
                 type="email"
                 placeholder="Your Email"
                 value={signUpEmail}
                 onChange={(e) => setSignUpEmail(e.target.value)}
-                className="h-[75px] bg-white text-black text-[24px]"
+                className="h-[75px] rounded-[0px] border border-white 
+                           bg-white/95 text-black placeholder:text-gray-500 
+                           text-[26px] font-normal font-['Poppins'] 
+                           placeholder:text-[22px] placeholder:font-normal"
               />
             </div>
 
@@ -294,13 +307,17 @@ export default function Auth() {
               placeholder="Password"
               value={signUpPassword}
               onChange={(e) => setSignUpPassword(e.target.value)}
-              className="h-[75px] bg-white text-black text-[24px]"
+              className="h-[75px] w-full rounded-[0px] border border-white 
+                         bg-white/95 text-black placeholder:text-gray-500 
+                         text-[26px] font-normal font-['Poppins'] 
+                         placeholder:text-[22px] placeholder:font-normal"
             />
 
             <Button
               type="submit"
               disabled={loading}
-              className="w-full h-[85px] bg-white text-[#DF1516] text-2xl font-bold"
+              className="w-full h-[85px] sm:h-[90px] rounded-[0px] bg-white text-[#DF1516] 
+                         font-bold text-2xl hover:bg-white/90 font-['Poppins']"
             >
               {loading ? "SIGNING UP..." : "SIGN UP"}
             </Button>
