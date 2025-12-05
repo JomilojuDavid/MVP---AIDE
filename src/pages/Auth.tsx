@@ -26,9 +26,7 @@ export default function Auth() {
   const leftRef = useRef<HTMLDivElement>(null);
   const rightRef = useRef<HTMLDivElement>(null);
 
-  /** ----------------------------------------------------------
-   * 🔥 AUTO-SCALING (fits content only, backgrounds remain full-screen)
-   * ---------------------------------------------------------- */
+  /** AUTO-SCALING */
   useEffect(() => {
     const resize = () => {
       const baseWidth = 1440;
@@ -37,7 +35,7 @@ export default function Auth() {
       const scaleX = window.innerWidth / baseWidth;
       const scaleY = window.innerHeight / baseHeight;
 
-      const finalScale = Math.min(scaleX, scaleY, 1); // never upscale
+      const finalScale = Math.min(scaleX, scaleY, 1);
       document.documentElement.style.setProperty("--auth-scale", String(finalScale));
     };
 
@@ -46,9 +44,7 @@ export default function Auth() {
     return () => window.removeEventListener("resize", resize);
   }, []);
 
-  /** ----------------------------------------------------------
-   * Load saved email if Remember Me was checked
-   * ---------------------------------------------------------- */
+  /** Load saved email if Remember Me was checked */
   useEffect(() => {
     const savedEmail = localStorage.getItem("rememberedEmail");
     if (savedEmail) {
@@ -57,9 +53,7 @@ export default function Auth() {
     }
   }, []);
 
-  /** ----------------------------------------------------------
-   * Scroll-based fade effects
-   * ---------------------------------------------------------- */
+  /** Scroll-based fade effects */
   useEffect(() => {
     const observer = new IntersectionObserver(
       entries => {
@@ -79,9 +73,6 @@ export default function Auth() {
     return () => observer.disconnect();
   }, []);
 
-  /** ----------------------------------------------------------
-   * Sign Up
-   * ---------------------------------------------------------- */
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -111,9 +102,6 @@ export default function Auth() {
     }
   };
 
-  /** ----------------------------------------------------------
-   * Sign In
-   * ---------------------------------------------------------- */
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -126,7 +114,6 @@ export default function Auth() {
 
       if (error) throw error;
 
-      // Save email if Remember Me is checked
       if (rememberMe) {
         localStorage.setItem("rememberedEmail", signInEmail);
       } else {
@@ -142,9 +129,6 @@ export default function Auth() {
     }
   };
 
-  /** ----------------------------------------------------------
-   * Google OAuth
-   * ---------------------------------------------------------- */
   const handleGoogle = async () => {
     setLoading(true);
     try {
@@ -174,37 +158,49 @@ export default function Auth() {
 
   return (
     <div className="min-h-screen w-full bg-white overflow-hidden flex">
-      {/* ---------- LEFT PANEL (SIGN IN) ----------- */}
+      {/* LEFT PANEL */}
       <motion.div
         ref={leftRef}
         variants={sectionVariants}
         initial="hidden"
         animate={leftControls}
-        className="w-[40%] bg-white flex items-center justify-center relative p-16"
+        className="w-[40%] bg-white flex flex-col items-center justify-center p-16"
       >
+        {/* Scaling content */}
         <div
-          className="w-full max-w-md"
+          className="w-full max-w-md flex flex-col items-center"
           style={{ transform: "scale(var(--auth-scale))", transformOrigin: "top center" }}
         >
-          <img
-            src={aideLogo}
-            onClick={() => navigate("/dashboard")}
-            className="h-20 absolute top-10 left-10 cursor-pointer"
-          />
+          {/* Logo in original position */}
+          <div className="mb-10">
+            <img
+              src={aideLogo}
+              onClick={() => navigate("/dashboard")}
+              className="h-24 cursor-pointer"
+            />
+          </div>
 
-          <motion.h1 variants={fadeItem} custom={0} className="text-[48px] font-extrabold text-[#DF1516] text-center mb-4">
+          <motion.h1
+            variants={fadeItem}
+            custom={0}
+            className="text-[54px] font-extrabold text-[#DF1516] text-center mb-6"
+          >
             Hello, Friend!
           </motion.h1>
 
-          <motion.p variants={fadeItem} custom={1} className="text-[22px] text-gray-800 text-center mb-10 leading-snug">
+          <motion.p
+            variants={fadeItem}
+            custom={1}
+            className="text-[24px] text-gray-800 text-center mb-12 leading-snug"
+          >
             Sign in to continue your personalized journey with <span className="font-semibold text-black">AIDE</span>.
           </motion.p>
 
-          <motion.form variants={fadeItem} custom={2} onSubmit={handleSignIn} className="space-y-4">
+          <motion.form variants={fadeItem} custom={2} onSubmit={handleSignIn} className="space-y-6 w-full">
             <Input
               type="email"
               placeholder="Your Email"
-              className="h-[65px] border border-[#DF1516] rounded-none text-[24px]"
+              className="h-[70px] border border-[#DF1516] rounded-none text-[26px]"
               value={signInEmail}
               onChange={(e) => setSignInEmail(e.target.value)}
             />
@@ -213,22 +209,22 @@ export default function Auth() {
               <Input
                 type="password"
                 placeholder="Password"
-                className="h-[65px] border-none text-[24px] flex-1"
+                className="h-[70px] border-none text-[26px] flex-1"
                 value={signInPassword}
                 onChange={(e) => setSignInPassword(e.target.value)}
               />
-              <Button className="h-[65px] w-[130px] bg-[#DF1516] text-white rounded-none text-[20px]">
+              <Button className="h-[70px] w-[140px] bg-[#DF1516] text-white rounded-none text-[22px]">
                 {loading ? "..." : "SIGN IN"}
               </Button>
             </div>
 
-            <div className="flex items-center justify-between text-[20px]">
-              <label className="flex items-center gap-2">
+            <div className="flex items-center justify-between text-[22px]">
+              <label className="flex items-center gap-3">
                 <input
                   type="checkbox"
                   checked={rememberMe}
                   onChange={(e) => setRememberMe(e.target.checked)}
-                  className="w-5 h-5 accent-[#DF1516]"
+                  className="w-6 h-6 accent-[#DF1516]"
                 />
                 Remember Me
               </label>
@@ -244,7 +240,7 @@ export default function Auth() {
         </div>
       </motion.div>
 
-      {/* ---------- RIGHT PANEL (SIGN UP) ----------- */}
+      {/* RIGHT PANEL */}
       <motion.div
         ref={rightRef}
         variants={sectionVariants}
@@ -256,38 +252,42 @@ export default function Auth() {
           className="w-full max-w-2xl"
           style={{ transform: "scale(var(--auth-scale))", transformOrigin: "top center" }}
         >
-          <motion.h2 variants={fadeItem} custom={0} className="text-[48px] text-white font-extrabold text-center mb-12">
+          <motion.h2
+            variants={fadeItem}
+            custom={0}
+            className="text-[54px] text-white font-extrabold text-center mb-14"
+          >
             Create an Account
           </motion.h2>
 
           {/* Google Sign In */}
           <button
             onClick={handleGoogle}
-            className="flex w-[80%] mx-auto mb-10 border border-white rounded-none overflow-hidden"
+            className="flex w-[80%] mx-auto mb-12 border border-white rounded-none overflow-hidden"
           >
             <div className="bg-white w-[80px] flex items-center justify-center border-r border-white">
-              <FcGoogle size={32} />
+              <FcGoogle size={36} />
             </div>
-            <span className="flex-1 h-[75px] bg-white text-[#DF1516] text-[20px] flex items-center justify-center font-semibold">
+            <span className="flex-1 h-[80px] bg-white text-[#DF1516] text-[22px] flex items-center justify-center font-semibold">
               Continue With Google
             </span>
           </button>
 
-          <p className="text-white text-center text-[22px] mb-8">or use your Email</p>
+          <p className="text-white text-center text-[24px] mb-10">or use your Email</p>
 
           <motion.form variants={fadeItem} custom={1} onSubmit={handleSignUp} className="space-y-6">
             <div className="grid grid-cols-2 gap-6">
               <Input
                 type="text"
                 placeholder="Full Name"
-                className="h-[75px] rounded-none text-[24px]"
+                className="h-[80px] rounded-none text-[26px]"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
               />
               <Input
                 type="email"
                 placeholder="Your Email"
-                className="h-[75px] rounded-none text-[24px]"
+                className="h-[80px] rounded-none text-[26px]"
                 value={signUpEmail}
                 onChange={(e) => setSignUpEmail(e.target.value)}
               />
@@ -296,14 +296,14 @@ export default function Auth() {
             <Input
               type="password"
               placeholder="Password"
-              className="h-[75px] rounded-none text-[24px]"
+              className="h-[80px] rounded-none text-[26px]"
               value={signUpPassword}
               onChange={(e) => setSignUpPassword(e.target.value)}
             />
 
             <Button
               type="submit"
-              className="w-full h-[85px] bg-white text-[#DF1516] text-[24px] font-bold rounded-none"
+              className="w-full h-[90px] bg-white text-[#DF1516] text-[26px] font-bold rounded-none"
             >
               {loading ? "..." : "SIGN UP"}
             </Button>
