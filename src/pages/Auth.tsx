@@ -14,6 +14,7 @@ export default function Auth() {
   const [signUpPassword, setSignUpPassword] = useState("");
   const [signInEmail, setSignInEmail] = useState("");
   const [signInPassword, setSignInPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
@@ -26,25 +27,34 @@ export default function Auth() {
   const rightRef = useRef<HTMLDivElement>(null);
 
   /** ----------------------------------------------------------
-   * 🔥 AUTO-SCALING (Option D)
-   * Fits entire auth page into *any* screen with no scrolling
+   * 🔥 AUTO-SCALING (fits content only, backgrounds remain full-screen)
    * ---------------------------------------------------------- */
   useEffect(() => {
     const resize = () => {
-      const baseWidth = 1440;   // your design width
-      const baseHeight = 900;   // your design height
+      const baseWidth = 1440;
+      const baseHeight = 900;
 
       const scaleX = window.innerWidth / baseWidth;
       const scaleY = window.innerHeight / baseHeight;
 
       const finalScale = Math.min(scaleX, scaleY, 1); // never upscale
-
       document.documentElement.style.setProperty("--auth-scale", String(finalScale));
     };
 
     resize();
     window.addEventListener("resize", resize);
     return () => window.removeEventListener("resize", resize);
+  }, []);
+
+  /** ----------------------------------------------------------
+   * Load saved email if Remember Me was checked
+   * ---------------------------------------------------------- */
+  useEffect(() => {
+    const savedEmail = localStorage.getItem("rememberedEmail");
+    if (savedEmail) {
+      setSignInEmail(savedEmail);
+      setRememberMe(true);
+    }
   }, []);
 
   /** ----------------------------------------------------------
@@ -69,6 +79,9 @@ export default function Auth() {
     return () => observer.disconnect();
   }, []);
 
+  /** ----------------------------------------------------------
+   * Sign Up
+   * ---------------------------------------------------------- */
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -98,6 +111,9 @@ export default function Auth() {
     }
   };
 
+  /** ----------------------------------------------------------
+   * Sign In
+   * ---------------------------------------------------------- */
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -110,6 +126,13 @@ export default function Auth() {
 
       if (error) throw error;
 
+      // Save email if Remember Me is checked
+      if (rememberMe) {
+        localStorage.setItem("rememberedEmail", signInEmail);
+      } else {
+        localStorage.removeItem("rememberedEmail");
+      }
+
       toast({ title: "Welcome back!" });
       navigate("/quiz");
     } catch (error: any) {
@@ -119,6 +142,9 @@ export default function Auth() {
     }
   };
 
+  /** ----------------------------------------------------------
+   * Google OAuth
+   * ---------------------------------------------------------- */
   const handleGoogle = async () => {
     setLoading(true);
     try {
@@ -134,11 +160,7 @@ export default function Auth() {
 
   const sectionVariants = {
     hidden: { opacity: 0, y: 80 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 1.1 }
-    }
+    visible: { opacity: 1, y: 0, transition: { duration: 1.1 } }
   };
 
   const fadeItem = {
@@ -151,45 +173,31 @@ export default function Auth() {
   };
 
   return (
-    <div
-      className="min-h-screen w-full bg-white overflow-hidden flex"
-      style={{
-        transform: "scale(var(--auth-scale))",
-        transformOrigin: "top left",
-        height: "100vh"
-      }}
-    >
+    <div className="min-h-screen w-full bg-white overflow-hidden flex">
       {/* ---------- LEFT PANEL (SIGN IN) ----------- */}
       <motion.div
         ref={leftRef}
         variants={sectionVariants}
         initial="hidden"
         animate={leftControls}
-        className="w-[40%] bg-white flex flex-col items-center justify-center p-16 relative"
+        className="w-[40%] bg-white flex items-center justify-center relative p-16"
       >
-        <img
-          src={aideLogo}
-          onClick={() => navigate("/dashboard")}
-          className="h-20 absolute top-10 left-10 cursor-pointer"
-        />
+        <div
+          className="w-full max-w-md"
+          style={{ transform: "scale(var(--auth-scale))", transformOrigin: "top center" }}
+        >
+          <img
+            src={aideLogo}
+            onClick={() => navigate("/dashboard")}
+            className="h-20 absolute top-10 left-10 cursor-pointer"
+          />
 
-        {/* Correct 80% scale */}
-        <div className="scale-[0.8] w-full max-w-md">
-          <motion.h1
-            variants={fadeItem}
-            custom={0}
-            className="text-[48px] font-extrabold text-[#DF1516] text-center mb-4"
-          >
+          <motion.h1 variants={fadeItem} custom={0} className="text-[48px] font-extrabold text-[#DF1516] text-center mb-4">
             Hello, Friend!
           </motion.h1>
 
-          <motion.p
-            variants={fadeItem}
-            custom={1}
-            className="text-[22px] text-gray-800 text-center mb-10 leading-snug"
-          >
-            Sign in to continue your personalized journey with{" "}
-            <span className="font-semibold text-black">AIDE</span>.
+          <motion.p variants={fadeItem} custom={1} className="text-[22px] text-gray-800 text-center mb-10 leading-snug">
+            Sign in to continue your personalized journey with <span className="font-semibold text-black">AIDE</span>.
           </motion.p>
 
           <motion.form variants={fadeItem} custom={2} onSubmit={handleSignIn} className="space-y-4">
@@ -214,13 +222,24 @@ export default function Auth() {
               </Button>
             </div>
 
-            <button
-              type="button"
-              onClick={() => navigate("/reset-password")}
-              className="text-[20px] font-semibold hover:text-[#DF1516]"
-            >
-              Forgot Password?
-            </button>
+            <div className="flex items-center justify-between text-[20px]">
+              <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  className="w-5 h-5 accent-[#DF1516]"
+                />
+                Remember Me
+              </label>
+              <button
+                type="button"
+                onClick={() => navigate("/reset-password")}
+                className="font-semibold hover:text-[#DF1516]"
+              >
+                Forgot Password?
+              </button>
+            </div>
           </motion.form>
         </div>
       </motion.div>
@@ -233,27 +252,26 @@ export default function Auth() {
         animate={rightControls}
         className="w-[60%] bg-[#DF1516] flex items-center justify-center p-20"
       >
-        <div className="scale-[0.8] w-full max-w-2xl">
-          <motion.h2
-            variants={fadeItem}
-            custom={0}
-            className="text-[48px] text-white font-extrabold text-center mb-12"
-          >
+        <div
+          className="w-full max-w-2xl"
+          style={{ transform: "scale(var(--auth-scale))", transformOrigin: "top center" }}
+        >
+          <motion.h2 variants={fadeItem} custom={0} className="text-[48px] text-white font-extrabold text-center mb-12">
             Create an Account
           </motion.h2>
 
-          <div className="flex w-[80%] mx-auto mb-10 border border-white rounded-none">
-            <button
-              onClick={handleGoogle}
-              className="bg-white w-[80px] flex items-center justify-center border-r border-white"
-            >
+          {/* Google Sign In */}
+          <button
+            onClick={handleGoogle}
+            className="flex w-[80%] mx-auto mb-10 border border-white rounded-none overflow-hidden"
+          >
+            <div className="bg-white w-[80px] flex items-center justify-center border-r border-white">
               <FcGoogle size={32} />
-            </button>
-
-            <Button className="flex-1 h-[75px] bg-white text-[#DF1516] text-[20px] rounded-none">
+            </div>
+            <span className="flex-1 h-[75px] bg-white text-[#DF1516] text-[20px] flex items-center justify-center font-semibold">
               Continue With Google
-            </Button>
-          </div>
+            </span>
+          </button>
 
           <p className="text-white text-center text-[22px] mb-8">or use your Email</p>
 
