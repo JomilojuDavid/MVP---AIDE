@@ -110,7 +110,7 @@ export default function Auth() {
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
-        options: { redirectTo: `${window.location.origin}/dashboard` },
+        options: { redirectTo: `${window.location.origin}/quiz-step2` },
       });
       if (error) throw error;
     } catch (error: any) {
