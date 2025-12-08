@@ -189,7 +189,7 @@ export default function Auth() {
           <motion.h1
             variants={fadeItem}
             custom={0}
-            className="font-extrabold font-size-24px text-[#DF1516] text-center mb-6"
+            className="font-extrabold font-size-48px text-[#DF1516] text-center mb-6"
           >
             Hello, Friend!
           </motion.h1>
@@ -198,7 +198,7 @@ export default function Auth() {
           <motion.p
             variants={fadeItem}
             custom={1}
-            className="text-gray-800 text-center mb-12 leading-snug"
+            className="text-gray-800 font-size-24px text-center mb-12 leading-snug"
           >
             Sign in to continue your personalized journey with{" "}
             <span className="font-bold text-black">AIDE</span> — where mindset mastery
@@ -210,7 +210,7 @@ export default function Auth() {
             <Input
               type="email"
               placeholder="Your Email"
-              className="h-[70px] border border-[#DF1516] rounded-none"
+              className="h-[70px] border border-[#DF1516] rounded-none font-size-24px"
               value={signInEmail}
               onChange={(e) => setSignInEmail(e.target.value)}
             />
@@ -219,7 +219,7 @@ export default function Auth() {
               <Input
                 type="password"
                 placeholder="Password"
-                className="h-[70px] border-none flex-1"
+                className="h-[70px] border-none flex-1 font-size-24px"
                 value={signInPassword}
                 onChange={(e) => setSignInPassword(e.target.value)}
               />
@@ -269,7 +269,7 @@ export default function Auth() {
           <motion.h2
             variants={fadeItem}
             custom={0}
-            className="text-white font-extrabold text-center mb-14"
+            className="text-white font-extrabold font-size-48px text-center mb-14"
           >
             Create an Account
           </motion.h2>
@@ -282,12 +282,12 @@ export default function Auth() {
             <div className="bg-white w-[80px] flex items-center justify-center border-r border-white">
               <FcGoogle size={36} />
             </div>
-            <span className="flex-1 h-[80px] bg-white text-[#DF1516] flex items-center justify-center font-bold">
+            <span className="flex-1 h-[80px] bg-white text-[#DF1516] flex items-center justify-center font-size-24px font-bold">
               Continue With Google
             </span>
           </button>
 
-          <p className="text-white text-center mb-10">
+          <p className="text-white font-size-24px text-center mb-10">
             or use your email for registration
           </p>
 
@@ -297,7 +297,7 @@ export default function Auth() {
               <Input
                 type="text"
                 placeholder="Full Name"
-                className="h-[80px] rounded-none"
+                className="h-[80px] rounded-none font-size-24px"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
               />
@@ -305,7 +305,7 @@ export default function Auth() {
               <Input
                 type="email"
                 placeholder="Your Email"
-                className="h-[80px] rounded-none"
+                className="h-[80px] rounded-none font-size-24px"
                 value={signUpEmail}
                 onChange={(e) => setSignUpEmail(e.target.value)}
               />
@@ -314,14 +314,14 @@ export default function Auth() {
             <Input
               type="password"
               placeholder="Password"
-              className="h-[80px] rounded-none"
+              className="h-[80px] rounded-none font-size-24px"
               value={signUpPassword}
               onChange={(e) => setSignUpPassword(e.target.value)}
             />
 
             <Button
               type="submit"
-              className="w-full h-[90px] bg-white text-[#DF1516] font-bold rounded-none"
+              className="w-full h-[90px] bg-white text-[#DF1516] font-bold font-size-24px rounded-none"
             >
               {loading ? "..." : "SIGN UP"}
             </Button>
