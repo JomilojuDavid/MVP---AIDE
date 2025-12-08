@@ -2,9 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* --------------------------------------------
+   DESIGN TOKENS — COLORS, RADII, ETC
+   All colors MUST remain HSL-based.
+--------------------------------------------- */
 
 @layer base {
   :root {
@@ -76,6 +77,7 @@ All colors MUST be HSL.
     --border: 0 0% 25%;
     --input: 0 0% 20%;
     --ring: 5 82% 53%;
+
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -87,6 +89,10 @@ All colors MUST be HSL.
   }
 }
 
+/* --------------------------------------------
+   BASIC ELEMENT STYLES
+--------------------------------------------- */
+
 @layer base {
   * {
     @apply border-border;
@@ -96,18 +102,33 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
   }
 }
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
+/* --------------------------------------------
+   GLOBAL FONTS (Poppins + Montserrat)
+--------------------------------------------- */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&display=swap');
+
+/* Apply Body font globally */
 @layer base {
   html {
-    @apply font-poppins text-body;
+    font-family: "Poppins", sans-serif;
   }
 
-  h1 {
-    @apply text-heading font-montserrat font-bold;
+  /* Headings use Montserrat */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
   }
-  h2, h3, h4, h5, h6 {
-    @apply font-montserrat font-semibold;
+
+  /* You can refine heading sizes if needed */
+  h1 {
+    @apply text-4xl;
+  }
+  h2 {
+    @apply text-3xl;
+  }
+  h3 {
+    @apply text-2xl;
   }
 }
-
