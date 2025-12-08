@@ -193,7 +193,7 @@ export default function Auth() {
             custom={1}
             className="text-[24px] text-gray-800 text-center mb-12 leading-snug"
           >
-            Sign in to continue your personalized journey with <span className="font-semibold text-black">AIDE</span>.
+            Sign in to continue your personalized journey with <span className="font-semibold text-black">AIDE</span>- where mindset mastery meets business growth. 
           </motion.p>
 
           <motion.form variants={fadeItem} custom={2} onSubmit={handleSignIn} className="space-y-6 w-full">
@@ -268,12 +268,12 @@ export default function Auth() {
             <div className="bg-white w-[80px] flex items-center justify-center border-r border-white">
               <FcGoogle size={36} />
             </div>
-            <span className="flex-1 h-[80px] bg-white text-[#DF1516] text-[22px] flex items-center justify-center font-semibold">
+            <span className="flex-1 h-[80px] bg-white text-[#DF1516] text-[22px] flex items-center justify-center font-bold">
               Continue With Google
             </span>
           </button>
 
-          <p className="text-white text-center text-[24px] mb-10">or use your Email</p>
+          <p className="text-white text-center text-[24px] mb-10">or use your Email for registration</p>
 
           <motion.form variants={fadeItem} custom={1} onSubmit={handleSignUp} className="space-y-6">
             <div className="grid grid-cols-2 gap-6">
