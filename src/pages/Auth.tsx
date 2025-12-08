@@ -38,13 +38,12 @@ export default function Auth() {
 
       document.documentElement.style.setProperty("--auth-scale", String(finalScale));
     };
-
     resize();
     window.addEventListener("resize", resize);
     return () => window.removeEventListener("resize", resize);
   }, []);
 
-  /** LOAD REMEMBERED EMAIL */
+  /** Remember Me load */
   useEffect(() => {
     const savedEmail = localStorage.getItem("rememberedEmail");
     if (savedEmail) {
@@ -53,7 +52,7 @@ export default function Auth() {
     }
   }, []);
 
-  /** FADE ANIMATIONS */
+  /** Fades */
   useEffect(() => {
     const observer = new IntersectionObserver(
       entries => {
@@ -74,48 +73,44 @@ export default function Auth() {
   }, []);
 
   /** SIGN UP */
-  const handleSignUp = async (e: React.FormEvent) => {
+  const handleSignUp = async e => {
     e.preventDefault();
     setLoading(true);
 
     try {
       const nameParts = fullName.trim().split(" ");
       const firstName = nameParts[0] || "";
-      const lastName = nameParts.slice(1).join(" ") || "";
+      const lastName = nameParts.slice(1).join(" ");
 
       const { error } = await supabase.auth.signUp({
         email: signUpEmail,
         password: signUpPassword,
         options: {
           emailRedirectTo: `${window.location.origin}/quiz`,
-          data: { first_name: firstName, last_name: lastName }
-        }
+          data: { first_name: firstName, last_name: lastName },
+        },
       });
 
       if (error) throw error;
 
       toast({ title: "Account created successfully!" });
       navigate("/quiz-step2");
-    } catch (error: any) {
-      toast({
-        title: "Sign up failed",
-        description: error.message,
-        variant: "destructive"
-      });
+    } catch (error) {
+      toast({ title: "Sign up failed", description: error.message, variant: "destructive" });
     } finally {
       setLoading(false);
     }
   };
 
   /** SIGN IN */
-  const handleSignIn = async (e: React.FormEvent) => {
+  const handleSignIn = async e => {
     e.preventDefault();
     setLoading(true);
 
     try {
       const { error } = await supabase.auth.signInWithPassword({
         email: signInEmail,
-        password: signInPassword
+        password: signInPassword,
       });
 
       if (error) throw error;
@@ -126,128 +121,111 @@ export default function Auth() {
 
       toast({ title: "Welcome back!" });
       navigate("/quiz");
-    } catch (error: any) {
-      toast({
-        title: "Sign in failed",
-        description: error.message,
-        variant: "destructive"
-      });
+    } catch (error) {
+      toast({ title: "Sign in failed", description: error.message, variant: "destructive" });
     } finally {
       setLoading(false);
     }
   };
 
-  /** GOOGLE */
+  /** GOOGLE LOGIN */
   const handleGoogle = async () => {
     setLoading(true);
     try {
       await supabase.auth.signInWithOAuth({
         provider: "google",
-        options: { redirectTo: `${window.location.origin}/dashboard` }
+        options: { redirectTo: `${window.location.origin}/dashboard` },
       });
-    } catch (error: any) {
-      toast({
-        title: "Google Sign In failed",
-        description: error.message,
-        variant: "destructive"
-      });
+    } catch (error) {
+      toast({ title: "Google Sign In failed", description: error.message, variant: "destructive" });
       setLoading(false);
     }
   };
 
-  /** ANIMATIONS */
   const sectionVariants = {
-    hidden: { opacity: 0, y: 80 },
-    visible: { opacity: 1, y: 0, transition: { duration: 1.0 } }
+    hidden: { opacity: 0, y: 70 },
+    visible: { opacity: 1, y: 0, transition: { duration: 1 } },
   };
 
   const fadeItem = {
-    hidden: { opacity: 0, y: 25 },
-    visible: (i: number) => ({
+    hidden: { opacity: 0, y: 20 },
+    visible: i => ({
       opacity: 1,
       y: 0,
-      transition: { delay: 0.2 + i * 0.12, duration: 0.7 }
-    })
+      transition: { duration: 0.6, delay: 0.15 + i * 0.12 },
+    }),
   };
 
   return (
-    <div className="min-h-screen w-full bg-white overflow-hidden flex">
+    <div className="min-h-screen w-full bg-white overflow-hidden flex relative">
 
-      {/* ==== LEFT PANEL ==== */}
+      {/* LOGO — TOP LEFT */}
+      <img
+        src={aideLogo}
+        onClick={() => navigate("/")}
+        className="absolute top-10 left-10 h-20 cursor-pointer z-20"
+        alt="Logo"
+      />
+
+      {/* LEFT PANEL */}
       <motion.div
         ref={leftRef}
         variants={sectionVariants}
         initial="hidden"
         animate={leftControls}
-        className="w-[40%] bg-white flex flex-col px-16"
+        className="w-[45%] bg-white flex flex-col items-center justify-center px-20"
       >
-        {/* LOGO (Top Left) */}
-        <div className="pt-10 pb-6">
-          <img
-            src={aideLogo}
-            onClick={() => navigate("/dashboard")}
-            className="h-20 cursor-pointer"
-          />
-        </div>
-
         <div
-          className="w-full max-w-md mx-auto flex flex-col"
+          className="w-full max-w-lg"
           style={{ transform: "scale(var(--auth-scale))", transformOrigin: "top center" }}
         >
-          {/* HEADING */}
           <motion.h1
             variants={fadeItem}
             custom={0}
-            className="font-[Montserrat] font-extrabold text-[#DF1516] text-center mb-5 text-[40px]"
+            className="text-[#DF1516] font-bold text-[40px] mb-6 leading-tight"
           >
             Hello, Friend!
           </motion.h1>
 
-          {/* TEXT */}
           <motion.p
             variants={fadeItem}
             custom={1}
-            className="font-[Poppins] text-gray-800 text-center mb-10 leading-snug text-[20px]"
+            className="text-[20px] text-gray-700 leading-relaxed mb-12 max-w-md"
           >
-            Sign in to continue your personalized journey with{" "}
-            <span className="font-bold text-black">AIDE</span>.
+            Sign in to continue your personalized journey with <b>AIDE</b>—where mindset
+            mastery meets business growth.
           </motion.p>
 
           {/* SIGN IN FORM */}
-          <motion.form
-            variants={fadeItem}
-            custom={2}
-            onSubmit={handleSignIn}
-            className="space-y-5 w-full"
-          >
+          <motion.form variants={fadeItem} custom={2} onSubmit={handleSignIn} className="space-y-6 w-full">
             <Input
               type="email"
               placeholder="Your Email"
-              className="h-[65px] border border-[#DF1516] rounded-none text-[22px]"
+              className="h-[60px] text-[18px] rounded-full px-6 border-[#DF1516]"
               value={signInEmail}
-              onChange={(e) => setSignInEmail(e.target.value)}
+              onChange={e => setSignInEmail(e.target.value)}
             />
 
-            <div className="flex border border-[#DF1516] rounded-none">
+            <div className="flex rounded-full border border-[#DF1516] overflow-hidden h-[60px]">
               <Input
                 type="password"
                 placeholder="Password"
-                className="h-[65px] border-none flex-1 text-[22px]"
+                className="flex-1 border-none text-[18px] px-6"
                 value={signInPassword}
-                onChange={(e) => setSignInPassword(e.target.value)}
+                onChange={e => setSignInPassword(e.target.value)}
               />
 
-              <Button className="h-[65px] w-[130px] bg-[#DF1516] text-white rounded-none text-[22px]">
+              <Button className="w-[130px] bg-[#DF1516] text-white rounded-none">
                 {loading ? "..." : "SIGN IN"}
               </Button>
             </div>
 
-            <div className="flex items-center justify-between text-[18px] font-[Poppins]">
-              <label className="flex items-center gap-3">
+            <div className="flex items-center justify-between text-[15px]">
+              <label className="flex items-center gap-2">
                 <input
                   type="checkbox"
                   checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
+                  onChange={e => setRememberMe(e.target.checked)}
                   className="w-5 h-5 accent-[#DF1516]"
                 />
                 Remember Me
@@ -265,81 +243,81 @@ export default function Auth() {
         </div>
       </motion.div>
 
-      {/* ==== RIGHT PANEL ==== */}
+      {/* RIGHT PANEL */}
       <motion.div
         ref={rightRef}
         variants={sectionVariants}
         initial="hidden"
         animate={rightControls}
-        className="w-[60%] bg-[#DF1516] flex items-center justify-center p-20"
+        className="w-[55%] bg-[#DF1516] flex items-center justify-center px-20"
       >
         <div
           className="w-full max-w-2xl"
           style={{ transform: "scale(var(--auth-scale))", transformOrigin: "top center" }}
         >
-          {/* HEADING */}
           <motion.h2
             variants={fadeItem}
             custom={0}
-            className="text-white font-[Montserrat] font-extrabold text-center mb-12 text-[40px]"
+            className="text-white font-bold text-[40px] text-center mb-10"
           >
             Create an Account
           </motion.h2>
 
-          {/* GOOGLE SIGN IN */}
+          {/* GOOGLE BUTTON */}
           <button
             onClick={handleGoogle}
-            className="flex w-[80%] mx-auto mb-10 border border-white rounded-none overflow-hidden"
+            className="flex w-[80%] mx-auto h-[70px] rounded-full overflow-hidden bg-white mb-10 border border-white"
           >
-            <div className="bg-white w-[75px] flex items-center justify-center border-r border-white">
-              <FcGoogle size={32} />
+            <div className="w-[80px] flex items-center justify-center border-r border-white bg-white">
+              <FcGoogle size={34} />
             </div>
-            <span className="flex-1 h-[75px] bg-white text-[#DF1516] flex items-center justify-center text-[22px] font-[Montserrat] font-bold">
+            <span className="flex-1 flex items-center justify-center text-[#DF1516] font-semibold text-[18px]">
               Continue With Google
             </span>
           </button>
 
-          <p className="text-white text-center mb-8 text-[20px] font-[Poppins]">
-            or use your email for registration
+          <p className="text-white text-center text-[18px] mb-8">
+            or use your Email for registration
           </p>
 
           {/* SIGN UP FORM */}
-          <motion.form variants={fadeItem} custom={1} onSubmit={handleSignUp} className="space-y-5">
-            <div className="grid grid-cols-2 gap-5">
+          <motion.form variants={fadeItem} custom={1} onSubmit={handleSignUp} className="space-y-6">
+            <div className="grid grid-cols-2 gap-6">
               <Input
                 type="text"
                 placeholder="Full Name"
-                className="h-[75px] rounded-none text-[22px]"
+                className="h-[60px] rounded-full text-[18px] px-6"
                 value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
+                onChange={e => setFullName(e.target.value)}
               />
 
               <Input
                 type="email"
                 placeholder="Your Email"
-                className="h-[75px] rounded-none text-[22px]"
+                className="h-[60px] rounded-full text-[18px] px-6"
                 value={signUpEmail}
-                onChange={(e) => setSignUpEmail(e.target.value)}
+                onChange={e => setSignUpEmail(e.target.value)}
               />
             </div>
 
             <Input
               type="password"
               placeholder="Password"
-              className="h-[75px] rounded-none text-[22px]"
+              className="h-[60px] rounded-full text-[18px] px-6"
               value={signUpPassword}
-              onChange={(e) => setSignUpPassword(e.target.value)}
+              onChange={e => setSignUpPassword(e.target.value)}
             />
 
             <Button
               type="submit"
-              className="w-full h-[80px] bg-white text-[#DF1516] font-bold rounded-none text-[22px] font-[Montserrat]"
+              className="w-full h-[70px] bg-white text-[#DF1516] font-semibold text-[18px] rounded-full"
             >
               {loading ? "..." : "SIGN UP"}
             </Button>
           </motion.form>
         </div>
       </motion.div>
+
     </div>
   );
 }
