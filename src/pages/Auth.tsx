@@ -295,4 +295,35 @@ export default function Auth() {
                 placeholder="Full Name"
                 className="h-[80px] text-[22px] rounded-none"
                 value={fullName}
-                onChange={(e) => setFul
+                onChange={(e) => setFullName(e.target.value)}
+              />
+
+              <Input
+                type="email"
+                placeholder="Your Email"
+                className="h-[80px] text-[22px] rounded-none"
+                value={signUpEmail}
+                onChange={(e) => setSignUpEmail(e.target.value)}
+              />
+            </div>
+
+            <Input
+              type="password"
+              placeholder="Password"
+              className="h-[80px] text-[22px] rounded-none"
+              value={signUpPassword}
+              onChange={(e) => setSignUpPassword(e.target.value)}
+            />
+
+            <Button
+              type="submit"
+              className="w-full h-[90px] bg-white text-[#DF1516] font-bold text-[28px] rounded-none"
+            >
+              {loading ? "..." : "SIGN UP"}
+            </Button>
+          </motion.form>
+        </div>
+      </motion.div>
+    </div>
+  );
+}
