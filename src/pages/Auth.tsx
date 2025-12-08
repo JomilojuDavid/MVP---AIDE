@@ -189,7 +189,7 @@ export default function Auth() {
           <motion.h1
             variants={fadeItem}
             custom={0}
-            className="font-extrabold text-[#DF1516] text-center mb-6"
+            className="font-extrabold font-size-24px text-[#DF1516] text-center mb-6"
           >
             Hello, Friend!
           </motion.h1>
