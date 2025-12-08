@@ -26,7 +26,7 @@ export default function Auth() {
   const leftRef = useRef<HTMLDivElement>(null);
   const rightRef = useRef<HTMLDivElement>(null);
 
-  /** AUTO-SCALING */
+  /** AUTO-SCALING (INCREASED BY +10%) */
   useEffect(() => {
     const resize = () => {
       const baseWidth = 1440;
@@ -34,7 +34,9 @@ export default function Auth() {
 
       const scaleX = window.innerWidth / baseWidth;
       const scaleY = window.innerHeight / baseHeight;
-      const finalScale = Math.min(scaleX, scaleY, 1) * 1.1; // +10% UI SCALE
+      let finalScale = Math.min(scaleX, scaleY, 1);
+
+      finalScale *= 1.1;
 
       document.documentElement.style.setProperty("--auth-scale", String(finalScale));
     };
@@ -44,7 +46,7 @@ export default function Auth() {
     return () => window.removeEventListener("resize", resize);
   }, []);
 
-  /** Load Remember Me */
+  /** Load saved email if Remember Me was checked */
   useEffect(() => {
     const savedEmail = localStorage.getItem("rememberedEmail");
     if (savedEmail) {
@@ -53,7 +55,7 @@ export default function Auth() {
     }
   }, []);
 
-  /** Fade animation */
+  /** Fades */
   useEffect(() => {
     const observer = new IntersectionObserver(
       entries => {
@@ -79,9 +81,9 @@ export default function Auth() {
     setLoading(true);
 
     try {
-      const parts = fullName.trim().split(" ");
-      const firstName = parts[0] || "";
-      const lastName = parts.slice(1).join(" ") || "";
+      const nameParts = fullName.trim().split(" ");
+      const firstName = nameParts[0] || "";
+      const lastName = nameParts.slice(1).join(" ") || "";
 
       const { error } = await supabase.auth.signUp({
         email: signUpEmail,
@@ -131,7 +133,7 @@ export default function Auth() {
     }
   };
 
-  /** GOOGLE */
+  /** GOOGLE SIGN IN */
   const handleGoogle = async () => {
     setLoading(true);
     try {
@@ -160,22 +162,22 @@ export default function Auth() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-white overflow-hidden flex font-poppins">
+    <div className="min-h-screen w-full bg-white overflow-hidden flex">
 
-      {/* LOGO */}
+      {/* FIXED LOGO TOP LEFT */}
       <img
         src={aideLogo}
         onClick={() => navigate("/dashboard")}
         className="h-16 absolute top-6 left-8 cursor-pointer z-50"
       />
 
-      {/* LEFT PANEL */}
+      {/* LEFT (SIGN IN) PANEL */}
       <motion.div
         ref={leftRef}
         variants={sectionVariants}
         initial="hidden"
         animate={leftControls}
-        className="w-[40%] bg-white flex flex-col items-center justify-start pt-32 p-12"
+        className="w-[40%] bg-white flex flex-col items-center justify-start pt-28 p-12"
       >
         <div
           className="w-full max-w-sm flex flex-col items-center"
@@ -186,28 +188,28 @@ export default function Auth() {
           <motion.h1
             variants={fadeItem}
             custom={0}
-            className="font-montserrat font-extrabold text-[#DF1516] text-[48px] mb-4 whitespace-nowrap"
+            className="font-extrabold text-[#DF1516] text-center text-[48px] whitespace-nowrap font-montserrat"
           >
             Hello, Friend!
           </motion.h1>
 
-          {/* BODY TEXT – Forced to ~3 lines */}
+          {/* PERFECT 3-LINE BODY TEXT */}
           <motion.p
             variants={fadeItem}
             custom={1}
-            className="text-gray-700 text-center leading-[1.25] text-[23px] max-w-[340px] mb-12"
+            className="text-gray-700 text-center text-[23px] leading-[1.13] max-w-[315px] mb-12 font-poppins"
           >
             Sign in to continue your personalized journey with{" "}
-            <span className="font-bold text-black">AIDE</span>—where mindset mastery meets business growth.
+            <span className="font-bold text-black">AIDE</span>—where mindset mastery
+            meets business growth.
           </motion.p>
 
           {/* SIGN IN FORM */}
           <motion.form variants={fadeItem} custom={2} onSubmit={handleSignIn} className="space-y-7 w-full">
-
             <Input
               type="email"
               placeholder="Your Email"
-              className="h-[78px] border border-[#DF1516] rounded-none text-[22px] placeholder:text-[22px] placeholder:text-[#DF1516] text-[#DF1516] px-6"
+              className="h-[78px] border border-[#DF1516] rounded-none text-[22px] placeholder:text-[#DF1516] text-[#DF1516] px-6"
               value={signInEmail}
               onChange={(e) => setSignInEmail(e.target.value)}
             />
@@ -216,19 +218,16 @@ export default function Auth() {
               <Input
                 type="password"
                 placeholder="Password"
-                className="h-[78px] border-none flex-1 text-[22px] placeholder:text-[22px] placeholder:text-[#DF1516] text-[#DF1516] px-6"
+                className="h-[78px] border-none flex-1 text-[22px] placeholder:text-[#DF1516] text-[#DF1516] px-6"
                 value={signInPassword}
                 onChange={(e) => setSignInPassword(e.target.value)}
               />
-              <Button
-                type="submit"
-                className="h-[78px] w-[170px] bg-[#DF1516] text-white rounded-none text-[22px] font-bold hover:bg-[#c01314]"
-              >
+              <Button type="submit" className="h-[78px] w-[165px] bg-[#DF1516] text-white rounded-none text-[22px] font-bold hover:bg-[#c01314]">
                 {loading ? "..." : "SIGN IN"}
               </Button>
             </div>
 
-            <div className="flex items-center justify-between mt-4">
+            <div className="flex items-center justify-between mt-3">
               <label className="flex items-center gap-3 text-[19px] text-gray-800 cursor-pointer">
                 <input
                   type="checkbox"
@@ -238,6 +237,7 @@ export default function Auth() {
                 />
                 Remember Me
               </label>
+
               <button
                 type="button"
                 onClick={() => navigate("/reset-password")}
@@ -246,12 +246,12 @@ export default function Auth() {
                 Forgot Password
               </button>
             </div>
-
           </motion.form>
+
         </div>
       </motion.div>
 
-      {/* RIGHT PANEL */}
+      {/* RIGHT (SIGN UP) PANEL */}
       <motion.div
         ref={rightRef}
         variants={sectionVariants}
@@ -264,16 +264,16 @@ export default function Auth() {
           style={{ transform: "scale(var(--auth-scale))", transformOrigin: "top center" }}
         >
 
-          {/* HEADING */}
+          {/* CREATE AN ACCOUNT (NO WRAP) */}
           <motion.h2
             variants={fadeItem}
             custom={0}
-            className="text-white font-montserrat font-extrabold text-center mb-14 text-[60px]"
+            className="text-white font-montserrat font-extrabold text-center mb-14 text-[60px] whitespace-nowrap"
           >
             Create an Account
           </motion.h2>
 
-          {/* GOOGLE BUTTON */}
+          {/* GOOGLE */}
           <button
             onClick={handleGoogle}
             className="flex w-[80%] mx-auto mb-12 rounded-none overflow-hidden"
@@ -286,7 +286,7 @@ export default function Auth() {
             </span>
           </button>
 
-          <p className="text-white text-center mb-12 text-[24px]">
+          <p className="text-white text-center mb-12 text-[24px] font-poppins">
             or use your Email for registration
           </p>
 
@@ -296,7 +296,7 @@ export default function Auth() {
               <Input
                 type="text"
                 placeholder="Full Name"
-                className="h-[78px] rounded-none text-[22px] placeholder:text-[22px] bg-[#e8e8e8] border-none px-6"
+                className="h-[78px] rounded-none text-[22px] bg-[#e8e8e8] border-none placeholder:text-gray-500 px-6"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
               />
@@ -304,7 +304,7 @@ export default function Auth() {
               <Input
                 type="email"
                 placeholder="Your Email"
-                className="h-[78px] rounded-none text-[22px] placeholder:text-[22px] bg-[#e8e8e8] border-none px-6"
+                className="h-[78px] rounded-none text-[22px] bg-[#e8e8e8] border-none placeholder:text-gray-500 px-6"
                 value={signUpEmail}
                 onChange={(e) => setSignUpEmail(e.target.value)}
               />
@@ -313,7 +313,7 @@ export default function Auth() {
             <Input
               type="password"
               placeholder="Password"
-              className="h-[78px] rounded-none text-[22px] placeholder:text-[22px] bg-[#e8e8e8] border-none px-6"
+              className="h-[78px] rounded-none text-[22px] bg-[#e8e8e8] border-none placeholder:text-gray-500 px-6"
               value={signUpPassword}
               onChange={(e) => setSignUpPassword(e.target.value)}
             />
@@ -327,6 +327,7 @@ export default function Auth() {
           </motion.form>
         </div>
       </motion.div>
+
     </div>
   );
 }
