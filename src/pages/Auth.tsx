@@ -145,6 +145,7 @@ export default function Auth() {
     }
   };
 
+  /** ANIMATION VARIANTS */
   const sectionVariants = {
     hidden: { opacity: 0, y: 80 },
     visible: { opacity: 1, y: 0, transition: { duration: 1.1 } }
@@ -160,8 +161,14 @@ export default function Auth() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-white overflow-hidden flex">
-      
+    <div className="min-h-screen w-full bg-white overflow-hidden flex relative">
+
+      {/* FIXED TOP-LEFT LOGO */}
+      <img
+        src={aideLogo}
+        onClick={() => navigate("/dashboard")}
+        className="h-24 absolute top-6 left-8 z-50 cursor-pointer"
+      />
 
       {/* LEFT PANEL */}
       <motion.div
@@ -169,27 +176,17 @@ export default function Auth() {
         variants={sectionVariants}
         initial="hidden"
         animate={leftControls}
-        className="w-[40%] bg-white flex flex-col items-center justify-center p-16"
+        className="w-[40%] bg-white flex flex-col items-center justify-center p-20"
       >
         <div
-          className="w-full max-w-md flex flex-col items-center"
+          className="w-full max-w-xl flex flex-col items-center text-center"
           style={{ transform: "scale(var(--auth-scale))", transformOrigin: "top center" }}
         >
-
-          {/* LOGO */}
-          <div className="mb-10">
-            <img
-              src={aideLogo}
-              onClick={() => navigate("/dashboard")}
-              className="h-24 cursor-pointer"
-            />
-          </div>
-
           {/* HEADING */}
           <motion.h1
             variants={fadeItem}
             custom={0}
-            className="font-extrabold font-size-48px text-[#DF1516] text-center mb-6"
+            className="font-extrabold text-6xl text-[#DF1516] mb-10 leading-tight"
           >
             Hello, Friend!
           </motion.h1>
@@ -198,19 +195,18 @@ export default function Auth() {
           <motion.p
             variants={fadeItem}
             custom={1}
-            className="text-gray-800 font-size-24px text-center mb-12 leading-snug"
+            className="text-gray-800 text-3xl mb-16 leading-snug"
           >
             Sign in to continue your personalized journey with{" "}
-            <span className="font-bold text-black">AIDE</span> — where mindset mastery
-            meets business growth.
+            <span className="font-bold text-black">AIDE</span> — where mindset mastery meets business growth.
           </motion.p>
 
           {/* SIGN IN FORM */}
-          <motion.form variants={fadeItem} custom={2} onSubmit={handleSignIn} className="space-y-6 w-full">
+          <motion.form variants={fadeItem} custom={2} onSubmit={handleSignIn} className="space-y-8 w-full">
             <Input
               type="email"
               placeholder="Your Email"
-              className="h-[70px] border border-[#DF1516] rounded-none font-size-24px"
+              className="h-[90px] text-3xl border border-[#DF1516] rounded-none"
               value={signInEmail}
               onChange={(e) => setSignInEmail(e.target.value)}
             />
@@ -219,22 +215,23 @@ export default function Auth() {
               <Input
                 type="password"
                 placeholder="Password"
-                className="h-[70px] border-none flex-1 font-size-24px"
+                className="h-[90px] text-3xl border-none flex-1"
                 value={signInPassword}
                 onChange={(e) => setSignInPassword(e.target.value)}
               />
-              <Button className="h-[70px] w-[140px] bg-[#DF1516] text-white rounded-none">
+              <Button className="h-[90px] w-[160px] bg-[#DF1516] text-white text-3xl rounded-none">
                 {loading ? "..." : "SIGN IN"}
               </Button>
             </div>
 
-            <div className="flex items-center justify-between">
-              <label className="flex items-center gap-3">
+            {/* REMEMBER + FORGOT */}
+            <div className="flex items-center justify-between text-2xl">
+              <label className="flex items-center gap-4">
                 <input
                   type="checkbox"
                   checked={rememberMe}
                   onChange={(e) => setRememberMe(e.target.checked)}
-                  className="w-6 h-6 accent-[#DF1516]"
+                  className="w-8 h-8 accent-[#DF1516]"
                 />
                 Remember Me
               </label>
@@ -251,7 +248,6 @@ export default function Auth() {
         </div>
       </motion.div>
 
-
       {/* RIGHT PANEL */}
       <motion.div
         ref={rightRef}
@@ -261,15 +257,14 @@ export default function Auth() {
         className="w-[60%] bg-[#DF1516] flex items-center justify-center p-20"
       >
         <div
-          className="w-full max-w-2xl"
+          className="w-full max-w-3xl"
           style={{ transform: "scale(var(--auth-scale))", transformOrigin: "top center" }}
         >
-
           {/* HEADING */}
           <motion.h2
             variants={fadeItem}
             custom={0}
-            className="text-white font-extrabold font-size-48px text-center mb-14"
+            className="text-white font-extrabold text-6xl text-center mb-16"
           >
             Create an Account
           </motion.h2>
@@ -277,27 +272,25 @@ export default function Auth() {
           {/* GOOGLE SIGN IN */}
           <button
             onClick={handleGoogle}
-            className="flex w-[80%] mx-auto mb-12 border border-white rounded-none overflow-hidden"
+            className="flex w-[85%] mx-auto mb-16 border border-white rounded-none overflow-hidden"
           >
-            <div className="bg-white w-[80px] flex items-center justify-center border-r border-white">
-              <FcGoogle size={36} />
+            <div className="bg-white w-[100px] flex items-center justify-center border-r border-white">
+              <FcGoogle size={48} />
             </div>
-            <span className="flex-1 h-[80px] bg-white text-[#DF1516] flex items-center justify-center font-size-24px font-bold">
+            <span className="flex-1 h-[100px] bg-white text-[#DF1516] flex items-center justify-center text-3xl font-bold">
               Continue With Google
             </span>
           </button>
 
-          <p className="text-white font-size-24px text-center mb-10">
-            or use your email for registration
-          </p>
+          <p className="text-white text-3xl text-center mb-12">or use your email for registration</p>
 
           {/* SIGN UP FORM */}
-          <motion.form variants={fadeItem} custom={1} onSubmit={handleSignUp} className="space-y-6">
-            <div className="grid grid-cols-2 gap-6">
+          <motion.form variants={fadeItem} custom={1} onSubmit={handleSignUp} className="space-y-8">
+            <div className="grid grid-cols-2 gap-8">
               <Input
                 type="text"
                 placeholder="Full Name"
-                className="h-[80px] rounded-none font-size-24px"
+                className="h-[100px] text-3xl rounded-none"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
               />
@@ -305,7 +298,7 @@ export default function Auth() {
               <Input
                 type="email"
                 placeholder="Your Email"
-                className="h-[80px] rounded-none font-size-24px"
+                className="h-[100px] text-3xl rounded-none"
                 value={signUpEmail}
                 onChange={(e) => setSignUpEmail(e.target.value)}
               />
@@ -314,14 +307,14 @@ export default function Auth() {
             <Input
               type="password"
               placeholder="Password"
-              className="h-[80px] rounded-none font-size-24px"
+              className="h-[100px] text-3xl rounded-none"
               value={signUpPassword}
               onChange={(e) => setSignUpPassword(e.target.value)}
             />
 
             <Button
               type="submit"
-              className="w-full h-[90px] bg-white text-[#DF1516] font-bold font-size-24px rounded-none"
+              className="w-full h-[110px] bg-white text-[#DF1516] text-4xl font-bold rounded-none"
             >
               {loading ? "..." : "SIGN UP"}
             </Button>
