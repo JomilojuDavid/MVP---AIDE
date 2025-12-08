@@ -26,7 +26,7 @@ export default function Auth() {
   const leftRef = useRef<HTMLDivElement>(null);
   const rightRef = useRef<HTMLDivElement>(null);
 
-  /** AUTO-SCALING */
+  /** AUTO SCALE */
   useEffect(() => {
     const resize = () => {
       const baseWidth = 1440;
@@ -44,7 +44,7 @@ export default function Auth() {
     return () => window.removeEventListener("resize", resize);
   }, []);
 
-  /** Load saved email if Remember Me was checked */
+  /** LOAD REMEMBERED EMAIL */
   useEffect(() => {
     const savedEmail = localStorage.getItem("rememberedEmail");
     if (savedEmail) {
@@ -53,7 +53,7 @@ export default function Auth() {
     }
   }, []);
 
-  /** Fades */
+  /** FADE ANIMATIONS */
   useEffect(() => {
     const observer = new IntersectionObserver(
       entries => {
@@ -97,7 +97,11 @@ export default function Auth() {
       toast({ title: "Account created successfully!" });
       navigate("/quiz-step2");
     } catch (error: any) {
-      toast({ title: "Sign up failed", description: error.message, variant: "destructive" });
+      toast({
+        title: "Sign up failed",
+        description: error.message,
+        variant: "destructive"
+      });
     } finally {
       setLoading(false);
     }
@@ -116,22 +120,24 @@ export default function Auth() {
 
       if (error) throw error;
 
-      if (rememberMe) {
-        localStorage.setItem("rememberedEmail", signInEmail);
-      } else {
-        localStorage.removeItem("rememberedEmail");
-      }
+      rememberMe
+        ? localStorage.setItem("rememberedEmail", signInEmail)
+        : localStorage.removeItem("rememberedEmail");
 
       toast({ title: "Welcome back!" });
       navigate("/quiz");
     } catch (error: any) {
-      toast({ title: "Sign in failed", description: error.message, variant: "destructive" });
+      toast({
+        title: "Sign in failed",
+        description: error.message,
+        variant: "destructive"
+      });
     } finally {
       setLoading(false);
     }
   };
 
-  /** GOOGLE SIGN IN */
+  /** GOOGLE */
   const handleGoogle = async () => {
     setLoading(true);
     try {
@@ -140,15 +146,19 @@ export default function Auth() {
         options: { redirectTo: `${window.location.origin}/dashboard` }
       });
     } catch (error: any) {
-      toast({ title: "Google Sign In failed", description: error.message, variant: "destructive" });
+      toast({
+        title: "Google Sign In failed",
+        description: error.message,
+        variant: "destructive"
+      });
       setLoading(false);
     }
   };
 
-  /** ANIMATION VARIANTS */
+  /** ANIMATIONS */
   const sectionVariants = {
     hidden: { opacity: 0, y: 80 },
-    visible: { opacity: 1, y: 0, transition: { duration: 1.1 } }
+    visible: { opacity: 1, y: 0, transition: { duration: 1.0 } }
   };
 
   const fadeItem = {
@@ -156,37 +166,39 @@ export default function Auth() {
     visible: (i: number) => ({
       opacity: 1,
       y: 0,
-      transition: { delay: 0.25 + i * 0.15, duration: 0.7 }
+      transition: { delay: 0.2 + i * 0.12, duration: 0.7 }
     })
   };
 
   return (
-    <div className="min-h-screen w-full bg-white overflow-hidden flex relative">
+    <div className="min-h-screen w-full bg-white overflow-hidden flex">
 
-      {/* FIXED TOP-LEFT LOGO */}
-      <img
-        src={aideLogo}
-        onClick={() => navigate("/dashboard")}
-        className="h-24 absolute top-6 left-8 z-50 cursor-pointer"
-      />
-
-      {/* LEFT PANEL */}
+      {/* ==== LEFT PANEL ==== */}
       <motion.div
         ref={leftRef}
         variants={sectionVariants}
         initial="hidden"
         animate={leftControls}
-        className="w-[40%] bg-white flex flex-col items-center justify-center p-20"
+        className="w-[40%] bg-white flex flex-col px-16"
       >
+        {/* LOGO (Top Left) */}
+        <div className="pt-10 pb-6">
+          <img
+            src={aideLogo}
+            onClick={() => navigate("/dashboard")}
+            className="h-20 cursor-pointer"
+          />
+        </div>
+
         <div
-          className="w-full max-w-xl flex flex-col items-center text-center"
+          className="w-full max-w-md mx-auto flex flex-col"
           style={{ transform: "scale(var(--auth-scale))", transformOrigin: "top center" }}
         >
           {/* HEADING */}
           <motion.h1
             variants={fadeItem}
             custom={0}
-            className="font-extrabold text-6xl text-[#DF1516] mb-10 leading-tight"
+            className="font-[Montserrat] font-extrabold text-[#DF1516] text-center mb-5 text-[40px]"
           >
             Hello, Friend!
           </motion.h1>
@@ -195,18 +207,23 @@ export default function Auth() {
           <motion.p
             variants={fadeItem}
             custom={1}
-            className="text-gray-800 text-3xl mb-16 leading-snug"
+            className="font-[Poppins] text-gray-800 text-center mb-10 leading-snug text-[20px]"
           >
             Sign in to continue your personalized journey with{" "}
-            <span className="font-bold text-black">AIDE</span> — where mindset mastery meets business growth.
+            <span className="font-bold text-black">AIDE</span>.
           </motion.p>
 
           {/* SIGN IN FORM */}
-          <motion.form variants={fadeItem} custom={2} onSubmit={handleSignIn} className="space-y-8 w-full">
+          <motion.form
+            variants={fadeItem}
+            custom={2}
+            onSubmit={handleSignIn}
+            className="space-y-5 w-full"
+          >
             <Input
               type="email"
               placeholder="Your Email"
-              className="h-[90px] text-3xl border border-[#DF1516] rounded-none"
+              className="h-[65px] border border-[#DF1516] rounded-none text-[22px]"
               value={signInEmail}
               onChange={(e) => setSignInEmail(e.target.value)}
             />
@@ -215,23 +232,23 @@ export default function Auth() {
               <Input
                 type="password"
                 placeholder="Password"
-                className="h-[90px] text-3xl border-none flex-1"
+                className="h-[65px] border-none flex-1 text-[22px]"
                 value={signInPassword}
                 onChange={(e) => setSignInPassword(e.target.value)}
               />
-              <Button className="h-[90px] w-[160px] bg-[#DF1516] text-white text-3xl rounded-none">
+
+              <Button className="h-[65px] w-[130px] bg-[#DF1516] text-white rounded-none text-[22px]">
                 {loading ? "..." : "SIGN IN"}
               </Button>
             </div>
 
-            {/* REMEMBER + FORGOT */}
-            <div className="flex items-center justify-between text-2xl">
-              <label className="flex items-center gap-4">
+            <div className="flex items-center justify-between text-[18px] font-[Poppins]">
+              <label className="flex items-center gap-3">
                 <input
                   type="checkbox"
                   checked={rememberMe}
                   onChange={(e) => setRememberMe(e.target.checked)}
-                  className="w-8 h-8 accent-[#DF1516]"
+                  className="w-5 h-5 accent-[#DF1516]"
                 />
                 Remember Me
               </label>
@@ -248,7 +265,7 @@ export default function Auth() {
         </div>
       </motion.div>
 
-      {/* RIGHT PANEL */}
+      {/* ==== RIGHT PANEL ==== */}
       <motion.div
         ref={rightRef}
         variants={sectionVariants}
@@ -257,14 +274,14 @@ export default function Auth() {
         className="w-[60%] bg-[#DF1516] flex items-center justify-center p-20"
       >
         <div
-          className="w-full max-w-3xl"
+          className="w-full max-w-2xl"
           style={{ transform: "scale(var(--auth-scale))", transformOrigin: "top center" }}
         >
           {/* HEADING */}
           <motion.h2
             variants={fadeItem}
             custom={0}
-            className="text-white font-extrabold text-6xl text-center mb-16"
+            className="text-white font-[Montserrat] font-extrabold text-center mb-12 text-[40px]"
           >
             Create an Account
           </motion.h2>
@@ -272,25 +289,27 @@ export default function Auth() {
           {/* GOOGLE SIGN IN */}
           <button
             onClick={handleGoogle}
-            className="flex w-[85%] mx-auto mb-16 border border-white rounded-none overflow-hidden"
+            className="flex w-[80%] mx-auto mb-10 border border-white rounded-none overflow-hidden"
           >
-            <div className="bg-white w-[100px] flex items-center justify-center border-r border-white">
-              <FcGoogle size={48} />
+            <div className="bg-white w-[75px] flex items-center justify-center border-r border-white">
+              <FcGoogle size={32} />
             </div>
-            <span className="flex-1 h-[100px] bg-white text-[#DF1516] flex items-center justify-center text-3xl font-bold">
+            <span className="flex-1 h-[75px] bg-white text-[#DF1516] flex items-center justify-center text-[22px] font-[Montserrat] font-bold">
               Continue With Google
             </span>
           </button>
 
-          <p className="text-white text-3xl text-center mb-12">or use your email for registration</p>
+          <p className="text-white text-center mb-8 text-[20px] font-[Poppins]">
+            or use your email for registration
+          </p>
 
           {/* SIGN UP FORM */}
-          <motion.form variants={fadeItem} custom={1} onSubmit={handleSignUp} className="space-y-8">
-            <div className="grid grid-cols-2 gap-8">
+          <motion.form variants={fadeItem} custom={1} onSubmit={handleSignUp} className="space-y-5">
+            <div className="grid grid-cols-2 gap-5">
               <Input
                 type="text"
                 placeholder="Full Name"
-                className="h-[100px] text-3xl rounded-none"
+                className="h-[75px] rounded-none text-[22px]"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
               />
@@ -298,7 +317,7 @@ export default function Auth() {
               <Input
                 type="email"
                 placeholder="Your Email"
-                className="h-[100px] text-3xl rounded-none"
+                className="h-[75px] rounded-none text-[22px]"
                 value={signUpEmail}
                 onChange={(e) => setSignUpEmail(e.target.value)}
               />
@@ -307,14 +326,14 @@ export default function Auth() {
             <Input
               type="password"
               placeholder="Password"
-              className="h-[100px] text-3xl rounded-none"
+              className="h-[75px] rounded-none text-[22px]"
               value={signUpPassword}
               onChange={(e) => setSignUpPassword(e.target.value)}
             />
 
             <Button
               type="submit"
-              className="w-full h-[110px] bg-white text-[#DF1516] text-4xl font-bold rounded-none"
+              className="w-full h-[80px] bg-white text-[#DF1516] font-bold rounded-none text-[22px] font-[Montserrat]"
             >
               {loading ? "..." : "SIGN UP"}
             </Button>
