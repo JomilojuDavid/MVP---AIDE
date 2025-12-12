@@ -26,7 +26,7 @@ export default function Quiz() {
       JSON.stringify({ question1, question2, question3 })
     );
 
-    navigate("/quiz-step-2");
+    navigate("/dashboard");
   };
 
   return (
