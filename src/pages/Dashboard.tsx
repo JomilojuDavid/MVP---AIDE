@@ -39,10 +39,10 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
   return (
     <div className="flex h-screen bg-primary relative overflow-hidden">
       <Sidebar showTasksAndResources={true} />
-      <TopBar />
+      <TopBar onNotificationsClick={() => navigate('/notifications')} onSettingsClick={() => navigate('/settings')} />
       
       <main className="flex-1 md:ml-64 p-4 md:p-6 overflow-auto">
-        <div className="max-w-5xl mx-auto space-y-4">
+        <div className="max-w-6xl mx-auto space-y-4">
           {/* Welcome Card */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -93,7 +93,7 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
             className="grid md:grid-cols-2 gap-4"
           >
             {/* Daily Prompt */}
-            <div className="bg-primary border-2 border-[#F3C17E] p-4">
+            <div onClick={() => window.open('https://calendar.google.com', '_blank')} className="cursor-pointer bg-primary border-2 border-[#F3C17E] p-4">
               <h3 className="text-lg font-bold mb-2 text-white">Daily Prompt</h3>
               <p className="text-sm text-white">
                 "Set one clear intention for today and take one step toward it."
@@ -123,3 +123,4 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
     </div>
   );
 }
+
