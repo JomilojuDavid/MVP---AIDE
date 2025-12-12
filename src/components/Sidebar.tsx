@@ -43,6 +43,7 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
           "fixed left-0 top-0 h-screen bg-background text-foreground w-64 flex flex-col transition-transform duration-300 z-40",
           !isOpen && "max-md:-translate-x-full"
         )}
+        className={textColor === "black" ? "text-black" : "text-white"}
       >
         {/* Logo */}
         <div className="p-6">
