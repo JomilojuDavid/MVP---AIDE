@@ -4,8 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
-import { Bell, Settings } from "lucide-react";
-import aideLogo from "@/assets/aide-logo.png";
 
 interface DashboardProps {
   showQuizPrompt?: boolean;
@@ -40,51 +38,27 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
 
   return (
     <div className="flex h-screen bg-primary relative overflow-hidden">
-      <Sidebar showTasksAndResources={true} textColor="black" />
-
-      <main className="flex-1 md:ml-64">
-        {/* Red Header Background */}
-        <div className="bg-red-600 p-6 relative">
-          {/* Top Icons */}
-          <div className="flex justify-end items-center gap-6 mb-6">
-            <Bell
-              className="w-8 h-8 stroke-white stroke-[2.5] cursor-pointer"
-              onClick={() => navigate("/notifications")}
-            />
-            <Settings
-              className="w-8 h-8 stroke-white stroke-[2.5] cursor-pointer"
-              onClick={() => navigate("/settings")}
-            />
-          </div>
-
-          {/* Logo */}
-          <div className="mb-6">
-            <img
-              src={aideLogo}
-              alt="AIDE Logo"
-              className="h-16 w-auto cursor-pointer"
-              onClick={() => navigate("/dashboard")}
-            />
-          </div>
-
+      <Sidebar showTasksAndResources={true} textColor="black">
+      <TopBar 
+        onNotificationsClick={() => navigate('/notifications')}
+        onSettingsClick={() => navigate('/settings')}
+      />
+      
+      <main className="flex-1 md:ml-64 p-4 md:p-6 overflow-auto">
+        <div className="max-w-6xl mx-auto space-y-4">
           {/* Welcome Card */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="bg-white rounded-2xl p-5 md:p-6 max-w-3xl mx-auto"
+            className="bg-white rounded-2xl p-5 md:p-6"
           >
             <h1 className="text-2xl md:text-3xl font-bold mb-2">
               Welcome, <span className="text-primary">{firstName || "Name"}!</span>
             </h1>
-            <p className="text-base md:text-lg text-foreground">
-              Moving from Stuck & Stagnant to Clear & Confident
-            </p>
+            <p className="text-base md:text-lg text-foreground">Moving from Stuck & Stagnant to Clear & Confident</p>
           </motion.div>
-        </div>
 
-        {/* Dashboard Content */}
-        <div className="p-4 md:p-6 max-w-6xl mx-auto space-y-4">
           {/* AIDE Roadmap */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -114,7 +88,7 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
             </div>
           </motion.div>
 
-          {/* Dashboard Cards */}
+          {/* Dashboard Content - Always show */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -152,3 +126,4 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
     </div>
   );
 }
+
