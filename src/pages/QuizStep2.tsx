@@ -90,22 +90,25 @@ export default function QuizStep2() {
                 </h3>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {["Awareness", "Intention", "Decisiveness", "Execution"].map(
-                    (stage) => (
-                      <Button
-                        key={stage}
-                        onClick={() => setAideStage(stage)}
-                        className={cn(
-                          "h-auto px-6 py-4 text-[1rem] rounded-[2px] border border-red-300 text-left whitespace-normal",
-                          aideStage === stage
-                            ? "bg-secondary text-foreground"
-                            : "bg-white hover:bg-[#F3C17E]"
-                        )}
-                      >
-                        <span className="font-semibold">{stage}</span>
-                      </Button>
-                    )
-                  )}
+                  {[
+                    { id: "Awareness", label: "Awareness {I need clarity on what's really holding me back}" },
+                    { id: "Intention", label: "Intention — I need stronger goals and focus" },
+                    { id: "Decisiveness", label: "Decisiveness — I need to stop hesitating and make moves" },
+                    { id: "Execution", label: "Execution — I need consistency and follow-through" },
+                  ].map((stage) => (
+                    <Button
+                      key={stage.id}
+                      onClick={() => setAideStage(stage.id)}
+                      className={cn(
+                        "h-auto px-6 py-5 text-[0.95rem] rounded-[2px] border border-[#ff000033] text-center whitespace-normal leading-snug",
+                        aideStage === stage.id
+                          ? "bg-secondary text-foreground"
+                          : "bg-white text-foreground hover:bg-[#F3C17E]"
+                      )}
+                    >
+                      {stage.label}
+                    </Button>
+                  ))}
                 </div>
               </div>
 
@@ -119,19 +122,19 @@ export default function QuizStep2() {
                   value={improvement}
                   onChange={(e) => setImprovement(e.target.value)}
                   placeholder="Write here..."
-                  className="border-0 border-b border-red-300 rounded-none bg-transparent text-lg focus-visible:ring-0 focus-visible:border-red-400"
+                  className="w-full px-1 bg-transparent border-0 border-b-[1.5px] border-[#ff000033] focus-visible:ring-0 focus-visible:border-red-400 text-[1rem] rounded-none resize-none"
                 />
               </div>
             </div>
 
             {/* Next Button */}
-            <div className="flex justify-end pt-8">
-              <Button
+            <div className="flex justify-end pt-6">
+              <button
                 onClick={handleSubmit}
-                className="text-primary text-lg font-bold hover:underline"
+                className="text-primary text-lg font-bold hover:underline transition-all hover:scale-[1.03]"
               >
-                NEXT &gt;&gt;
-              </Button>
+                NEXT&gt;&gt;
+              </button>
             </div>
           </motion.div>
 
