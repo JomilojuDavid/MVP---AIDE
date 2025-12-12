@@ -54,7 +54,7 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
               Welcome, <span className="text-primary">{firstName || "Name"}!</span>
             </h1>
-            <p className="text-xl md:text-2xl text-foreground">Moving From Stuck to Clear & Confident.</p>
+            <p className="text-xl md:text-2xl text-foreground">Moving from Stuck & Stagnant to Clear & Confident</p>
           </motion.div>
 
           {/* AIDE Roadmap */}
@@ -67,10 +67,10 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
             <h2 className="text-3xl md:text-4xl font-bold mb-8 text-foreground">Your AIDE Roadmap</h2>
             
             {/* Progress Bar */}
-            <div className="relative w-full h-6 bg-gray-200 rounded-full mb-6 overflow-hidden">
+            <div className="relative w-full h-4 bg-[#FFD9D9] rounded-full mb-6 overflow-hidden">
               <div 
                 className="absolute top-0 left-0 h-full bg-primary rounded-full transition-all duration-500"
-                style={{ width: showQuizPrompt ? '25%' : '50%' }}
+                style={{ width: showQuizPrompt ? '5%' : '25%' }}
               />
             </div>
 
@@ -110,28 +110,28 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.6 }}
-              className="grid md:grid-cols-2 gap-8"
+              className="grid md:grid-cols-2 gap-6"
             >
               {/* Daily Prompt */}
-              <div className="bg-primary border-4 border-secondary rounded-3xl p-8 text-white">
-                <h3 className="text-2xl font-bold mb-4">Daily Prompt</h3>
-                <p className="text-lg">
+              <div className="bg-white border-2 border-primary rounded-xl p-6">
+                <h3 className="text-xl font-bold mb-3 text-primary">Daily Prompt</h3>
+                <p className="text-base text-primary">
                   "Set one clear intention for today and take one step toward it."
                 </p>
               </div>
 
               {/* Progress Tracker */}
-              <div className="bg-primary border-4 border-secondary rounded-3xl p-8 text-white">
-                <h3 className="text-2xl font-bold mb-4">Progress Tracker</h3>
-                <p className="text-lg">
+              <div className="bg-white border-2 border-primary rounded-xl p-6">
+                <h3 className="text-xl font-bold mb-3 text-primary">Progress Tracker</h3>
+                <p className="text-base text-primary">
                   You've completed 2 of 4 stages this month.
                 </p>
               </div>
 
               {/* Quick Tips */}
-              <div className="md:col-span-2 bg-primary border-4 border-secondary rounded-3xl p-8 text-white">
-                <h3 className="text-2xl font-bold mb-6">Quick Tips</h3>
-                <ul className="space-y-3 text-lg list-disc list-inside">
+              <div className="md:col-span-2 bg-white border-2 border-primary rounded-xl p-6">
+                <h3 className="text-xl font-bold mb-4 text-primary">Quick Tips</h3>
+                <ul className="space-y-2 text-base text-primary list-disc list-inside">
                   <li>Start your day with clarity.</li>
                   <li>Break goals into smaller steps.</li>
                   <li>Review wins weekly.</li>
