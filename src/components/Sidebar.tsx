@@ -1,3 +1,4 @@
+// Updated Sidebar with black text support and corrected class merging
 import { Menu, HelpCircle } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
@@ -11,9 +12,10 @@ import iconAnalytics from "@/assets/icon-analytics.png";
 
 interface SidebarProps {
   showTasksAndResources?: boolean;
+  textColor?: string; // NEW
 }
 
-export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
+export const Sidebar = ({ showTasksAndResources = false, textColor = "black" }: SidebarProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 
@@ -40,10 +42,10 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed left-0 top-0 h-screen bg-background text-foreground w-64 flex flex-col transition-transform duration-300 z-40",
-          !isOpen && "max-md:-translate-x-full"
+          "fixed left-0 top-0 h-screen bg-background w-64 flex flex-col transition-transform duration-300 z-40",
+          !isOpen && "max-md:-translate-x-full",
+          textColor === "black" ? "text-black" : "text-white"
         )}
-        className={textColor === "black" ? "text-black" : "text-white"}
       >
         {/* Logo */}
         <div className="p-6">
@@ -57,10 +59,10 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
               key={item.name}
               to={item.path}
               className={cn(
-                "flex items-center gap-4 px-8 py-3 transition-colors rounded-lg",
+                "flex items-center gap-4 px-8 py-3 rounded-lg transition-colors",
                 isActive(item.path)
                   ? "bg-secondary text-primary font-semibold"
-                  : "text-primary hover:bg-secondary/50"
+                  : "hover:bg-secondary/50"
               )}
             >
               <img src={item.icon} alt={item.name} className="w-5 h-5" />
@@ -71,7 +73,7 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
 
         {/* Support Button */}
         <div className="p-6">
-          <button className="flex items-center gap-3 text-primary hover:text-primary/80 transition-colors">
+          <button className="flex items-center gap-3 hover:text-primary transition-colors">
             <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center">
               <HelpCircle className="w-4 h-4" />
             </div>
@@ -80,7 +82,7 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
         </div>
       </aside>
 
-      {/* Overlay for mobile */}
+      {/* Mobile Overlay */}
       {isOpen && (
         <div
           className="md:hidden fixed inset-0 bg-black/50 z-30"
