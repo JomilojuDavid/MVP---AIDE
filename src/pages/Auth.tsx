@@ -26,6 +26,42 @@ export default function Auth() {
   const leftRef = useRef<HTMLDivElement>(null);
   const rightRef = useRef<HTMLDivElement>(null);
 
+  /** Listen for auth state changes (handles OAuth redirects) */
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        if (event === 'SIGNED_IN' && session?.user) {
+          // Check if user has completed quiz by checking if they have a profile with data
+          setTimeout(async () => {
+            const { data: profile } = await supabase
+              .from('profiles')
+              .select('created_at')
+              .eq('id', session.user.id)
+              .single();
+            
+            // If profile was just created (within last 30 seconds), treat as new user
+            if (profile?.created_at) {
+              const createdAt = new Date(profile.created_at);
+              const now = new Date();
+              const isNewUser = (now.getTime() - createdAt.getTime()) < 30000;
+              
+              if (isNewUser) {
+                navigate('/quiz-step2');
+              } else {
+                navigate('/dashboard');
+              }
+            } else {
+              // No profile yet, new user
+              navigate('/quiz-step2');
+            }
+          }, 0);
+        }
+      }
+    );
+
+    return () => subscription.unsubscribe();
+  }, [navigate]);
+
   /** AUTO-SCALING */
   useEffect(() => {
     const resize = () => {
