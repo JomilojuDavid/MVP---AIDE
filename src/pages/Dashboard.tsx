@@ -86,59 +86,39 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
             </div>
           </motion.div>
 
-          {showQuizPrompt ? (
-            /* Quiz Prompt Card */
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-              className="bg-white rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6"
-            >
-              <p className="text-xl md:text-2xl text-foreground">
-                To unlock your personalized dashboard, take our quick quiz.
+          {/* Dashboard Content - Always show */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            className="grid md:grid-cols-2 gap-6"
+          >
+            {/* Daily Prompt */}
+            <div className="bg-primary border-2 border-primary rounded-xl p-6">
+              <h3 className="text-xl font-bold mb-3 text-white">Daily Prompt</h3>
+              <p className="text-base text-white">
+                "Set one clear intention for today and take one step toward it."
               </p>
-              <Button
-                onClick={() => navigate("/quiz")}
-                className="bg-primary text-white hover:bg-primary/90 h-14 px-10 text-lg font-bold rounded-full uppercase transition-all whitespace-nowrap"
-              >
-                Take Quiz
-              </Button>
-            </motion.div>
-          ) : (
-            /* Full Dashboard Content */
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-              className="grid md:grid-cols-2 gap-6"
-            >
-              {/* Daily Prompt */}
-              <div className="bg-white border-2 border-primary rounded-xl p-6">
-                <h3 className="text-xl font-bold mb-3 text-primary">Daily Prompt</h3>
-                <p className="text-base text-primary">
-                  "Set one clear intention for today and take one step toward it."
-                </p>
-              </div>
+            </div>
 
-              {/* Progress Tracker */}
-              <div className="bg-white border-2 border-primary rounded-xl p-6">
-                <h3 className="text-xl font-bold mb-3 text-primary">Progress Tracker</h3>
-                <p className="text-base text-primary">
-                  You've completed 2 of 4 stages this month.
-                </p>
-              </div>
+            {/* Progress Tracker */}
+            <div className="bg-primary border-2 border-primary rounded-xl p-6">
+              <h3 className="text-xl font-bold mb-3 text-white">Progress Tracker</h3>
+              <p className="text-base text-white">
+                You've completed 2 of 4 stages this month.
+              </p>
+            </div>
 
-              {/* Quick Tips */}
-              <div className="md:col-span-2 bg-white border-2 border-primary rounded-xl p-6">
-                <h3 className="text-xl font-bold mb-4 text-primary">Quick Tips</h3>
-                <ul className="space-y-2 text-base text-primary list-disc list-inside">
-                  <li>Start your day with clarity.</li>
-                  <li>Break goals into smaller steps.</li>
-                  <li>Review wins weekly.</li>
-                </ul>
-              </div>
-            </motion.div>
-          )}
+            {/* Quick Tips */}
+            <div className="md:col-span-2 bg-primary border-2 border-primary rounded-xl p-6">
+              <h3 className="text-xl font-bold mb-4 text-white">Quick Tips</h3>
+              <ul className="space-y-2 text-base text-white list-disc list-inside">
+                <li>Start your day with clarity.</li>
+                <li>Break goals into smaller steps.</li>
+                <li>Review wins weekly.</li>
+              </ul>
+            </div>
+          </motion.div>
         </div>
       </main>
     </div>
