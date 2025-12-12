@@ -63,10 +63,10 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="bg-white rounded-2xl p-5 md:p-6"
           >
-            <h2 className="text-xl md:text-2xl font-bold mb-4 text-foreground">Your AIDE Roadmap</h2>
+            <h2 className="text-xl md:text-2xl font-semi-bold mb-4 text-foreground">Your AIDE Roadmap</h2>
             
             {/* Progress Bar */}
-            <div className="relative w-full h-3 bg-[#FFD9D9] rounded-full mb-4 overflow-hidden">
+            <div className="relative w-full h-3 bg-[#FFD9D9] mb-4 overflow-hidden">
               <div 
                 className="absolute top-0 left-0 h-full bg-primary rounded-full transition-all duration-500"
                 style={{ width: showQuizPrompt ? '5%' : '25%' }}
@@ -93,7 +93,7 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
             className="grid md:grid-cols-2 gap-4"
           >
             {/* Daily Prompt */}
-            <div className="bg-primary border-2 border-[#F3C17E] rounded-xl p-4">
+            <div className="bg-primary border-2 border-[#F3C17E] p-4">
               <h3 className="text-lg font-bold mb-2 text-white">Daily Prompt</h3>
               <p className="text-sm text-white">
                 "Set one clear intention for today and take one step toward it."
@@ -101,7 +101,7 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
             </div>
 
             {/* Progress Tracker */}
-            <div className="bg-primary border-2 border-[#F3C17E] rounded-xl p-4">
+            <div className="bg-primary border-2 border-[#F3C17E] p-4">
               <h3 className="text-lg font-bold mb-2 text-white">Progress Tracker</h3>
               <p className="text-sm text-white">
                 You've completed 2 of 4 stages this month.
@@ -109,7 +109,7 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
             </div>
 
             {/* Quick Tips */}
-            <div className="md:col-span-2 bg-primary border-2 border-[#F3C17E] rounded-xl p-4">
+            <div className="md:col-span-2 bg-primary border-2 border-[#F3C17E] p-4">
               <h3 className="text-lg font-bold mb-3 text-white">Quick Tips</h3>
               <ul className="space-y-1 text-sm text-white list-disc list-inside">
                 <li>Start your day with clarity.</li>
