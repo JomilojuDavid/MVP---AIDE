@@ -1,8 +1,13 @@
-import { Home, Settings, Menu, HelpCircle, Brain, BookOpen, CheckSquare, BarChart3 } from "lucide-react";
+import { Menu, HelpCircle } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import aideLogo from "@/assets/aide-logo.png";
+import iconHome from "@/assets/icon-home.png";
+import iconAssessment from "@/assets/icon-assessment.png";
+import iconResources from "@/assets/icon-resources.png";
+import iconTasks from "@/assets/icon-tasks.png";
+import iconAnalytics from "@/assets/icon-analytics.png";
 
 interface SidebarProps {
   showTasksAndResources?: boolean;
@@ -15,11 +20,11 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
   const isActive = (path: string) => location.pathname === path;
 
   const navItems = [
-    { name: "Home", path: "/dashboard", icon: Home, show: true },
-    { name: "Assessment", path: "/assessment", icon: Brain, show: showTasksAndResources },
-    { name: "Resources", path: "/resources", icon: BookOpen, show: showTasksAndResources },
-    { name: "Tasks", path: "/tasks", icon: CheckSquare, show: showTasksAndResources },
-    { name: "Analytics", path: "/analytics", icon: BarChart3, show: showTasksAndResources },
+    { name: "Home", path: "/dashboard", icon: iconHome, show: true },
+    { name: "Assessment", path: "/assessment", icon: iconAssessment, show: showTasksAndResources },
+    { name: "Resources", path: "/resources", icon: iconResources, show: showTasksAndResources },
+    { name: "Tasks", path: "/tasks", icon: iconTasks, show: showTasksAndResources },
+    { name: "Analytics", path: "/analytics", icon: iconAnalytics, show: showTasksAndResources },
   ];
 
   return (
@@ -40,34 +45,34 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
         )}
       >
         {/* Logo */}
-        <div className="p-8">
-          <img src={aideLogo} alt="AIDE Logo" className="h-20 w-auto" />
+        <div className="p-6">
+          <img src={aideLogo} alt="AIDE Logo" className="h-16 w-auto" />
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 py-8">
+        <nav className="flex-1 py-4">
           {navItems.filter(item => item.show).map((item) => (
             <Link
               key={item.name}
               to={item.path}
               className={cn(
-                "flex items-center gap-4 px-8 py-4 transition-colors rounded-lg",
+                "flex items-center gap-4 px-8 py-3 transition-colors rounded-lg",
                 isActive(item.path)
                   ? "bg-secondary text-primary font-semibold"
                   : "text-primary hover:bg-secondary/50"
               )}
             >
-              <item.icon className="w-5 h-5 stroke-primary" />
+              <img src={item.icon} alt={item.name} className="w-5 h-5" />
               <span>{item.name}</span>
             </Link>
           ))}
         </nav>
 
         {/* Support Button */}
-        <div className="p-8">
-          <button className="flex items-center gap-3 text-foreground hover:text-primary transition-colors">
-            <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
-              <HelpCircle className="w-5 h-5" />
+        <div className="p-6">
+          <button className="flex items-center gap-3 text-primary hover:text-primary/80 transition-colors">
+            <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center">
+              <HelpCircle className="w-4 h-4" />
             </div>
             <span className="font-medium">Support</span>
           </button>
