@@ -53,11 +53,11 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
               className={cn(
                 "flex items-center gap-4 px-8 py-4 transition-colors rounded-lg",
                 isActive(item.path)
-                  ? "bg-secondary text-foreground font-semibold"
-                  : "text-foreground hover:bg-secondary/50"
+                  ? "bg-secondary text-primary font-semibold"
+                  : "text-primary hover:bg-secondary/50"
               )}
             >
-              <item.icon className="w-5 h-5" />
+              <item.icon className="w-5 h-5 stroke-primary" />
               <span>{item.name}</span>
             </Link>
           ))}
