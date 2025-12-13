@@ -93,7 +93,7 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
             className="grid md:grid-cols-2 gap-5"
           >
             {/* Daily Prompt */}
-            <div onClick={() => window.open('https://calendar.google.com', '_blank')} className="cursor-pointer bg-primary border-2 border-[#F3C17E] p-5 rounded-lg">
+            <div onClick={() => window.open('https://calendar.google.com', '_blank')} className="cursor-pointer bg-primary border-2 border-[#F3C17E] p-5">
               <h3 className="text-xl font-bold mb-3 text-white">Daily Prompt</h3>
               <p className="text-base text-white">
                 "Set one clear intention for today and take one step toward it."
@@ -101,7 +101,7 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
             </div>
 
             {/* Progress Tracker */}
-            <div className="bg-primary border-2 border-[#F3C17E] p-5 rounded-lg">
+            <div className="bg-primary border-2 border-[#F3C17E] p-5">
               <h3 className="text-xl font-bold mb-3 text-white">Progress Tracker</h3>
               <p className="text-base text-white">
                 You've completed 2 of 4 stages this month.
@@ -109,7 +109,7 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
             </div>
 
             {/* Quick Tips */}
-            <div className="md:col-span-2 bg-primary border-2 border-[#F3C17E] p-5 rounded-lg">
+            <div className="md:col-span-2 bg-primary border-2 border-[#F3C17E] p-5">
               <h3 className="text-xl font-bold mb-4 text-white">Quick Tips</h3>
               <ul className="space-y-2 text-base text-white list-disc list-inside">
                 <li>Start your day with clarity.</li>
