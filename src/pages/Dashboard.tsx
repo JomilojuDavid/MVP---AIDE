@@ -39,7 +39,7 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
   return (
     <div className="flex h-screen bg-primary relative overflow-hidden">
       <Sidebar showTasksAndResources={true} />
-      <TopBar onNotificationsClick={() => navigate('/notifications')} onSettingsClick={() => navigate('/settings')} />
+      <TopBar />
       
       <main className="flex-1 md:ml-64 p-4 md:p-6 overflow-auto">
         <div className="max-w-6xl mx-auto space-y-4">
