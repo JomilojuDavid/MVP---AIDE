@@ -1,4 +1,4 @@
-import { Menu, HelpCircle, Settings, Bell } from "lucide-react";
+import { Menu } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -8,6 +8,7 @@ import iconAssessment from "@/assets/icon-assessment.png";
 import iconResources from "@/assets/icon-resources.png";
 import iconTasks from "@/assets/icon-tasks.png";
 import iconAnalytics from "@/assets/icon-analytics.png";
+import supportWoman from "@/assets/support-woman.jpg";
 
 interface SidebarProps {
   showTasksAndResources?: boolean;
@@ -44,17 +45,11 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
           !isOpen && "max-md:-translate-x-full"
         )}
       >
-        {/* Top icons */}
-        <div className="flex items-center justify-between px-6 pt-6">
-          <Link to="/settings">
-            <Settings className="w-6 h-6 cursor-pointer" />
-          </Link>
-          <Bell className="w-6 h-6 cursor-pointer" />
-        </div>
-
-        {/* Logo */}
+        {/* Logo - Clickable */}
         <div className="p-6 pb-2">
-          <img src={aideLogo} alt="AIDE Logo" className="h-16 w-auto" />
+          <Link to="/dashboard">
+            <img src={aideLogo} alt="AIDE Logo" className="h-16 w-auto cursor-pointer" />
+          </Link>
         </div>
 
         {/* Navigation */}
@@ -76,12 +71,14 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
           ))}
         </nav>
 
-        {/* Support Button */}
+        {/* Support Button with Woman Image */}
         <div className="p-6">
           <button className="flex items-center gap-3 text-black hover:text-black/80 transition-colors">
-            <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center">
-              <HelpCircle className="w-4 h-4" />
-            </div>
+            <img 
+              src={supportWoman} 
+              alt="Support" 
+              className="w-10 h-10 rounded-full object-cover"
+            />
             <span className="font-medium">Support</span>
           </button>
         </div>
