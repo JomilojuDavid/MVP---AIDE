@@ -61,7 +61,7 @@ export default function Assessment() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="bg-white rounded-2xl p-6 text-center"
+            className="bg-white p-6 text-center"
           >
             <h2 className="text-2xl font-bold mb-4 text-foreground">
               Ready to take your AIDE Assessment?
@@ -80,7 +80,7 @@ export default function Assessment() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="bg-primary border-2 border-secondary rounded-2xl p-6 text-white"
+            className="bg-primary border-2 border-secondary p-6 text-white"
           >
             <h3 className="text-xl font-bold mb-4">Quick Tips</h3>
             <ul className="space-y-2 text-base list-disc list-inside">
