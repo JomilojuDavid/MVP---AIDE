@@ -59,7 +59,7 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
               key={item.name}
               to={item.path}
               className={cn(
-                "flex items-center gap-4 px-8 py-3 transition-colors rounded-lg",
+                "flex items-center gap-4 px-8 pt-8 transition-colors rounded-lg",
                 isActive(item.path)
                   ? "bg-secondary text-primary font-semibold"
                   : "text-black hover:bg-secondary/50"
