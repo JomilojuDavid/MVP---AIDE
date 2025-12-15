@@ -69,12 +69,12 @@ export default function Tasks() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="bg-white rounded-2xl py-4 px-6"
+            className="bg-white rounded-2xl py-5 px-8"
           >
-            <h1 className="text-2xl font-bold mb-1">
+            <h1 className="text-3xl font-bold mb-1">
               Complete Your AIDE Tasks, <span className="text-primary">{firstName || "Name"}!</span>
             </h1>
-            <p className="text-sm text-foreground">
+            <p className="text-base text-foreground">
               Each step brings you closer to clarity, confidence, and execution.
             </p>
           </motion.div>
@@ -84,23 +84,23 @@ export default function Tasks() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="bg-white py-4 px-6 flex-1"
+            className="bg-white py-5 px-8 flex-1"
           >
-            <div className="space-y-3">
+            <div className="space-y-4">
               {tasksList.map((task, index) => (
-                <div key={task.id} className="flex items-start gap-3">
+                <div key={task.id} className="flex items-start gap-4">
                   <Checkbox id={task.id} className="mt-1 h-5 w-5 border-2 border-secondary" />
                   <div className="flex-1">
                     <label
                       htmlFor={task.id}
-                      className="text-base font-bold text-foreground cursor-pointer block"
+                      className="text-lg font-bold text-foreground cursor-pointer block"
                     >
                       {task.title}
                     </label>
-                    <p className="text-sm text-foreground">{task.description}</p>
+                    <p className="text-base text-foreground">{task.description}</p>
                   </div>
                   {index === tasksList.length - 1 && (
-                    <Button className="bg-primary text-white hover:bg-primary/90 h-8 px-4 text-xs font-bold rounded-full">
+                    <Button className="bg-primary text-white hover:bg-primary/90 h-10 px-5 text-sm font-bold rounded-full">
                       Start Tasks
                     </Button>
                   )}
@@ -114,10 +114,10 @@ export default function Tasks() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
-            className="bg-primary border-2 border-secondary py-4 px-6 text-white"
+            className="bg-primary border-2 border-secondary py-5 px-8 text-white"
           >
-            <h3 className="text-lg font-bold mb-2">Quick Tips</h3>
-            <ul className="space-y-1 text-sm list-disc list-inside">
+            <h3 className="text-xl font-bold mb-3">Quick Tips</h3>
+            <ul className="space-y-1 text-base list-disc list-inside">
               <li>Start your day with clarity.</li>
               <li>Break goals into smaller steps.</li>
               <li>Review wins weekly.</li>

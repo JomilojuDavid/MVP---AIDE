@@ -46,14 +46,14 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
         )}
       >
         {/* Logo - Clickable */}
-        <div className="p-6 pb-4">
+        <div className="p-6 pb-2">
           <Link to="/dashboard">
             <img src={aideLogo} alt="AIDE Logo" className="h-20 w-auto cursor-pointer" />
           </Link>
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 px-4 space-y-2">
+        <nav className="flex-1 px-4 space-y-2 mt-6">
           {navItems.filter(item => item.show).map((item) => (
             <Link
               key={item.name}
@@ -65,19 +65,13 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
                   ? "text-primary font-semibold"
                   : "text-foreground hover:text-primary"
               )}
-              style={{
-                color: isActive(item.path) ? undefined : '#F3C17E'
-              }}
             >
               <img 
                 src={item.icon} 
                 alt={item.name} 
                 className="w-5 h-5"
-                style={{ 
-                  filter: 'invert(78%) sepia(31%) saturate(628%) hue-rotate(341deg) brightness(95%) contrast(92%)'
-                }}
               />
-              <span className="font-medium" style={{ color: '#F3C17E' }}>{item.name}</span>
+              <span className="font-medium text-primary">{item.name}</span>
             </Link>
           ))}
         </nav>
