@@ -14,30 +14,36 @@ export const TopBar = () => {
         z-[999]
         flex
         items-center
-        gap-[12px]
+        gap-[18px]
         pointer-events-auto
       "
     >
-      {/* Settings (≈42 × 41) */}
+      {/* SETTINGS ICON — 42.6 × 41 */}
       <Button
         variant="ghost"
         size="icon"
+        onClick={() => navigate("/settings")}
         className="w-[42.6px] h-[41px] p-0"
-        onClick={() => navigate('/settings')}
       >
-        <Settings className="w-[42.6px] h-[41px] text-white" />
+        <Settings
+          className="w-[42.6px] h-[41px] text-white"
+          strokeWidth={2.2}
+        />
       </Button>
 
-      {/* Bell (44 × 44) */}
+      {/* BELL ICON — 44 × 44 */}
       <Button
         variant="ghost"
         size="icon"
+        onClick={() => navigate("/notifications")}
         className="relative w-[44px] h-[44px] p-0"
-        onClick={() => navigate('/notifications')}
       >
-        <Bell className="w-[44px] h-[44px] text-white" />
+        <Bell
+          className="w-[44px] h-[44px] text-white"
+          strokeWidth={2.2}
+        />
 
-        {/* Badge */}
+        {/* NOTIFICATION BADGE — FIGMA MATCH */}
         <span
           className="
             absolute
