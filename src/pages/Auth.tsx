@@ -26,38 +26,29 @@ export default function Auth() {
   const leftRef = useRef<HTMLDivElement>(null);
   const rightRef = useRef<HTMLDivElement>(null);
 
-  /** Listen for auth state changes (handles OAuth redirects) */
+  /** AUTH STATE LISTENER (single source of truth for redirects) */
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        if (event === 'SIGNED_IN' && session?.user) {
-          // Check if user has completed quiz by checking if they have a profile with data
-          setTimeout(async () => {
-            const { data: profile } = await supabase
-              .from('profiles')
-              .select('created_at')
-              .eq('id', session.user.id)
-              .single();
-            
-            // If profile was just created (within last 30 seconds), treat as new user
-            if (profile?.created_at) {
-              const createdAt = new Date(profile.created_at);
-              const now = new Date();
-              const isNewUser = (now.getTime() - createdAt.getTime()) < 30000;
-              
-              if (isNewUser) {
-                navigate('/quiz-step2');
-              } else {
-                navigate('/dashboard');
-              }
-            } else {
-              // No profile yet, new user
-              navigate('/quiz-step2');
-            }
-          }, 0);
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event === "SIGNED_IN" && session?.user) {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("created_at")
+          .eq("id", session.user.id)
+          .single();
+
+        if (profile?.created_at) {
+          const createdAt = new Date(profile.created_at);
+          const now = new Date();
+          const isNewUser = now.getTime() - createdAt.getTime() < 30000;
+
+          navigate(isNewUser ? "/quiz-step2" : "/dashboard");
+        } else {
+          navigate("/quiz-step2");
         }
       }
-    );
+    });
 
     return () => subscription.unsubscribe();
   }, [navigate]);
@@ -70,9 +61,12 @@ export default function Auth() {
 
       const scaleX = window.innerWidth / baseWidth;
       const scaleY = window.innerHeight / baseHeight;
-      const finalScale = Math.min(scaleX, scaleY) * 1.1; // +10%
+      const finalScale = Math.min(scaleX, scaleY) * 1.1;
 
-      document.documentElement.style.setProperty("--auth-scale", String(finalScale));
+      document.documentElement.style.setProperty(
+        "--auth-scale",
+        String(finalScale)
+      );
     };
 
     resize();
@@ -80,7 +74,7 @@ export default function Auth() {
     return () => window.removeEventListener("resize", resize);
   }, []);
 
-  /** Load saved email if Remember Me was checked */
+  /** LOAD REMEMBERED EMAIL */
   useEffect(() => {
     const savedEmail = localStorage.getItem("rememberedEmail");
     if (savedEmail) {
@@ -89,14 +83,16 @@ export default function Auth() {
     }
   }, []);
 
-  /** Fades (intersection observer) */
+  /** FADE-IN OBSERVER */
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            if (entry.target === leftRef.current) leftControls.start("visible");
-            if (entry.target === rightRef.current) rightControls.start("visible");
+            if (entry.target === leftRef.current)
+              leftControls.start("visible");
+            if (entry.target === rightRef.current)
+              rightControls.start("visible");
           }
         });
       },
@@ -123,7 +119,7 @@ export default function Auth() {
         email: signUpEmail,
         password: signUpPassword,
         options: {
-          emailRedirectTo: `${window.location.origin}/quiz`,
+          emailRedirectTo: `${window.location.origin}/auth`,
           data: { first_name: firstName, last_name: lastName },
         },
       });
@@ -131,9 +127,12 @@ export default function Auth() {
       if (error) throw error;
 
       toast({ title: "Account created successfully!" });
-      navigate("/quiz-step2");
     } catch (error: any) {
-      toast({ title: "Sign up failed", description: error.message, variant: "destructive" });
+      toast({
+        title: "Sign up failed",
+        description: error.message,
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
@@ -159,9 +158,12 @@ export default function Auth() {
       }
 
       toast({ title: "Welcome back!" });
-      navigate("/quiz");
     } catch (error: any) {
-      toast({ title: "Sign in failed", description: error.message, variant: "destructive" });
+      toast({
+        title: "Sign in failed",
+        description: error.message,
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
@@ -173,17 +175,27 @@ export default function Auth() {
     try {
       await supabase.auth.signInWithOAuth({
         provider: "google",
-        options: { redirectTo: `${window.location.origin}/dashboard` },
+        options: {
+          redirectTo: `${window.location.origin}/auth`,
+        },
       });
     } catch (error: any) {
-      toast({ title: "Google Sign In failed", description: error.message, variant: "destructive" });
+      toast({
+        title: "Google Sign In failed",
+        description: error.message,
+        variant: "destructive",
+      });
       setLoading(false);
     }
   };
 
   const sectionVariants = {
     hidden: { opacity: 0, y: 80 },
-    visible: { opacity: 1, y: 0, transition: { duration: 1.1 } },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 1.1 },
+    },
   };
 
   const fadeItem = {
@@ -197,7 +209,7 @@ export default function Auth() {
 
   return (
     <div className="min-h-screen w-full flex relative bg-white">
-      {/* fixed logo top-left */}
+      {/* LOGO */}
       <img
         src={aideLogo}
         onClick={() => navigate("/dashboard")}
@@ -205,7 +217,7 @@ export default function Auth() {
         alt="AIDE logo"
       />
 
-      {/* LEFT PANEL (sign-in) */}
+      {/* LEFT PANEL */}
       <motion.div
         ref={leftRef}
         variants={sectionVariants}
@@ -215,9 +227,11 @@ export default function Auth() {
       >
         <div
           className="w-full max-w-sm flex flex-col items-center text-center"
-          style={{ transform: "scale(var(--auth-scale))", transformOrigin: "top center" }}
+          style={{
+            transform: "scale(var(--auth-scale))",
+            transformOrigin: "top center",
+          }}
         >
-          {/* HELLO FRIEND: moved down via pt-48 on parent, whitespace kept on one line */}
           <motion.h1
             variants={fadeItem}
             custom={0}
@@ -226,19 +240,17 @@ export default function Auth() {
             Hello, Friend!
           </motion.h1>
 
-          {/* BODY TEXT: exactly ~3 lines (constrained width + tighter leading) */}
           <motion.p
             variants={fadeItem}
             custom={1}
-            className="text-gray-700 text-[22px] mt-4 text-center max-w-[350px]"
+            className="text-gray-700 text-[22px] mt-4 max-w-[350px]"
             style={{ lineHeight: 1.4 }}
           >
             Sign in to continue your personalized journey with{" "}
-            <span className="font-bold text-black">AIDE</span>—where mindset mastery meets
-            business growth.
+            <span className="font-bold text-black">AIDE</span>—where mindset
+            mastery meets business growth.
           </motion.p>
 
-          {/* SIGN IN FORM */}
           <motion.form
             variants={fadeItem}
             custom={2}
@@ -292,7 +304,7 @@ export default function Auth() {
         </div>
       </motion.div>
 
-      {/* RIGHT PANEL (sign-up) */}
+      {/* RIGHT PANEL */}
       <motion.div
         ref={rightRef}
         variants={sectionVariants}
@@ -302,9 +314,11 @@ export default function Auth() {
       >
         <div
           className="w-full max-w-xl text-center"
-          style={{ transform: "scale(var(--auth-scale))", transformOrigin: "top center" }}
+          style={{
+            transform: "scale(var(--auth-scale))",
+            transformOrigin: "top center",
+          }}
         >
-          {/* CREATE AN ACCOUNT - single line, no wrap */}
           <motion.h2
             variants={fadeItem}
             custom={0}
@@ -313,11 +327,9 @@ export default function Auth() {
             Create an Account
           </motion.h2>
 
-          {/* GOOGLE SIGN IN */}
           <button
             onClick={handleGoogle}
             className="flex w-[80%] mx-auto mt-8 mb-6 rounded-none overflow-hidden"
-            aria-label="Continue with Google"
           >
             <div className="bg-white w-[80px] h-[80px] flex items-center justify-center">
               <FcGoogle size={42} />
@@ -327,10 +339,16 @@ export default function Auth() {
             </span>
           </button>
 
-          <p className="text-white text-[23px] mt-4 mb-6">or use your Email for registration</p>
+          <p className="text-white text-[23px] mt-4 mb-6">
+            or use your Email for registration
+          </p>
 
-          {/* SIGN UP FORM */}
-          <motion.form variants={fadeItem} custom={1} onSubmit={handleSignUp} className="space-y-6">
+          <motion.form
+            variants={fadeItem}
+            custom={1}
+            onSubmit={handleSignUp}
+            className="space-y-6"
+          >
             <div className="grid grid-cols-2 gap-6">
               <Input
                 type="text"
