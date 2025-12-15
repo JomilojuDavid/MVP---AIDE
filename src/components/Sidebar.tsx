@@ -235,7 +235,7 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
         </div>
       </aside>
 
-      {/* === Mobile Sidebar (unchanged behavior) === */}
+      {/* === Mobile Sidebar (unchanged behavior) */}
       {isOpen && (
         <div
           className="md:hidden fixed inset-0 bg-black/50 z-30"
