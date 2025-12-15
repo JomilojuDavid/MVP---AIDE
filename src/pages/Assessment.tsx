@@ -1,96 +1,123 @@
-import { Sidebar } from "@/components/Sidebar";
-import { TopBar } from "@/components/TopBar";
 import { Button } from "@/components/ui/button";
-import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
 
 export default function Assessment() {
-  const [firstName, setFirstName] = useState<string>("");
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchProfile = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      if (!user) {
-        navigate("/auth");
-        return;
-      }
-
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("first_name")
-        .eq("id", user.id)
-        .single();
-
-      if (profile?.first_name) {
-        setFirstName(profile.first_name);
-      }
-    };
-
-    fetchProfile();
-  }, [navigate]);
+  const userName = "Name"; // replace later with real user data
 
   return (
-    <div className="flex h-screen bg-primary overflow-hidden">
-      <Sidebar showTasksAndResources />
+    <div className="min-h-screen bg-[#DF1516] flex">
+      {/* MAIN CONTENT */}
+      <main className="flex-1 ml-64 pt-[120px]">
+        <div className="relative w-full">
 
-      <TopBar />
-
-      <main className="flex-1 md:ml-64 pt-8 px-6 flex flex-col">
-        <div className="max-w-4xl mx-auto w-full flex flex-col gap-4 flex-1">
-          {/* Header */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="bg-white rounded-2xl py-5 px-8"
+          {/* Your Weekly AIDE Assessment */}
+          <div
+            className="bg-white mx-auto flex items-center justify-center"
+            style={{
+              width: 995,
+              height: 111,
+              borderRadius: 17,
+              boxShadow: "0px 4px 4px rgba(0,0,0,0.25)",
+            }}
           >
-            <h1 className="text-3xl font-bold">
+            <p
+              style={{
+                fontFamily: "Arial",
+                fontSize: 45,
+                fontWeight: 400,
+                lineHeight: "100%",
+              }}
+            >
               Your Weekly AIDE Assessment,{" "}
-              <span className="text-primary">{firstName || "Name"}!</span>
-            </h1>
-          </motion.div>
+              <span className="text-[#DF1516]">{userName}!</span>
+            </p>
+          </div>
 
-          {/* Assessment Card */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="bg-white py-10 px-8 text-center flex-1 flex flex-col justify-center"
+          {/* Ready to take your AIDE Assessment */}
+          <div
+            className="bg-white mx-auto mt-[32px] flex flex-col items-center justify-center"
+            style={{
+              width: 995,
+              height: 401,
+              boxShadow: "0px 4px 4px rgba(0,0,0,0.25)",
+            }}
           >
-            <h2 className="text-3xl font-bold mb-4 text-foreground">
+            <h1
+              className="text-center"
+              style={{
+                fontFamily: "Arial",
+                fontSize: 48,
+                fontWeight: 400,
+                lineHeight: "100%",
+                width: 699,
+              }}
+            >
               Ready to take your AIDE Assessment?
-            </h2>
-            <p className="text-lg text-foreground mb-6">
+            </h1>
+
+            <p
+              className="mt-6 text-center"
+              style={{
+                fontFamily: "Montserrat",
+                fontSize: 28,
+                fontWeight: 400,
+                lineHeight: "100%",
+                width: 767,
+              }}
+            >
               This assessment takes less than 5 minutes and helps us personalize
               your growth experience.
             </p>
-            <div>
-              <Button className="bg-primary text-white hover:bg-primary/90 h-12 px-8 text-base font-bold rounded-full">
-                Take Assessment
-              </Button>
-            </div>
-          </motion.div>
+
+            <Button
+              className="mt-8 bg-[#DF1516] hover:bg-[#c01314]"
+              style={{
+                width: 257,
+                height: 52,
+                borderRadius: 17,
+                fontFamily: "Montserrat",
+                fontSize: 20,
+                fontWeight: 500,
+              }}
+            >
+              Take Assessment
+            </Button>
+          </div>
 
           {/* Quick Tips */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="bg-primary border-2 border-secondary py-5 px-8 text-white"
+          <div
+            className="mx-auto mt-[60px] flex flex-col justify-center px-10"
+            style={{
+              width: 995,
+              height: 208,
+              border: "2px solid #F3C17E",
+            }}
           >
-            <h3 className="text-xl font-bold mb-3">Quick Tips</h3>
-            <ul className="space-y-1 text-base list-disc list-inside">
-              <li>Start your day with clarity.</li>
-              <li>Break goals into smaller steps.</li>
-              <li>Review wins weekly.</li>
+            <h2
+              style={{
+                fontFamily: "Montserrat",
+                fontSize: 26,
+                fontWeight: 700,
+                lineHeight: "100%",
+              }}
+            >
+              Quick Tips
+            </h2>
+
+            <ul
+              className="mt-6 space-y-2"
+              style={{
+                fontFamily: "Montserrat",
+                fontSize: 20,
+                fontWeight: 500,
+                lineHeight: "32px",
+              }}
+            >
+              <li>• Start your day with clarity.</li>
+              <li>• Break goals into smaller steps.</li>
+              <li>• Review wins weekly.</li>
             </ul>
-          </motion.div>
+          </div>
+
         </div>
       </main>
     </div>
