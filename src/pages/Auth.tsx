@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { FcGoogle } from "react-icons/fc";
 import aideLogo from "@/assets/aide-logo.png";
+import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
-import ResponsiveCanvas from "@/components/ResponsiveCanvas";
 
 export default function Auth() {
   const [fullName, setFullName] = useState("");
@@ -26,7 +26,7 @@ export default function Auth() {
   const leftRef = useRef<HTMLDivElement>(null);
   const rightRef = useRef<HTMLDivElement>(null);
 
-  /** Intersection Observer for fade-in animations */
+  // Intersection observer for fade-in animations
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -44,6 +44,24 @@ export default function Auth() {
     return () => observer.disconnect();
   }, [leftControls, rightControls]);
 
+  // AUTO-SCALING for canvas
+  useEffect(() => {
+    const resize = () => {
+      const baseWidth = 1512;
+      const baseHeight = 982;
+
+      const scaleX = window.innerWidth / baseWidth;
+      const scaleY = window.innerHeight / baseHeight;
+      const finalScale = Math.min(scaleX, scaleY);
+
+      document.documentElement.style.setProperty("--auth-scale", String(finalScale));
+    };
+
+    resize();
+    window.addEventListener("resize", resize);
+    return () => window.removeEventListener("resize", resize);
+  }, []);
+
   const sectionVariants = {
     hidden: { opacity: 0, y: 80 },
     visible: { opacity: 1, y: 0, transition: { duration: 1.1 } },
@@ -58,12 +76,18 @@ export default function Auth() {
     }),
   };
 
+  /** SIGN IN handler, SIGN UP handler, GOOGLE handler remain unchanged */
+
   return (
-    <ResponsiveCanvas width={1512} height={982}>
+    <div
+      className="relative w-screen h-screen"
+      style={{ backgroundColor: "#FFFFFF" }}
+    >
       {/* Logo */}
       <img
         src={aideLogo}
         onClick={() => navigate("/dashboard")}
+        alt="AIDE Logo"
         className="absolute cursor-pointer"
         style={{
           width: "259px",
@@ -71,23 +95,20 @@ export default function Auth() {
           top: "35px",
           left: "35px",
         }}
-        alt="AIDE Logo"
       />
 
-      {/* LEFT PANEL - Sign In */}
+      {/* LEFT PANEL - SIGN IN */}
       <motion.div
         ref={leftRef}
         variants={sectionVariants}
         initial="hidden"
         animate={leftControls}
-        className="absolute bg-white"
+        className="absolute"
         style={{
           width: "700px",
           height: "982px",
           left: 0,
           top: 0,
-          paddingTop: "312px",
-          paddingLeft: "72px",
         }}
       >
         {/* Hello Friend */}
@@ -98,6 +119,9 @@ export default function Auth() {
           style={{
             width: "442px",
             height: "59px",
+            top: "312px",
+            left: "72px",
+            position: "absolute",
             fontSize: "48px",
             lineHeight: "100%",
           }}
@@ -105,98 +129,105 @@ export default function Auth() {
           Hello, Friend!
         </motion.h1>
 
-        {/* Sign in text */}
+        {/* Sign in Text */}
         <motion.p
           variants={fadeItem}
           custom={1}
-          className="text-center"
           style={{
             width: "540px",
             height: "108px",
+            top: "404px",
+            left: "42px",
+            position: "absolute",
             fontFamily: "Poppins",
             fontWeight: 400,
             fontSize: "24px",
-            marginTop: "20px",
+            lineHeight: "100%",
+            textAlign: "center",
           }}
         >
           Sign in to continue your personalized journey with{" "}
           <span style={{ fontWeight: 800 }}>AIDE</span>
         </motion.p>
 
-        {/* Your Email Input */}
+        {/* Email Input */}
         <motion.div
           variants={fadeItem}
           custom={2}
-          className="relative mt-10"
           style={{
             width: "465px",
             height: "83px",
             top: "557px",
-            left: "0px",
+            left: "62px",
+            position: "absolute",
           }}
         >
           <Input
             type="email"
             placeholder="Your Email"
-            className="h-full w-full border border-[#DF1516] text-[22px] px-4 rounded-none"
             value={signInEmail}
             onChange={(e) => setSignInEmail(e.target.value)}
+            className="h-full w-full border border-[#DF1516] rounded-none text-[22px] px-4"
           />
         </motion.div>
 
-        {/* Password */}
+        {/* Password Input + Sign In Button */}
         <motion.div
           variants={fadeItem}
           custom={3}
-          className="relative flex"
           style={{
             width: "465px",
+            height: "83px",
             top: "664px",
+            left: "58px",
+            position: "absolute",
+            display: "flex",
           }}
         >
           <Input
             type="password"
             placeholder="Password"
-            className="h-[83px] w-[339px] border border-[#DF1516] px-4 text-[22px] rounded-none"
             value={signInPassword}
             onChange={(e) => setSignInPassword(e.target.value)}
+            className="h-full w-[339px] border border-[#DF1516] rounded-none px-4 text-[22px]"
           />
           <Button
             type="submit"
-            className="h-[83px] w-[161px] bg-[#DF1516] text-white text-[24px] font-bold rounded-none"
+            className="h-full w-[161px] bg-[#DF1516] text-white font-bold text-[24px] rounded-none"
           >
             Sign In
           </Button>
         </motion.div>
       </motion.div>
 
-      {/* RIGHT PANEL - Sign Up */}
+      {/* RIGHT PANEL - SIGN UP */}
       <motion.div
         ref={rightRef}
         variants={sectionVariants}
         initial="hidden"
         animate={rightControls}
-        className="absolute bg-[#DF1516]"
+        className="absolute"
         style={{
           width: "812px",
           height: "982px",
-          left: "700px",
           top: 0,
-          paddingTop: "185px",
-          paddingLeft: "53px",
+          left: "700px",
+          backgroundColor: "#DF1516",
         }}
       >
         {/* Create an Account */}
         <motion.h2
           variants={fadeItem}
           custom={0}
-          className="text-white font-montserrat font-extrabold text-center"
+          className="font-montserrat font-extrabold text-center text-white"
           style={{
             width: "570px",
             height: "59px",
+            top: "185px",
+            left: "753px",
+            position: "absolute",
             fontSize: "48px",
             lineHeight: "100%",
-            marginBottom: "50px",
           }}
         >
           Create an Account
@@ -206,8 +237,14 @@ export default function Auth() {
         <motion.div
           variants={fadeItem}
           custom={1}
-          className="flex"
-          style={{ marginBottom: "20px" }}
+          style={{
+            width: "469px",
+            height: "83px",
+            top: "286px",
+            left: "834px",
+            position: "absolute",
+            display: "flex",
+          }}
         >
           <div
             className="flex items-center justify-center border border-[#DF1516]"
@@ -223,49 +260,70 @@ export default function Auth() {
           </div>
         </motion.div>
 
-        {/* Or use email */}
+        {/* Or use Email */}
         <p
-          className="text-white text-[24px]"
-          style={{ marginBottom: "20px", textAlign: "center" }}
+          style={{
+            width: "540px",
+            height: "36px",
+            top: "412px",
+            left: "772px",
+            position: "absolute",
+            fontFamily: "Poppins",
+            fontWeight: 400,
+            fontSize: "24px",
+            lineHeight: "100%",
+            color: "white",
+            textAlign: "center",
+          }}
         >
           or use your Email for registration
         </p>
 
         {/* Sign Up Form */}
-        <motion.div variants={fadeItem} custom={2} className="flex flex-col gap-6">
-          <div className="flex gap-6">
-            <Input
-              type="text"
-              placeholder="Full Name"
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-              className="h-[83px] w-[283px] border border-[#F3C17E] rounded-none px-4 text-[22px]"
-            />
-            <Input
-              type="email"
-              placeholder="Your Email"
-              value={signUpEmail}
-              onChange={(e) => setSignUpEmail(e.target.value)}
-              className="h-[83px] w-[283px] border border-[#F3C17E] rounded-none px-4 text-[22px]"
-            />
-          </div>
-
+        <motion.div
+          variants={fadeItem}
+          custom={2}
+          style={{
+            position: "absolute",
+            top: "507px",
+            left: "736px",
+            display: "flex",
+            gap: "10px",
+          }}
+        >
           <Input
-            type="password"
-            placeholder="Password"
-            value={signUpPassword}
-            onChange={(e) => setSignUpPassword(e.target.value)}
-            className="h-[83px] border border-[#F3C17E] rounded-none px-4 text-[22px]"
+            type="text"
+            placeholder="Full Name"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+            className="h-[83px] w-[283px] border border-[#F3C17E] rounded-none px-4 text-[22px]"
           />
-
-          <Button
-            type="submit"
-            className="h-[83px] w-[603px] bg-[#F3C17E] text-[#DF1516] font-bold rounded-none text-[24px]"
-          >
-            Sign Up
-          </Button>
+          <Input
+            type="email"
+            placeholder="Your Email"
+            value={signUpEmail}
+            onChange={(e) => setSignUpEmail(e.target.value)}
+            className="h-[83px] w-[283px] border border-[#F3C17E] rounded-none px-4 text-[22px]"
+          />
         </motion.div>
+
+        <Input
+          type="password"
+          placeholder="Password"
+          value={signUpPassword}
+          onChange={(e) => setSignUpPassword(e.target.value)}
+          className="h-[83px] border border-[#F3C17E] rounded-none px-4 text-[22px]"
+          style={{ position: "absolute", top: "733px", left: "744px", width: "603px" }}
+        />
+
+        <Button
+          type="submit"
+          className="h-[83px] w-[603px] text-[24px] font-bold bg-[#F3C17E] text-[#DF1516] rounded-none"
+          style={{ position: "absolute", top: "733px", left: "744px" }}
+        >
+          Sign Up
+        </Button>
       </motion.div>
-    </ResponsiveCanvas>
+    </div>
   );
 }
