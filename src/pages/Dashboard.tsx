@@ -17,12 +17,12 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
   const CANVAS_WIDTH = 1512;
   const CANVAS_HEIGHT = 982;
 
-  // Dynamic scaling based on viewport
+  // Dynamically calculate scale based on viewport
   useEffect(() => {
     const handleResize = () => {
       const scaleX = window.innerWidth / CANVAS_WIDTH;
       const scaleY = window.innerHeight / CANVAS_HEIGHT;
-      const newScale = Math.min(scaleX, scaleY, 1); // Never scale above 1
+      const newScale = Math.min(scaleX, scaleY, 1); // Never scale above original size
       setScale(newScale);
     };
 
@@ -31,6 +31,7 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Fetch user profile
   useEffect(() => {
     const fetchProfile = async () => {
       const {
@@ -62,7 +63,7 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
       <Sidebar showTasksAndResources />
       <TopBar />
 
-      {/* === Main Canvas Container (Scaled & Centered) === */}
+      {/* === Main Canvas Container: Scaled & Perfectly Centered === */}
       <div className="absolute inset-0 flex items-center justify-center">
         <main
           className="relative"
@@ -71,7 +72,7 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
             height: `${CANVAS_HEIGHT}px`,
             borderRadius: "30px",
             transform: `scale(${scale})`,
-            transformOrigin: "top left",
+            transformOrigin: "center center", // Center scaling
           }}
         >
           {/* === Welcome Card === */}
