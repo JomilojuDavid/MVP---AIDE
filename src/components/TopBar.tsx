@@ -1,5 +1,4 @@
 import { Settings, Bell } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 
 export const TopBar = () => {
@@ -14,36 +13,34 @@ export const TopBar = () => {
         z-[999]
         flex
         items-center
-        gap-[18px]
+        gap-[20px]
         pointer-events-auto
       "
     >
-      {/* SETTINGS ICON — 42.6 × 41 */}
-      <Button
-        variant="ghost"
-        size="icon"
+      {/* SETTINGS — 42.6 × 41 */}
+      <button
         onClick={() => navigate("/settings")}
-        className="w-[42.6px] h-[41px] p-0"
+        className="w-[42.6px] h-[41px] flex items-center justify-center"
       >
         <Settings
-          className="w-[42.6px] h-[41px] text-white"
-          strokeWidth={2.2}
+          style={{ width: "42.6px", height: "41px" }}
+          strokeWidth={2.4}
+          className="text-white"
         />
-      </Button>
+      </button>
 
-      {/* BELL ICON — 44 × 44 */}
-      <Button
-        variant="ghost"
-        size="icon"
+      {/* BELL — 44 × 44 */}
+      <button
         onClick={() => navigate("/notifications")}
-        className="relative w-[44px] h-[44px] p-0"
+        className="relative w-[44px] h-[44px] flex items-center justify-center"
       >
         <Bell
-          className="w-[44px] h-[44px] text-white"
-          strokeWidth={2.2}
+          style={{ width: "44px", height: "44px" }}
+          strokeWidth={2.4}
+          className="text-white"
         />
 
-        {/* NOTIFICATION BADGE — FIGMA MATCH */}
+        {/* BADGE — EXACT FIGMA */}
         <span
           className="
             absolute
@@ -66,7 +63,7 @@ export const TopBar = () => {
         >
           3
         </span>
-      </Button>
+      </button>
     </div>
   );
 };
