@@ -2,6 +2,7 @@ import { Menu } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+
 import aideLogo from "@/assets/aide-logo.png";
 import iconHome from "@/assets/icon-home.png";
 import iconAssessment from "@/assets/icon-assessment.png";
@@ -20,17 +21,9 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
 
   const isActive = (path: string) => location.pathname === path;
 
-  const navItems = [
-    { name: "Home", path: "/dashboard", icon: iconHome, show: true },
-    { name: "Assessment", path: "/assessment", icon: iconAssessment, show: showTasksAndResources },
-    { name: "Resources", path: "/resources", icon: iconResources, show: showTasksAndResources },
-    { name: "Tasks", path: "/tasks", icon: iconTasks, show: showTasksAndResources },
-    { name: "Analytics", path: "/analytics", icon: iconAnalytics, show: showTasksAndResources },
-  ];
-
   return (
     <>
-      {/* Mobile Menu Button */}
+      {/* === Mobile Menu Button (unchanged) === */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="md:hidden fixed top-4 left-4 z-50 p-2 bg-primary text-primary-foreground rounded-lg"
@@ -38,58 +31,211 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
         <Menu className="w-6 h-6" />
       </button>
 
-      {/* Sidebar */}
+      {/* === Sidebar Canvas === */}
       <aside
         className={cn(
-          "fixed left-0 top-0 h-screen bg-background text-black w-64 flex flex-col transition-transform duration-300 z-40",
-          !isOpen && "max-md:-translate-x-full"
+          "fixed left-0 top-0 bg-background text-black z-40",
+          "w-[260px] h-[982px]",
+          "hidden md:block"
         )}
       >
-        {/* Logo - Clickable */}
-        <div className="p-6 pb-2">
-          <Link to="/dashboard">
-            <img src={aideLogo} alt="AIDE Logo" className="h-20 w-auto cursor-pointer" />
-          </Link>
-        </div>
+        {/* === Logo === */}
+        <Link to="/dashboard">
+          <img
+            src={aideLogo}
+            alt="AIDE Logo"
+            style={{
+              position: "absolute",
+              width: "167px",
+              height: "132px",
+              top: "76px",
+              left: "30px",
+              objectFit: "contain",
+              cursor: "pointer",
+            }}
+          />
+        </Link>
 
-        {/* Navigation */}
-        <nav className="flex-1 px-4 space-y-2 mt-6">
-          {navItems.filter(item => item.show).map((item) => (
-            <Link
-              key={item.name}
-              to={item.path}
-              onClick={() => setIsOpen(false)}
-              className={cn(
-                "flex items-center gap-3 px-4 py-3 transition-colors",
-                isActive(item.path)
-                  ? "text-primary font-semibold"
-                  : "text-foreground hover:text-primary"
-              )}
-            >
-              <img 
-                src={item.icon} 
-                alt={item.name} 
-                className="w-5 h-5"
-              />
-              <span className="font-medium text-primary">{item.name}</span>
-            </Link>
-          ))}
-        </nav>
+        {/* === Home === */}
+        <Link to="/dashboard">
+          <img
+            src={iconHome}
+            alt="Home"
+            style={{
+              position: "absolute",
+              width: "23.91px",
+              height: "23px",
+              top: "270px",
+              left: "53px",
+            }}
+          />
+          <span
+            style={{
+              position: "absolute",
+              top: "274px",
+              left: "85.91px",
+              fontFamily: "Arial, sans-serif",
+              fontWeight: 400,
+              fontSize: "21px",
+              color: "#000",
+            }}
+          >
+            Home
+          </span>
+        </Link>
 
-        {/* Support Button with Woman Image */}
-        <div className="p-6">
-          <button className="flex items-center gap-3 transition-colors">
-            <img 
-              src={supportWoman} 
-              alt="Support" 
-              className="w-10 h-10 rounded-full object-cover"
+        {/* === Assessment === */}
+        {showTasksAndResources && (
+          <Link to="/assessment">
+            <img
+              src={iconAssessment}
+              alt="Assessment"
+              style={{
+                position: "absolute",
+                width: "31.18px",
+                height: "30px",
+                top: "332px",
+                left: "53px",
+              }}
             />
-            <span className="font-medium" style={{ color: '#000' }}>Support</span>
-          </button>
+            <span
+              style={{
+                position: "absolute",
+                top: "338px",
+                left: "89.18px",
+                fontFamily: "Arial, sans-serif",
+                fontWeight: 400,
+                fontSize: "21px",
+                color: "#000",
+              }}
+            >
+              Assessment
+            </span>
+          </Link>
+        )}
+
+        {/* === Resources === */}
+        {showTasksAndResources && (
+          <Link to="/resources">
+            <img
+              src={iconResources}
+              alt="Resources"
+              style={{
+                position: "absolute",
+                width: "31.18px",
+                height: "30px",
+                top: "401px",
+                left: "53px",
+              }}
+            />
+            <span
+              style={{
+                position: "absolute",
+                top: "406px",
+                left: "93.18px",
+                fontFamily: "Arial, sans-serif",
+                fontWeight: 400,
+                fontSize: "21px",
+                color: "#000",
+              }}
+            >
+              Resources
+            </span>
+          </Link>
+        )}
+
+        {/* === Tasks === */}
+        {showTasksAndResources && (
+          <Link to="/tasks">
+            <img
+              src={iconTasks}
+              alt="Tasks"
+              style={{
+                position: "absolute",
+                width: "31.18px",
+                height: "30px",
+                top: "469px",
+                left: "53px",
+              }}
+            />
+            <span
+              style={{
+                position: "absolute",
+                top: "474px",
+                left: "88.18px",
+                fontFamily: "Arial, sans-serif",
+                fontWeight: 400,
+                fontSize: "21px",
+                color: "#000",
+              }}
+            >
+              Tasks
+            </span>
+          </Link>
+        )}
+
+        {/* === Analytics === */}
+        {showTasksAndResources && (
+          <Link to="/analytics">
+            <img
+              src={iconAnalytics}
+              alt="Analytics"
+              style={{
+                position: "absolute",
+                width: "31.18px",
+                height: "30px",
+                top: "534px",
+                left: "53px",
+              }}
+            />
+            <span
+              style={{
+                position: "absolute",
+                top: "542px",
+                left: "88.18px",
+                fontFamily: "Arial, sans-serif",
+                fontWeight: 400,
+                fontSize: "21px",
+                color: "#000",
+              }}
+            >
+              Analytics
+            </span>
+          </Link>
+        )}
+
+        {/* === Support === */}
+        <div>
+          <img
+            src={supportWoman}
+            alt="Support"
+            style={{
+              position: "absolute",
+              width: "46px",
+              height: "52px",
+              top: "871px",
+              left: "34px",
+              borderRadius: "50%",
+              objectFit: "cover",
+            }}
+          />
+          <span
+            style={{
+              position: "absolute",
+              top: "883px",
+              left: "100px",
+              fontFamily: "Arial, sans-serif",
+              fontWeight: 400,
+              fontSize: "24px",
+              color: "#000",
+            }}
+          >
+            Support
+          </span>
         </div>
       </aside>
 
-      {/* Overlay for mobile */}
+      {/* === Mobile Sidebar (unchanged behavior) === */}
       {isOpen && (
         <div
           className="md:hidden fixed inset-0 bg-black/50 z-30"
