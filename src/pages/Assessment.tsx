@@ -162,6 +162,7 @@ export default function Assessment() {
               fontFamily: "Montserrat, sans-serif",
               fontSize: "26px",
               fontWeight: 700,
+              color: "white",
             }}
           >
             Quick Tips
