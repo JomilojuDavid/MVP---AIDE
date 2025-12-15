@@ -174,6 +174,7 @@ export default function Assessment() {
               fontWeight: 500,
               lineHeight: "32px",
               marginTop: "16px",
+              color: "white",
             }}
           >
             <li>• Start your day with clarity.</li>
