@@ -136,7 +136,7 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
               top: "285px",
               left: "372px",
               backgroundColor: "#FFFFFF",
-              borderRadius: "17px",
+              borderRadius: "0px",
               boxShadow: "0px 4px 4px rgba(0,0,0,0.25)",
             }}
           >
