@@ -39,104 +39,245 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
   }, [navigate]);
 
   return (
-    <div className="flex h-screen bg-primary overflow-hidden">
+    <div className="relative flex bg-primary overflow-hidden">
       <Sidebar showTasksAndResources />
-
       <TopBar />
 
-      <main className="flex-1 md:ml-64 pt-8 px-6 flex flex-col">
-        <div className="max-w-4xl mx-auto w-full flex flex-col gap-3 flex-1">
-          {/* Welcome Card */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="bg-white rounded-2xl py-4 px-6"
+      {/* === Desktop Canvas === */}
+      <main
+        className="relative"
+        style={{
+          width: "1512px",
+          height: "982px",
+          borderRadius: "30px",
+        }}
+      >
+        {/* === Welcome Card === */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          style={{
+            position: "absolute",
+            width: "995px",
+            height: "152px",
+            top: "111px",
+            left: "372px",
+            backgroundColor: "#FFFFFF",
+            borderRadius: "17px",
+            boxShadow: "0px 4px 4px rgba(0,0,0,0.25)",
+          }}
+        >
+          <h1
+            style={{
+              position: "absolute",
+              top: "24px",
+              left: "65px",
+              fontFamily: "Arial, sans-serif",
+              fontWeight: 400,
+              fontSize: "45px",
+              lineHeight: "45px",
+            }}
           >
-            <h1 className="text-2xl font-bold mb-1">
-              Welcome,{" "}
-              <span className="text-primary">{firstName || "Name"}!</span>
-            </h1>
-            <p className="text-sm text-foreground">
-              Moving from Stuck & Stagnant to Clear & Confident
-            </p>
-          </motion.div>
+            Welcome,{" "}
+            <span style={{ color: "#DF1516" }}>
+              {firstName || "Name"}!
+            </span>
+          </h1>
+        </motion.div>
 
-          {/* AIDE Roadmap */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="bg-white rounded-2xl py-4 px-6"
+        {/* === AIDE Roadmap === */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          style={{
+            position: "absolute",
+            width: "995px",
+            height: "185px",
+            top: "285px",
+            left: "372px",
+            backgroundColor: "#FFFFFF",
+            borderRadius: "17px",
+            boxShadow: "0px 4px 4px rgba(0,0,0,0.25)",
+          }}
+        >
+          <h2
+            style={{
+              position: "absolute",
+              top: "37px",
+              left: "49px",
+              fontFamily: "Montserrat, sans-serif",
+              fontWeight: 500,
+              fontSize: "24px",
+            }}
           >
-            <h2 className="text-lg font-semibold mb-3 text-foreground">
-              Your AIDE Roadmap
-            </h2>
+            Your AIDE Roadmap
+          </h2>
 
-            {/* Progress Bar */}
-            <div className="relative w-full h-3 bg-[#FFD9D9] mb-3 rounded-full overflow-hidden">
-              <div
-                className="absolute top-0 left-0 h-full bg-primary rounded-full transition-all duration-500"
-                style={{ width: showQuizPrompt ? "5%" : "25%" }}
-              />
-            </div>
-
-            {/* Stages */}
-            <div className="flex flex-wrap gap-2 items-center text-sm font-medium text-foreground">
-              <span>Awareness</span>
-              <span>→</span>
-              <span>Intention</span>
-              <span>→</span>
-              <span>Decisiveness</span>
-              <span>→</span>
-              <span>Execution</span>
-            </div>
-          </motion.div>
-
-          {/* Bottom Content */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="grid md:grid-cols-2 gap-3 flex-1"
+          {/* Progress Bar */}
+          <div
+            style={{
+              position: "absolute",
+              top: "82px",
+              left: "53px",
+              width: "798px",
+              height: "26px",
+              borderRadius: "50px",
+              border: "1px solid #F3C17E",
+              backgroundColor: "#FFFFFF",
+            }}
           >
-            {/* Daily Prompt */}
             <div
-              onClick={() =>
-                window.open("https://calendar.google.com", "_blank")
-              }
-              className="cursor-pointer bg-primary border-2 border-[#F3C17E] py-3 px-4"
-            >
-              <h3 className="text-base font-bold mb-2 text-white">
-                Daily Prompt
-              </h3>
-              <p className="text-sm text-white">
-                "Set one clear intention for today and take one step toward it."
-              </p>
-            </div>
+              style={{
+                width: showQuizPrompt ? "40px" : "482px",
+                height: "100%",
+                borderRadius: "50px",
+                backgroundColor: "#DF1516",
+                border: "3px solid #DF1516",
+              }}
+            />
+          </div>
 
-            {/* Progress Tracker */}
-            <div className="bg-primary border-2 border-[#F3C17E] py-3 px-4">
-              <h3 className="text-base font-bold mb-2 text-white">
-                Progress Tracker
-              </h3>
-              <p className="text-sm text-white">
-                You've completed 2 of 4 stages this month.
-              </p>
-            </div>
+          <p
+            style={{
+              position: "absolute",
+              top: "124px",
+              left: "42px",
+              fontFamily: "Montserrat, sans-serif",
+              fontWeight: 400,
+              fontSize: "20px",
+            }}
+          >
+            Awareness → Intention → Decisiveness → Execution
+          </p>
+        </motion.div>
 
-            {/* Quick Tips */}
-            <div className="md:col-span-2 bg-primary border-2 border-[#F3C17E] py-3 px-4">
-              <h3 className="text-base font-bold mb-2 text-white">
-                Quick Tips
-              </h3>
-              <ul className="space-y-1 text-sm text-white list-disc list-inside">
-                <li>Start your day with clarity.</li>
-                <li>Break goals into smaller steps.</li>
-                <li>Review wins weekly.</li>
-              </ul>
-            </div>
-          </motion.div>
+        {/* === Daily Prompt === */}
+        <div
+          onClick={() => window.open("https://calendar.google.com", "_blank")}
+          style={{
+            position: "absolute",
+            width: "482px",
+            height: "179px",
+            top: "493px",
+            left: "372px",
+            border: "2px solid #F3C17E",
+            cursor: "pointer",
+          }}
+        >
+          <h3
+            style={{
+              position: "absolute",
+              top: "34px",
+              left: "62px",
+              fontFamily: "Montserrat, sans-serif",
+              fontWeight: 700,
+              fontSize: "26px",
+              color: "#FFFFFF",
+            }}
+          >
+            Daily Prompt
+          </h3>
+
+          <p
+            style={{
+              position: "absolute",
+              top: "90px",
+              left: "62px",
+              fontFamily: "Montserrat, sans-serif",
+              fontWeight: 500,
+              fontSize: "20px",
+              lineHeight: "32px",
+              color: "#FFFFFF",
+            }}
+          >
+            Set one clear intention for today and take one step toward it.
+          </p>
+        </div>
+
+        {/* === Progress Tracker === */}
+        <div
+          style={{
+            position: "absolute",
+            width: "467px",
+            height: "179px",
+            top: "493px",
+            left: "900px",
+            border: "2px solid #F3C17E",
+          }}
+        >
+          <h3
+            style={{
+              position: "absolute",
+              top: "34px",
+              left: "47px",
+              fontFamily: "Montserrat, sans-serif",
+              fontWeight: 700,
+              fontSize: "26px",
+              color: "#FFFFFF",
+            }}
+          >
+            Progress Tracker
+          </h3>
+
+          <p
+            style={{
+              position: "absolute",
+              top: "90px",
+              left: "47px",
+              fontFamily: "Montserrat, sans-serif",
+              fontWeight: 500,
+              fontSize: "20px",
+              lineHeight: "32px",
+              color: "#FFFFFF",
+            }}
+          >
+            You’ve completed 2 of 4 stages this month.
+          </p>
+        </div>
+
+        {/* === Quick Tips === */}
+        <div
+          style={{
+            position: "absolute",
+            width: "995px",
+            height: "208px",
+            top: "689px",
+            left: "372px",
+            border: "2px solid #F3C17E",
+          }}
+        >
+          <h3
+            style={{
+              position: "absolute",
+              top: "35px",
+              left: "62px",
+              fontFamily: "Montserrat, sans-serif",
+              fontWeight: 700,
+              fontSize: "26px",
+              color: "#FFFFFF",
+            }}
+          >
+            Quick Tips
+          </h3>
+
+          <ul
+            style={{
+              position: "absolute",
+              top: "82px",
+              left: "45px",
+              fontFamily: "Montserrat, sans-serif",
+              fontWeight: 500,
+              fontSize: "20px",
+              lineHeight: "32px",
+              color: "#FFFFFF",
+            }}
+          >
+            <li>Start your day with clarity.</li>
+            <li>Break goals into smaller steps.</li>
+            <li>Review wins weekly.</li>
+          </ul>
         </div>
       </main>
     </div>
