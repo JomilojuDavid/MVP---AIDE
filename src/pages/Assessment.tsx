@@ -1,125 +1,134 @@
 import { Button } from "@/components/ui/button";
+import { Sidebar } from "@/components/Sidebar";
+import { TopBar } from "@/components/TopBar";
 
 export default function Assessment() {
-  const userName = "Name"; // replace later with real user data
+  const userName = "Name"; // replace with real user data
 
   return (
     <div className="min-h-screen bg-[#DF1516] flex">
-      {/* MAIN CONTENT */}
-      <main className="flex-1 ml-64 pt-[120px]">
-        <div className="relative w-full">
+      {/* Sidebar */}
+      <Sidebar />
 
-          {/* Your Weekly AIDE Assessment */}
-          <div
-            className="bg-white mx-auto flex items-center justify-center"
-            style={{
-              width: 995,
-              height: 111,
-              borderRadius: 17,
-              boxShadow: "0px 4px 4px rgba(0,0,0,0.25)",
-            }}
-          >
-            <p
-              style={{
-                fontFamily: "Arial",
-                fontSize: 45,
-                fontWeight: 400,
-                lineHeight: "100%",
-              }}
-            >
-              Your Weekly AIDE Assessment,{" "}
-              <span className="text-[#DF1516]">{userName}!</span>
-            </p>
-          </div>
+      <div className="flex-1 flex flex-col">
+        {/* TopBar */}
+        <TopBar />
 
-          {/* Ready to take your AIDE Assessment */}
-          <div
-            className="bg-white mx-auto mt-[32px] flex flex-col items-center justify-center"
-            style={{
-              width: 995,
-              height: 401,
-              boxShadow: "0px 4px 4px rgba(0,0,0,0.25)",
-            }}
-          >
-            <h1
-              className="text-center"
-              style={{
-                fontFamily: "Arial",
-                fontSize: 48,
-                fontWeight: 400,
-                lineHeight: "100%",
-                width: 699,
-              }}
-            >
-              Ready to take your AIDE Assessment?
-            </h1>
+        {/* MAIN CONTENT */}
+        <main className="pt-[120px] px-10">
+          <div className="relative w-full">
 
-            <p
-              className="mt-6 text-center"
+            {/* Your Weekly AIDE Assessment */}
+            <div
+              className="bg-white mx-auto flex items-center justify-center shadow-md"
               style={{
-                fontFamily: "Montserrat",
-                fontSize: 28,
-                fontWeight: 400,
-                lineHeight: "100%",
-                width: 767,
-              }}
-            >
-              This assessment takes less than 5 minutes and helps us personalize
-              your growth experience.
-            </p>
-
-            <Button
-              className="mt-8 bg-[#DF1516] hover:bg-[#c01314]"
-              style={{
-                width: 257,
-                height: 52,
+                width: 995,
+                height: 111,
                 borderRadius: 17,
-                fontFamily: "Montserrat",
-                fontSize: 20,
-                fontWeight: 500,
               }}
             >
-              Take Assessment
-            </Button>
-          </div>
+              <p
+                style={{
+                  fontFamily: "Arial",
+                  fontSize: 45,
+                  fontWeight: 400,
+                  lineHeight: "100%",
+                }}
+              >
+                Your Weekly AIDE Assessment,{" "}
+                <span className="text-[#DF1516]">{userName}!</span>
+              </p>
+            </div>
 
-          {/* Quick Tips */}
-          <div
-            className="mx-auto mt-[60px] flex flex-col justify-center px-10"
-            style={{
-              width: 995,
-              height: 208,
-              border: "2px solid #F3C17E",
-            }}
-          >
-            <h2
+            {/* Ready to take your AIDE Assessment */}
+            <div
+              className="bg-white mx-auto mt-8 flex flex-col items-center justify-center shadow-md"
               style={{
-                fontFamily: "Montserrat",
-                fontSize: 26,
-                fontWeight: 700,
-                lineHeight: "100%",
+                width: 995,
+                height: 401,
+                borderRadius: 17,
               }}
             >
-              Quick Tips
-            </h2>
+              <h1
+                className="text-center"
+                style={{
+                  fontFamily: "Arial",
+                  fontSize: 48,
+                  fontWeight: 400,
+                  lineHeight: "100%",
+                  width: 699,
+                }}
+              >
+                Ready to take your AIDE Assessment?
+              </h1>
 
-            <ul
-              className="mt-6 space-y-2"
+              <p
+                className="mt-6 text-center"
+                style={{
+                  fontFamily: "Montserrat",
+                  fontSize: 28,
+                  fontWeight: 400,
+                  lineHeight: "100%",
+                  width: 767,
+                }}
+              >
+                This assessment takes less than 5 minutes and helps us personalize
+                your growth experience.
+              </p>
+
+              <Button
+                className="mt-8 bg-[#DF1516] hover:bg-[#c01314]"
+                style={{
+                  width: 257,
+                  height: 52,
+                  borderRadius: 17,
+                  fontFamily: "Montserrat",
+                  fontSize: 20,
+                  fontWeight: 500,
+                }}
+                aria-label="Take Assessment"
+              >
+                Take Assessment
+              </Button>
+            </div>
+
+            {/* Quick Tips */}
+            <div
+              className="mx-auto mt-16 flex flex-col justify-center px-10 border-2 border-[#F3C17E]"
               style={{
-                fontFamily: "Montserrat",
-                fontSize: 20,
-                fontWeight: 500,
-                lineHeight: "32px",
+                width: 995,
+                height: 250, // slightly bigger
               }}
             >
-              <li>• Start your day with clarity.</li>
-              <li>• Break goals into smaller steps.</li>
-              <li>• Review wins weekly.</li>
-            </ul>
-          </div>
+              <h2
+                style={{
+                  fontFamily: "Montserrat",
+                  fontSize: 26,
+                  fontWeight: 700,
+                  lineHeight: "100%",
+                }}
+              >
+                Quick Tips
+              </h2>
 
-        </div>
-      </main>
+              <ul
+                className="mt-6 space-y-2"
+                style={{
+                  fontFamily: "Montserrat",
+                  fontSize: 20,
+                  fontWeight: 500,
+                  lineHeight: "32px",
+                }}
+              >
+                <li>• Start your day with clarity.</li>
+                <li>• Break goals into smaller steps.</li>
+                <li>• Review wins weekly.</li>
+              </ul>
+            </div>
+
+          </div>
+        </main>
+      </div>
     </div>
   );
 }
