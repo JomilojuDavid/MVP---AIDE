@@ -52,41 +52,56 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
           borderRadius: "30px",
         }}
       >
-        {/* === Welcome Card === */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          style={{
-            position: "absolute",
-            width: "995px",
-            height: "152px",
-            top: "111px",
-            left: "372px",
-            backgroundColor: "#FFFFFF",
-            borderRadius: "17px",
-            boxShadow: "0px 4px 4px rgba(0,0,0,0.25)",
-          }}
-        >
-          <h1
-            style={{
-              position: "absolute",
-              top: "24px",
-              left: "65px",
-              fontFamily: "Arial, sans-serif",
-              fontWeight: 400,
-              fontSize: "45px",
-              lineHeight: "45px",
-            }}
-          >
-            Welcome,{" "}
-            <span style={{ color: "#DF1516" }}>
-              {firstName || "Name"}!
-            </span>
-          </h1>
-        </motion.div>
+       {/* === Welcome Card === */}
+<motion.div
+  initial={{ opacity: 0, y: 16 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.5 }}
+  style={{
+    position: "absolute",
+    width: "995px",
+    height: "152px",
+    top: "111px",
+    left: "372px",
+    backgroundColor: "#FFFFFF",
+    borderRadius: "17px",
+    boxShadow: "0px 4px 4px rgba(0,0,0,0.25)",
+  }}
+>
+  <h1
+    style={{
+      position: "absolute",
+      top: "24px",
+      left: "65px",
+      fontFamily: "Arial, sans-serif",
+      fontWeight: 400,
+      fontSize: "45px",
+      lineHeight: "45px",
+    }}
+  >
+    Welcome, <span style={{ color: "#DF1516" }}>{firstName || "Name"}!</span>
+  </h1>
 
-        {/* === AIDE Roadmap === */}
+  {/* === Body Text === */}
+  <p
+    style={{
+      position: "absolute",
+      top: "90px", // adjusted to be under the heading
+      left: "65px",
+      width: "589px",
+      height: "28px",
+      fontFamily: "Montserrat, sans-serif",
+      fontWeight: 400,
+      fontSize: "18px",
+      lineHeight: "100%",
+      letterSpacing: "0%",
+      opacity: 1,
+    }}
+  >
+    Moving from Stuck & Stagnant to Clear & Confident
+  </p>
+</motion.div>
+    {/* === AIDE Roadmap === */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
