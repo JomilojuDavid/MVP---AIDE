@@ -9,50 +9,53 @@ export const TopBar = () => {
     <div
       className="
         fixed
-        top-4
-        right-6
-        z-[100]
+        top-[41px]
+        right-[30px]
+        z-[999]
         flex
         items-center
-        gap-3
+        gap-[12px]
         pointer-events-auto
       "
     >
-      {/* Settings */}
+      {/* Settings (≈42 × 41) */}
       <Button
         variant="ghost"
         size="icon"
-        className="w-10 h-10 p-0 hover:bg-white/10"
-        onClick={() => navigate("/settings")}
+        className="w-[42.6px] h-[41px] p-0"
+        onClick={() => navigate('/settings')}
       >
-        <Settings className="w-7 h-7 text-white" />
+        <Settings className="w-[42.6px] h-[41px] text-white" />
       </Button>
 
-      {/* Notifications */}
+      {/* Bell (44 × 44) */}
       <Button
         variant="ghost"
         size="icon"
-        className="relative w-10 h-10 p-0 hover:bg-white/10"
-        onClick={() => navigate("/notifications")}
+        className="relative w-[44px] h-[44px] p-0"
+        onClick={() => navigate('/notifications')}
       >
-        <Bell className="w-7 h-7 text-white" />
+        <Bell className="w-[44px] h-[44px] text-white" />
 
-        {/* Notification badge */}
+        {/* Badge */}
         <span
           className="
             absolute
-            -top-1
-            -right-1
-            w-5
-            h-5
-            bg-white
-            text-primary
-            text-xs
+            top-[1px]
+            right-[1px]
+            w-[30px]
+            h-[25px]
+            bg-[#DF1516]
+            border
+            border-[#F3C17E]
             rounded-full
             flex
             items-center
             justify-center
-            font-bold
+            text-white
+            text-[16px]
+            font-extrabold
+            leading-none
           "
         >
           3
