@@ -46,40 +46,51 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
         )}
       >
         {/* Logo - Clickable */}
-        <div className="p-6 pb-2">
+        <div className="p-6 pb-4">
           <Link to="/dashboard">
-            <img src={aideLogo} alt="AIDE Logo" className="h-16 w-auto cursor-pointer" />
+            <img src={aideLogo} alt="AIDE Logo" className="h-20 w-auto cursor-pointer" />
           </Link>
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 py-4">
+        <nav className="flex-1 px-4 space-y-2">
           {navItems.filter(item => item.show).map((item) => (
             <Link
               key={item.name}
               to={item.path}
+              onClick={() => setIsOpen(false)}
               className={cn(
-                "flex items-center gap-4 px-8 pt-8 transition-colors rounded-lg",
+                "flex items-center gap-3 px-4 py-3 transition-colors",
                 isActive(item.path)
-                  ? "bg-secondary text-primary font-semibold"
-                  : "text-black hover:bg-secondary/50"
+                  ? "text-primary font-semibold"
+                  : "text-foreground hover:text-primary"
               )}
+              style={{
+                color: isActive(item.path) ? undefined : '#F3C17E'
+              }}
             >
-              <img src={item.icon} alt={item.name} className="w-5 h-5" />
-              <span>{item.name}</span>
+              <img 
+                src={item.icon} 
+                alt={item.name} 
+                className="w-5 h-5"
+                style={{ 
+                  filter: 'invert(78%) sepia(31%) saturate(628%) hue-rotate(341deg) brightness(95%) contrast(92%)'
+                }}
+              />
+              <span className="font-medium" style={{ color: '#F3C17E' }}>{item.name}</span>
             </Link>
           ))}
         </nav>
 
         {/* Support Button with Woman Image */}
         <div className="p-6">
-          <button className="flex items-center gap-3 text-black hover:text-black/80 transition-colors">
+          <button className="flex items-center gap-3 transition-colors">
             <img 
               src={supportWoman} 
               alt="Support" 
               className="w-10 h-10 rounded-full object-cover"
             />
-            <span className="font-medium">Support</span>
+            <span className="font-medium" style={{ color: '#000' }}>Support</span>
           </button>
         </div>
       </aside>
