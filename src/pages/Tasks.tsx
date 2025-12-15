@@ -58,23 +58,23 @@ export default function Tasks() {
   }, [navigate]);
 
   return (
-    <div className="flex min-h-screen bg-primary relative">
+    <div className="flex h-screen bg-primary overflow-hidden">
       <Sidebar showTasksAndResources />
       <TopBar />
       
-      <main className="flex-1 md:ml-64 p-8 md:p-12">
-        <div className="max-w-5xl mx-auto space-y-8">
+      <main className="flex-1 md:ml-64 pt-8 px-6 flex flex-col">
+        <div className="max-w-4xl mx-auto w-full flex flex-col gap-3 flex-1">
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="bg-white rounded-3xl p-8 md:p-12"
+            className="bg-white rounded-2xl py-4 px-6"
           >
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <h1 className="text-2xl font-bold mb-1">
               Complete Your AIDE Tasks, <span className="text-primary">{firstName || "Name"}!</span>
             </h1>
-            <p className="text-xl text-foreground">
+            <p className="text-sm text-foreground">
               Each step brings you closer to clarity, confidence, and execution.
             </p>
           </motion.div>
@@ -84,29 +84,28 @@ export default function Tasks() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="bg-white rounded-3xl p-8 md:p-12"
+            className="bg-white py-4 px-6 flex-1"
           >
-            <div className="space-y-8">
-              {tasksList.map((task) => (
-                <div key={task.id} className="flex items-start gap-4 pb-6 border-b border-border last:border-0">
-                  <Checkbox id={task.id} className="mt-1" />
+            <div className="space-y-3">
+              {tasksList.map((task, index) => (
+                <div key={task.id} className="flex items-start gap-3">
+                  <Checkbox id={task.id} className="mt-1 h-5 w-5 border-2 border-secondary" />
                   <div className="flex-1">
                     <label
                       htmlFor={task.id}
-                      className="text-xl font-bold text-foreground cursor-pointer block mb-2"
+                      className="text-base font-bold text-foreground cursor-pointer block"
                     >
                       {task.title}
                     </label>
-                    <p className="text-foreground">{task.description}</p>
+                    <p className="text-sm text-foreground">{task.description}</p>
                   </div>
+                  {index === tasksList.length - 1 && (
+                    <Button className="bg-primary text-white hover:bg-primary/90 h-8 px-4 text-xs font-bold rounded-full">
+                      Start Tasks
+                    </Button>
+                  )}
                 </div>
               ))}
-              
-              <div className="flex justify-end pt-4">
-                <Button className="bg-primary text-white hover:bg-primary/90 h-14 px-10 text-lg font-bold rounded-full">
-                  Start Tasks
-                </Button>
-              </div>
             </div>
           </motion.div>
 
@@ -115,10 +114,10 @@ export default function Tasks() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
-            className="bg-primary border-4 border-secondary rounded-3xl p-8 text-white"
+            className="bg-primary border-2 border-secondary py-4 px-6 text-white"
           >
-            <h3 className="text-2xl font-bold mb-6">Quick Tips</h3>
-            <ul className="space-y-3 text-lg list-disc list-inside">
+            <h3 className="text-lg font-bold mb-2">Quick Tips</h3>
+            <ul className="space-y-1 text-sm list-disc list-inside">
               <li>Start your day with clarity.</li>
               <li>Break goals into smaller steps.</li>
               <li>Review wins weekly.</li>
