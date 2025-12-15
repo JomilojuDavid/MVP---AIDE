@@ -12,6 +12,24 @@ interface DashboardProps {
 export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
   const navigate = useNavigate();
   const [firstName, setFirstName] = useState<string>("");
+  const [scale, setScale] = useState<number>(1);
+
+  const CANVAS_WIDTH = 1512;
+  const CANVAS_HEIGHT = 982;
+
+  // Update scale dynamically based on window size
+  useEffect(() => {
+    const handleResize = () => {
+      const scaleX = window.innerWidth / CANVAS_WIDTH;
+      const scaleY = window.innerHeight / CANVAS_HEIGHT;
+      const newScale = Math.min(scaleX, scaleY, 1); // Never scale above 1
+      setScale(newScale);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -39,18 +57,19 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
   }, [navigate]);
 
   return (
-    <div className="relative flex bg-primary overflow-hidden">
+    <div className="flex items-center justify-center w-screen h-screen bg-primary overflow-hidden">
+      {/* Sidebar and TopBar stay functional */}
       <Sidebar showTasksAndResources />
       <TopBar />
 
-      {/* === Desktop Canvas Scaled === */}
+      {/* === Responsive & Centered Main Canvas === */}
       <main
         className="relative"
         style={{
-          width: "1512px",
-          height: "982px",
+          width: `${CANVAS_WIDTH}px`,
+          height: `${CANVAS_HEIGHT}px`,
           borderRadius: "30px",
-          transform: "scale(0.8)", // Scale down to fit screen
+          transform: `scale(${scale})`,
           transformOrigin: "top left",
         }}
       >
@@ -84,7 +103,6 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
             Welcome, <span style={{ color: "#DF1516" }}>{firstName || "Name"}!</span>
           </h1>
 
-          {/* Body Text */}
           <p
             style={{
               position: "absolute",
@@ -133,7 +151,6 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
             Your AIDE Roadmap
           </h2>
 
-          {/* Progress Bar */}
           <div
             style={{
               position: "absolute",
