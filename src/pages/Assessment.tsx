@@ -108,7 +108,7 @@ export default function Assessment() {
         </p>
 
         <Button
-          onClick={() => navigate("/quiz")}
+          onClick={() => navigate("/quizstep2")}
           className="mt-8 bg-[#DF1516] hover:bg-[#c01314] focus:ring-2 focus:ring-offset-2 focus:ring-[#DF1516]"
           style={{
             width: 257,
