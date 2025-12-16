@@ -4,6 +4,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+import AppLayout from "@/layouts/AppLayout";
+
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import ResetPassword from "./pages/ResetPassword";
@@ -23,34 +25,44 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-
       <Toaster />
       <Sonner />
 
       <BrowserRouter>
         <Routes>
+          {/* ===== PUBLIC / NO LAYOUT ===== */}
           <Route path="/" element={<Index />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/auth" element={<Auth />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
 
-          {/* Quiz flow */}
-          <Route path="/quiz-step2" element={<QuizStep2 />} />
+          {/* Quiz flow (no sidebar/topbar) */}
           <Route path="/quiz" element={<Quiz />} />
+          <Route path="/quiz-step2" element={<QuizStep2 />} />
           <Route path="/submission" element={<Submission />} />
 
-          {/* Dashboard pages */}
-          <Route path="/dashboard" element={<Dashboard showQuizPrompt={true} />} />
-          <Route path="/dashboard-full" element={<Dashboard showQuizPrompt={false} />} />
-          <Route path="/assessment" element={<Assessment />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/tasks" element={<Tasks />} />
-          <Route path="/resources" element={<Resources />} />
-          <Route path="/analytics" element={<Analytics />} />
+          {/* ===== APP LAYOUT (LOCKED) ===== */}
+          <Route
+            element={<AppLayout />}
+          >
+            <Route
+              path="/dashboard"
+              element={<Dashboard showQuizPrompt={true} />}
+            />
+            <Route
+              path="/dashboard-full"
+              element={<Dashboard showQuizPrompt={false} />}
+            />
+            <Route path="/assessment" element={<Assessment />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/tasks" element={<Tasks />} />
+            <Route path="/resources" element={<Resources />} />
+            <Route path="/analytics" element={<Analytics />} />
+          </Route>
 
+          {/* ===== FALLBACK ===== */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
-
     </TooltipProvider>
   </QueryClientProvider>
 );
