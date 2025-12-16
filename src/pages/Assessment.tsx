@@ -1,17 +1,16 @@
 import { Sidebar } from "@/components/Sidebar";
 import { TopBar } from "@/components/TopBar";
 import ResponsiveCanvas from "@/components/ResponsiveCanvas";
-import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { motion } from "framer-motion";
 
 export default function Assessment() {
   const navigate = useNavigate();
-  const [firstName, setFirstName] = useState<string>("");
+  const [firstName, setFirstName] = useState("");
 
-  // Fetch user profile
   useEffect(() => {
     const fetchProfile = async () => {
       const {
@@ -23,167 +22,150 @@ export default function Assessment() {
         return;
       }
 
-      const { data: profile } = await supabase
+      const { data } = await supabase
         .from("profiles")
         .select("first_name")
         .eq("id", user.id)
         .single();
 
-      if (profile?.first_name) {
-        setFirstName(profile.first_name);
-      }
+      if (data?.first_name) setFirstName(data.first_name);
     };
 
     fetchProfile();
   }, [navigate]);
 
   return (
-    <div className="relative w-screen h-screen bg-primary">
-      {/* Sidebar and TopBar */}
+    <div className="relative w-screen h-screen bg-primary overflow-hidden">
       <Sidebar showTasksAndResources />
       <TopBar />
 
-      {/* Main content in ResponsiveCanvas */}
-      <ResponsiveCanvas width={1512} height={982}>
-        {/* Weekly AIDE Assessment Card */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          style={{
-            position: "absolute",
-            top: "111px",
-            left: "372px",
-            width: "995px",
-            height: "111px",
-            backgroundColor: "#FFFFFF",
-            borderRadius: "17px",
-            boxShadow: "0px 4px 4px rgba(0,0,0,0.25)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <p
+      {/* ===== DESKTOP / TABLET VIEW ===== */}
+      <div className="hidden lg:block">
+        <ResponsiveCanvas width={1512} height={982} minScale={0.75} maxScale={1}>
+          {/* HEADER */}
+          <motion.div
+            whileHover={{ y: -2 }}
+            className="absolute bg-white flex items-center justify-center"
             style={{
-              fontFamily: "Arial, sans-serif",
-              fontSize: "45px",
-              fontWeight: 400,
-              lineHeight: "100%",
+              top: 111,
+              left: 372,
+              width: 995,
+              height: 111,
+              borderRadius: 17,
+              boxShadow: "0px 4px 4px rgba(0,0,0,0.25)",
             }}
           >
-            Your Weekly AIDE Assessment,{" "}
-            <span style={{ color: "#DF1516" }}>{firstName || "Name"}!</span>
-          </p>
-        </motion.div>
+            <p style={{ fontSize: 45, fontFamily: "Arial" }}>
+              Your Weekly AIDE Assessment,{" "}
+              <span className="text-[#DF1516]">
+                {firstName || "Name"}!
+              </span>
+            </p>
+          </motion.div>
 
-        {/* Ready to Take Assessment Card */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          style={{
-            position: "absolute",
-            top: "245px",
-            left: "372px",
-            width: "995px",
-            height: "401px",
-            backgroundColor: "#FFFFFF",
-            borderRadius: "0px",
-            boxShadow: "0px 4px 4px rgba(0,0,0,0.25)",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <h1
+          {/* MAIN CARD */}
+          <motion.div
+            whileHover={{ y: -2 }}
+            className="absolute bg-white flex flex-col items-center justify-center"
             style={{
-              fontFamily: "Arial, sans-serif",
-              fontSize: "48px",
-              fontWeight: 400,
-              textAlign: "center",
-              width: "699px",
+              top: 245,
+              left: 372,
+              width: 995,
+              height: 401,
+              borderRadius: 17,
+              boxShadow: "0px 4px 4px rgba(0,0,0,0.25)",
             }}
           >
+            <h1 style={{ fontSize: 48, textAlign: "center", width: 700 }}>
+              Ready to take your AIDE Assessment?
+            </h1>
+
+            <p
+              style={{
+                fontSize: 28,
+                textAlign: "center",
+                width: 770,
+                marginTop: 24,
+                fontFamily: "Montserrat",
+              }}
+            >
+              This assessment takes less than 5 minutes and helps us personalize
+              your growth experience.
+            </p>
+
+            <Button
+              onClick={() => navigate("/assessment/start")}
+              className="mt-8 bg-[#DF1516] hover:bg-[#c01314] focus:ring-2 focus:ring-offset-2 focus:ring-[#DF1516]"
+              style={{
+                width: 257,
+                height: 52,
+                borderRadius: 17,
+                fontSize: 20,
+              }}
+            >
+              Take Assessment
+            </Button>
+          </motion.div>
+
+          {/* QUICK TIPS */}
+          <motion.div
+            whileHover={{ y: -2 }}
+            className="absolute border-2 border-[#F3C17E] bg-transparent"
+            style={{
+              top: 689,
+              left: 372,
+              width: 995,
+              height: 208,
+              padding: 32,
+            }}
+          >
+            <h2 className="text-[26px] font-bold">Quick Tips</h2>
+            <ul className="mt-4 text-[20px] leading-8">
+              <li>Start your day with clarity.</li>
+              <li>Break goals into smaller steps.</li>
+              <li>Review wins weekly.</li>
+            </ul>
+          </motion.div>
+        </ResponsiveCanvas>
+      </div>
+
+      {/* ===== MOBILE VIEW ===== */}
+      <div className="lg:hidden pt-28 px-4 space-y-6 overflow-y-auto">
+        <div className="bg-white rounded-[17px] p-6 shadow">
+          <p className="text-2xl text-center">
+            Your Weekly AIDE Assessment,{" "}
+            <span className="text-[#DF1516]">
+              {firstName || "Name"}!
+            </span>
+          </p>
+        </div>
+
+        <div className="bg-white rounded-[17px] p-6 shadow text-center">
+          <h1 className="text-2xl">
             Ready to take your AIDE Assessment?
           </h1>
-
-          <p
-            style={{
-              fontFamily: "Montserrat, sans-serif",
-              fontSize: "28px",
-              fontWeight: 400,
-              textAlign: "center",
-              width: "767px",
-              marginTop: "24px",
-            }}
-          >
-            This assessment takes less than 5 minutes and helps us personalize your
+          <p className="text-lg mt-4">
+            This assessment takes less than 5 minutes and helps personalize your
             growth experience.
           </p>
 
           <Button
-            className="mt-8 bg-[#DF1516] hover:bg-[#c01314]"
-            style={{
-              width: "257px",
-              height: "52px",
-              borderRadius: "17px",
-              fontFamily: "Montserrat, sans-serif",
-              fontSize: "20px",
-              fontWeight: 500,
-            }}
-            aria-label="Take Assessment"
+            onClick={() => navigate("/assessment/start")}
+            className="mt-6 w-full bg-[#DF1516] hover:bg-[#c01314]"
           >
             Take Assessment
           </Button>
-        </motion.div>
+        </div>
 
-        {/* Quick Tips Card */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          style={{
-            position: "absolute",
-            top: "689px",
-            left: "372px",
-            width: "995px",
-            height: "208px",
-            border: "2px solid #F3C17E",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "flex-start",
-            padding: "32px",
-          }}
-        >
-          <h2
-            style={{
-              fontFamily: "Montserrat, sans-serif",
-              fontSize: "26px",
-              fontWeight: 700,
-              color: "white",
-            }}
-          >
-            Quick Tips
-          </h2>
-
-          <ul
-            style={{
-              fontFamily: "Montserrat, sans-serif",
-              fontSize: "20px",
-              fontWeight: 500,
-              lineHeight: "32px",
-              marginTop: "16px",
-              color: "white",
-            }}
-          >
-            <li>• Start your day with clarity.</li>
-            <li>• Break goals into smaller steps.</li>
-            <li>• Review wins weekly.</li>
+        <div className="border-2 border-[#F3C17E] p-6">
+          <h2 className="font-bold text-xl">Quick Tips</h2>
+          <ul className="mt-3 space-y-2">
+            <li>Start your day with clarity.</li>
+            <li>Break goals into smaller steps.</li>
+            <li>Review wins weekly.</li>
           </ul>
-        </motion.div>
-      </ResponsiveCanvas>
+        </div>
+      </div>
     </div>
   );
 }
