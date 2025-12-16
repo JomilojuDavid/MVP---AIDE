@@ -108,7 +108,7 @@ export default function Assessment() {
         </p>
 
         <Button
-          onClick={() => navigate("/assessment/quiz")}
+          onClick={() => navigate("/quiz")}
           className="mt-8 bg-[#DF1516] hover:bg-[#c01314] focus:ring-2 focus:ring-offset-2 focus:ring-[#DF1516]"
           style={{
             width: 257,
@@ -134,6 +134,7 @@ export default function Assessment() {
           height: 208,
           border: "2px solid #F3C17E",
           padding: 32,
+          color: "#FFFFFF",
         }}
       >
         <h2 style={{ fontSize: 26, fontWeight: 700 }}>Quick Tips</h2>
