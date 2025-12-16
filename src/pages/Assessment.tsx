@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import LockedCanvas from "@/components/LockedCanvas";
+import  LockedCanvas  from "@/components/LockedCanvas";
 import { useAppLayout } from "@/hooks/useAppLayout";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
