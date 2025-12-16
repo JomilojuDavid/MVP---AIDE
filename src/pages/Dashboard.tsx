@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import LockedCanvas from "@/components/LockedCanvas";
 import { motion } from "framer-motion";
+import { useAppLayout } from "@/hooks/useAppLayout";  
+
 
 export default function Dashboard({ showQuizPrompt = false }: { showQuizPrompt?: boolean }) {
   const navigate = useNavigate();
