@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
 
+
 export default function Assessment() {
   const navigate = useNavigate();
   const [firstName, setFirstName] = useState("");
@@ -107,7 +108,7 @@ export default function Assessment() {
         </p>
 
         <Button
-          onClick={() => navigate("/assessment/start")}
+          onClick={() => navigate("/assessment/quiz")}
           className="mt-8 bg-[#DF1516] hover:bg-[#c01314] focus:ring-2 focus:ring-offset-2 focus:ring-[#DF1516]"
           style={{
             width: 257,
@@ -142,6 +143,7 @@ export default function Assessment() {
             fontSize: 20,
             lineHeight: "32px",
             fontFamily: "Montserrat",
+            color: "#FFFFFF",
           }}
         >
           <li>Start your day with clarity.</li>
