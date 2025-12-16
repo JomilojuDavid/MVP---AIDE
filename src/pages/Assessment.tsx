@@ -74,7 +74,7 @@ export default function Assessment() {
           width: 995,
           height: 401,
           backgroundColor: "#FFFFFF",
-          borderRadius: 17,
+          borderRadius: 0,
           boxShadow: "0px 4px 4px rgba(0,0,0,0.25)",
           display: "flex",
           flexDirection: "column",
