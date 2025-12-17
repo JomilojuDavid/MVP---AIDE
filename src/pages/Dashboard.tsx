@@ -1,11 +1,11 @@
 import { Sidebar } from "@/components/Sidebar";
 import { TopBar } from "@/components/TopBar";
 import LockedCanvas from "@/components/LockedCanvas";
+import { useAppLayout } from "@/hooks/useAppLayout";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import aideLogo from "@/assets/aide-logo.png";
 
 interface DashboardProps {
   showQuizPrompt?: boolean;
@@ -13,6 +13,7 @@ interface DashboardProps {
 
 export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
   const navigate = useNavigate();
+  const { topOffset } = useAppLayout();
   const [firstName, setFirstName] = useState<string>("");
 
   // Fetch user profile
@@ -40,23 +41,14 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
   }, [navigate]);
 
   return (
-    <div className="relative w-screen h-screen bg-primary overflow-hidden">
-      {/* Sidebar */}
+    <div className="relative w-screen h-screen bg-primary">
+      {/* Sidebar & TopBar */}
       <Sidebar showTasksAndResources />
-
-      {/* TopBar */}
       <TopBar />
 
-      {/* Logo */}
-      <img
-        src={aideLogo}
-        alt="AIDE Logo"
-        className="absolute top-[19px] left-[26px] w-[167px] h-[132px]"
-      />
-
-      {/* Main content in LockedCanvas */}
-      <LockedCanvas width={1512} height={982}>
-        {/* Welcome Card */}
+      {/* Locked Canvas */}
+      <LockedCanvas width={1512} height={982} topOffset={topOffset} offsetX={240}>
+        {/* === Welcome Card === */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -64,23 +56,17 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
           style={{
             position: "absolute",
             top: 111,
-            left: 372,
             width: 995,
             height: 152,
             backgroundColor: "#FFFFFF",
             borderRadius: 17,
             boxShadow: "0px 4px 4px rgba(0,0,0,0.25)",
-            padding: "24px",
+            padding: 24,
+            left: "50%",
+            transform: "translateX(-50%)",
           }}
         >
-          <h1
-            style={{
-              fontFamily: "Arial, sans-serif",
-              fontWeight: 400,
-              fontSize: 45,
-              lineHeight: "45px",
-            }}
-          >
+          <h1 style={{ fontFamily: "Arial, sans-serif", fontWeight: 400, fontSize: 45 }}>
             Welcome, <span style={{ color: "#DF1516" }}>{firstName || "Name"}!</span>
           </h1>
           <p
@@ -95,7 +81,7 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
           </p>
         </motion.div>
 
-        {/* AIDE Roadmap */}
+        {/* === AIDE Roadmap === */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -103,24 +89,20 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
           style={{
             position: "absolute",
             top: 285,
-            left: 372,
             width: 995,
             height: 185,
             backgroundColor: "#FFFFFF",
             borderRadius: 0,
             boxShadow: "0px 4px 4px rgba(0,0,0,0.25)",
-            padding: "24px",
+            padding: 24,
+            left: "50%",
+            transform: "translateX(-50%)",
           }}
         >
-          <h2
-            style={{
-              fontFamily: "Montserrat, sans-serif",
-              fontWeight: 500,
-              fontSize: 24,
-            }}
-          >
+          <h2 style={{ fontFamily: "Montserrat, sans-serif", fontWeight: 500, fontSize: 24 }}>
             Your AIDE Roadmap
           </h2>
+
           <div
             style={{
               marginTop: 20,
@@ -141,6 +123,7 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
               }}
             />
           </div>
+
           <p
             style={{
               marginTop: 12,
@@ -153,28 +136,21 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
           </p>
         </motion.div>
 
-        {/* Daily Prompt */}
+        {/* === Daily Prompt === */}
         <div
           onClick={() => window.open("https://calendar.google.com", "_blank")}
           style={{
             position: "absolute",
             top: 493,
-            left: 372,
             width: 482,
             height: 179,
             border: "2px solid #F3C17E",
             cursor: "pointer",
             padding: 24,
+            left: "calc(50% - 482px - 20px)", // align left side
           }}
         >
-          <h3
-            style={{
-              fontFamily: "Montserrat, sans-serif",
-              fontWeight: 700,
-              fontSize: 26,
-              color: "#FFFFFF",
-            }}
-          >
+          <h3 style={{ fontFamily: "Montserrat, sans-serif", fontWeight: 700, fontSize: 26, color: "#FFFFFF" }}>
             Daily Prompt
           </h3>
           <p
@@ -191,26 +167,19 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
           </p>
         </div>
 
-        {/* Progress Tracker */}
+        {/* === Progress Tracker === */}
         <div
           style={{
             position: "absolute",
             top: 493,
-            left: 900,
             width: 467,
             height: 179,
             border: "2px solid #F3C17E",
             padding: 24,
+            left: "calc(50% + 20px)", // align right side
           }}
         >
-          <h3
-            style={{
-              fontFamily: "Montserrat, sans-serif",
-              fontWeight: 700,
-              fontSize: 26,
-              color: "#FFFFFF",
-            }}
-          >
+          <h3 style={{ fontFamily: "Montserrat, sans-serif", fontWeight: 700, fontSize: 26, color: "#FFFFFF" }}>
             Progress Tracker
           </h3>
           <p
@@ -227,28 +196,21 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
           </p>
         </div>
 
-        {/* Quick Tips */}
+        {/* === Quick Tips === */}
         <div
           style={{
             position: "absolute",
             top: 689,
-            left: 372,
             width: 995,
             height: 208,
             border: "2px solid #F3C17E",
             padding: 32,
             color: "#FFFFFF",
+            left: "50%",
+            transform: "translateX(-50%)",
           }}
         >
-          <h3
-            style={{
-              fontFamily: "Montserrat, sans-serif",
-              fontWeight: 700,
-              fontSize: 26,
-            }}
-          >
-            Quick Tips
-          </h3>
+          <h3 style={{ fontFamily: "Montserrat, sans-serif", fontWeight: 700, fontSize: 26 }}>Quick Tips</h3>
           <ul
             style={{
               marginTop: 16,
