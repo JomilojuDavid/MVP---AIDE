@@ -54,7 +54,7 @@ export default function QuizStep2() {
       <div className="flex-1 bg-primary relative flex justify-center items-center p-8">
 
         {/* Settings Icon */}
-        <Settings className="absolute top-8 right-8 w-7 h-7 text-white" />
+        <Settings className="absolute top-8 right-8 w-7 h-7 text-white" onClick={() => navigate("/settings")}  />
 
         {/* Inner Content Box (80% width) */}
         <div className="w-[80%] flex flex-col gap-8">
@@ -64,7 +64,7 @@ export default function QuizStep2() {
             initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="bg-white p-10 rounded-3xl shadow-lg w-full"
+            className="bg-white p-10 shadow-lg w-full"
           >
             <h1 className="text-4xl font-bold text-center mb-3">
               AIDE Onboarding Quiz
