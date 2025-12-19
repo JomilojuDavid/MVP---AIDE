@@ -92,7 +92,7 @@ export default function Quiz() {
             initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.4 }}
-            className="bg-white rounded-3xl p-8 w-full shadow-[0_4px_25px_rgba(0,0,0,0.1)] flex flex-col justify-between"
+            className="bg-white rounded-0 p-8 w-full shadow-[0_4px_25px_rgba(0,0,0,0.1)] flex flex-col justify-between"
           >
             <div className="grid gap-7">
 
