@@ -66,7 +66,7 @@ export default function QuizStep2() {
             transition={{ duration: 0.5 }}
             className="bg-white p-10 shadow-lg w-full"
           >
-            <h1 className="text-4xl font-bold text-center mb-3">
+            <h1 className="text-4xl rounded-3xl font-bold text-center mb-3">
               AIDE Onboarding Quiz
             </h1>
             <p className="text-lg text-muted-foreground text-center">
@@ -79,7 +79,7 @@ export default function QuizStep2() {
             initial={{ opacity: 0, y: 35 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.2 }}
-            className="bg-white p-10 rounded-3xl shadow-lg w-full flex flex-col justify-between"
+            className="bg-white p-10 shadow-lg w-full flex flex-col justify-between"
           >
             <div className="flex flex-col gap-10">
 
