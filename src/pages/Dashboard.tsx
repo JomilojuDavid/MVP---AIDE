@@ -15,9 +15,7 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
 
   useEffect(() => {
     const fetchProfile = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+      const { data: { user } } = await supabase.auth.getUser();
 
       if (!user) {
         navigate("/auth");
@@ -30,9 +28,7 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
         .eq("id", user.id)
         .single();
 
-      if (profile?.first_name) {
-        setFirstName(profile.first_name);
-      }
+      if (profile?.first_name) setFirstName(profile.first_name);
     };
 
     fetchProfile();
@@ -43,7 +39,7 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
       <Sidebar showTasksAndResources />
       <TopBar />
 
-      {/* === Desktop Canvas === */}
+      {/* === DESKTOP CANVAS === */}
       <main
         className="relative"
         style={{
@@ -52,210 +48,139 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
           borderRadius: "30px",
         }}
       >
-        {/* === Welcome Card === */}
+        {/* ========================= */}
+        {/* YOUR WEEKLY AIDE CARD */}
+        {/* ========================= */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.4 }}
           style={{
             position: "absolute",
             width: "995px",
-            height: "152px",
-            top: "111px",
-            left: "372px",
+            height: "111px",
+            top: "142px",
+            left: "371px",
             backgroundColor: "#FFFFFF",
             borderRadius: "17px",
             boxShadow: "0px 4px 4px rgba(0,0,0,0.25)",
+            display: "flex",
+            alignItems: "center",
           }}
         >
           <h1
             style={{
-              position: "absolute",
-              top: "24px",
-              left: "65px",
+              marginLeft: "65px",
               fontFamily: "Arial, sans-serif",
               fontWeight: 400,
               fontSize: "45px",
               lineHeight: "45px",
+              whiteSpace: "nowrap",
             }}
           >
-            Welcome,{" "}
+            Your Weekly AIDE Assessment,{" "}
             <span style={{ color: "#DF1516" }}>
               {firstName || "Name"}!
             </span>
           </h1>
         </motion.div>
 
-        {/* === AIDE Roadmap === */}
+        {/* ========================= */}
+        {/* READY TO TAKE ASSESSMENT */}
+        {/* ========================= */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
           style={{
             position: "absolute",
             width: "995px",
-            height: "185px",
+            height: "401px",
             top: "285px",
             left: "372px",
             backgroundColor: "#FFFFFF",
             borderRadius: "17px",
             boxShadow: "0px 4px 4px rgba(0,0,0,0.25)",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
           <h2
             style={{
-              position: "absolute",
-              top: "37px",
-              left: "49px",
-              fontFamily: "Montserrat, sans-serif",
-              fontWeight: 500,
-              fontSize: "24px",
+              marginTop: "53px",
+              width: "699px",
+              fontFamily: "Arial, sans-serif",
+              fontWeight: 400,
+              fontSize: "48px",
+              lineHeight: "48px",
+              textAlign: "center",
             }}
           >
-            Your AIDE Roadmap
+            Ready to take your AIDE Assessment?
           </h2>
 
-          {/* Progress Bar */}
-          <div
-            style={{
-              position: "absolute",
-              top: "82px",
-              left: "53px",
-              width: "798px",
-              height: "26px",
-              borderRadius: "50px",
-              border: "1px solid #F3C17E",
-              backgroundColor: "#FFFFFF",
-            }}
-          >
-            <div
-              style={{
-                width: showQuizPrompt ? "40px" : "482px",
-                height: "100%",
-                borderRadius: "50px",
-                backgroundColor: "#DF1516",
-                border: "3px solid #DF1516",
-              }}
-            />
-          </div>
-
           <p
             style={{
-              position: "absolute",
-              top: "124px",
-              left: "42px",
+              marginTop: "30px",
+              width: "767px",
               fontFamily: "Montserrat, sans-serif",
               fontWeight: 400,
-              fontSize: "20px",
+              fontSize: "28px",
+              lineHeight: "28px",
+              textAlign: "center",
             }}
           >
-            Awareness → Intention → Decisiveness → Execution
+            This assessment takes less than 5 minutes and helps us personalize
+            your growth experience.
           </p>
+
+          <button
+            onClick={() => navigate("/assessment/start")}
+            style={{
+              marginTop: "42px",
+              width: "257px",
+              height: "52px",
+              borderRadius: "17px",
+              backgroundColor: "#DF1516",
+              color: "#FFFFFF",
+              fontFamily: "Montserrat, sans-serif",
+              fontWeight: 500,
+              fontSize: "20px",
+              border: "none",
+              cursor: "pointer",
+            }}
+          >
+            Take Assessment
+          </button>
         </motion.div>
 
-        {/* === Daily Prompt === */}
-        <div
-          onClick={() => window.open("https://calendar.google.com", "_blank")}
-          style={{
-            position: "absolute",
-            width: "482px",
-            height: "179px",
-            top: "493px",
-            left: "372px",
-            border: "2px solid #F3C17E",
-            cursor: "pointer",
-          }}
-        >
-          <h3
-            style={{
-              position: "absolute",
-              top: "34px",
-              left: "62px",
-              fontFamily: "Montserrat, sans-serif",
-              fontWeight: 700,
-              fontSize: "26px",
-              color: "#FFFFFF",
-            }}
-          >
-            Daily Prompt
-          </h3>
-
-          <p
-            style={{
-              position: "absolute",
-              top: "90px",
-              left: "62px",
-              fontFamily: "Montserrat, sans-serif",
-              fontWeight: 500,
-              fontSize: "20px",
-              lineHeight: "32px",
-              color: "#FFFFFF",
-            }}
-          >
-            Set one clear intention for today and take one step toward it.
-          </p>
-        </div>
-
-        {/* === Progress Tracker === */}
-        <div
-          style={{
-            position: "absolute",
-            width: "467px",
-            height: "179px",
-            top: "493px",
-            left: "900px",
-            border: "2px solid #F3C17E",
-          }}
-        >
-          <h3
-            style={{
-              position: "absolute",
-              top: "34px",
-              left: "47px",
-              fontFamily: "Montserrat, sans-serif",
-              fontWeight: 700,
-              fontSize: "26px",
-              color: "#FFFFFF",
-            }}
-          >
-            Progress Tracker
-          </h3>
-
-          <p
-            style={{
-              position: "absolute",
-              top: "90px",
-              left: "47px",
-              fontFamily: "Montserrat, sans-serif",
-              fontWeight: 500,
-              fontSize: "20px",
-              lineHeight: "32px",
-              color: "#FFFFFF",
-            }}
-          >
-            You’ve completed 2 of 4 stages this month.
-          </p>
-        </div>
-
-        {/* === Quick Tips === */}
-        <div
+        {/* ========================= */}
+        {/* QUICK TIPS */}
+        {/* ========================= */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.2 }}
           style={{
             position: "absolute",
             width: "995px",
             height: "208px",
-            top: "689px",
-            left: "372px",
+            top: "747px",
+            left: "371px",
             border: "2px solid #F3C17E",
+            display: "flex",
+            flexDirection: "column",
           }}
         >
           <h3
             style={{
-              position: "absolute",
-              top: "35px",
-              left: "62px",
+              marginTop: "35px",
+              marginLeft: "62px",
               fontFamily: "Montserrat, sans-serif",
               fontWeight: 700,
               fontSize: "26px",
+              lineHeight: "26px",
               color: "#FFFFFF",
             }}
           >
@@ -264,9 +189,8 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
 
           <ul
             style={{
-              position: "absolute",
-              top: "82px",
-              left: "45px",
+              marginTop: "21px",
+              marginLeft: "62px",
               fontFamily: "Montserrat, sans-serif",
               fontWeight: 500,
               fontSize: "20px",
@@ -278,7 +202,7 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
             <li>Break goals into smaller steps.</li>
             <li>Review wins weekly.</li>
           </ul>
-        </div>
+        </motion.div>
       </main>
     </div>
   );
