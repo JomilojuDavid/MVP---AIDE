@@ -34,74 +34,254 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
   }, [navigate]);
 
   return (
-    <div className="flex w-screen h-screen bg-primary overflow-auto relative">
-      {/* Sidebar and TopBar */}
+    <div className="relative flex bg-primary overflow-hidden h-screen w-screen">
       <Sidebar showTasksAndResources />
       <TopBar />
 
-      {/* Main Content */}
-      <main className="flex-1 relative p-6 flex flex-col gap-6 min-h-screen">
-        {/* === Welcome Card === */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="bg-white shadow-md rounded-lg p-6 w-full max-w-[995px]"
+      {/* === SCALE WRAPPER (forces viewport fit) === */}
+      <div
+        className="relative"
+        style={{
+          transform: "scale(calc(100vw / 1512))",
+          transformOrigin: "top left",
+          width: "1512px",
+          height: "982px",
+        }}
+      >
+        {/* === DESKTOP CANVAS === */}
+        <main
+          style={{
+            position: "relative",
+            width: "1512px",
+            height: "982px",
+            borderRadius: "30px",
+          }}
         >
-          <h1 className="text-4xl font-normal">
-            Welcome, <span className="text-red-600">{firstName || "Name"}!</span>
-          </h1>
-        </motion.div>
+          {/* === WELCOME CARD === */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            style={{
+              position: "absolute",
+              width: "995px",
+              height: "152px",
+              top: "111px",
+              left: "372px",
+              background: "#FFFFFF",
+              borderRadius: "17px",
+              boxShadow: "0px 4px 4px rgba(0,0,0,0.25)",
+            }}
+          >
+            <h1
+              style={{
+                position: "absolute",
+                top: "24px",
+                left: "65px",
+                fontFamily: "Arial",
+                fontWeight: 400,
+                fontSize: "45px",
+                lineHeight: "45px",
+              }}
+            >
+              Welcome,{" "}
+              <span style={{ color: "#DF1516" }}>
+                {firstName || "Name"}!
+              </span>
+            </h1>
+          </motion.div>
 
-        {/* === AIDE Roadmap === */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="bg-white shadow-md rounded-lg p-6 w-full max-w-[995px]"
-        >
-          <h2 className="text-2xl font-medium mb-4">Your AIDE Roadmap</h2>
-          <div className="w-full h-6 bg-transparent border rounded-full border-yellow-300">
+          {/* === AIDE ROADMAP === */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            style={{
+              position: "absolute",
+              width: "995px",
+              height: "185px",
+              top: "285px",
+              left: "372px",
+              background: "#FFFFFF",
+              borderRadius: "17px",
+              boxShadow: "0px 4px 4px rgba(0,0,0,0.25)",
+            }}
+          >
+            <h2
+              style={{
+                position: "absolute",
+                top: "37px",
+                left: "49px",
+                fontFamily: "Montserrat",
+                fontWeight: 500,
+                fontSize: "24px",
+              }}
+            >
+              Your AIDE Roadmap
+            </h2>
+
             <div
-              className="h-full rounded-full bg-red-600"
-              style={{ width: showQuizPrompt ? "5%" : "50%" }}
-            />
-          </div>
-          <p className="mt-4 text-lg">
-            Awareness → Intention → Decisiveness → Execution
-          </p>
-        </motion.div>
+              style={{
+                position: "absolute",
+                top: "82px",
+                left: "53px",
+                width: "798px",
+                height: "26px",
+                borderRadius: "50px",
+                border: "1px solid #F3C17E",
+              }}
+            >
+              <div
+                style={{
+                  width: showQuizPrompt ? "40px" : "482px",
+                  height: "100%",
+                  borderRadius: "50px",
+                  background: "#DF1516",
+                }}
+              />
+            </div>
 
-        {/* === Daily Prompt & Progress Tracker === */}
-        <div className="flex gap-6 flex-wrap">
+            <p
+              style={{
+                position: "absolute",
+                top: "124px",
+                left: "42px",
+                fontFamily: "Montserrat",
+                fontSize: "20px",
+              }}
+            >
+              Awareness → Intention → Decisiveness → Execution
+            </p>
+          </motion.div>
+
+          {/* === DAILY PROMPT === */}
           <div
             onClick={() => window.open("https://calendar.google.com")}
-            className="flex-1 bg-yellow-300 cursor-pointer rounded-lg p-6 min-w-[300px]"
+            style={{
+              position: "absolute",
+              width: "482px",
+              height: "179px",
+              top: "493px",
+              left: "372px",
+              border: "2px solid #F3C17E",
+              cursor: "pointer",
+            }}
           >
-            <h3 className="text-xl font-bold text-white mb-2">Daily Prompt</h3>
-            <p className="text-white text-lg">
+            <h3
+              style={{
+                position: "absolute",
+                top: "34px",
+                left: "62px",
+                fontFamily: "Montserrat",
+                fontWeight: 700,
+                fontSize: "26px",
+                color: "#FFFFFF",
+              }}
+            >
+              Daily Prompt
+            </h3>
+
+            <p
+              style={{
+                position: "absolute",
+                top: "90px",
+                left: "62px",
+                fontFamily: "Montserrat",
+                fontWeight: 500,
+                fontSize: "20px",
+                lineHeight: "32px",
+                color: "#FFFFFF",
+              }}
+            >
               Set one clear intention for today and take one step toward it.
             </p>
           </div>
 
-          <div className="flex-1 bg-yellow-300 rounded-lg p-6 min-w-[300px]">
-            <h3 className="text-xl font-bold text-white mb-2">Progress Tracker</h3>
-            <p className="text-white text-lg">
+          {/* === PROGRESS TRACKER === */}
+          <div
+            style={{
+              position: "absolute",
+              width: "467px",
+              height: "179px",
+              top: "493px",
+              left: "900px",
+              border: "2px solid #F3C17E",
+            }}
+          >
+            <h3
+              style={{
+                position: "absolute",
+                top: "34px",
+                left: "47px",
+                fontFamily: "Montserrat",
+                fontWeight: 700,
+                fontSize: "26px",
+                color: "#FFFFFF",
+              }}
+            >
+              Progress Tracker
+            </h3>
+
+            <p
+              style={{
+                position: "absolute",
+                top: "90px",
+                left: "47px",
+                fontFamily: "Montserrat",
+                fontWeight: 500,
+                fontSize: "20px",
+                lineHeight: "32px",
+                color: "#FFFFFF",
+              }}
+            >
               You’ve completed 2 of 4 stages this month.
             </p>
           </div>
-        </div>
 
-        {/* === Quick Tips === */}
-        <div className="bg-yellow-300 rounded-lg p-6 w-full max-w-[995px]">
-          <h3 className="text-xl font-bold text-white mb-4">Quick Tips</h3>
-          <ul className="text-white text-lg list-disc list-inside space-y-2">
-            <li>Start your day with clarity.</li>
-            <li>Break goals into smaller steps.</li>
-            <li>Review wins weekly.</li>
-          </ul>
-        </div>
-      </main>
+          {/* === QUICK TIPS === */}
+          <div
+            style={{
+              position: "absolute",
+              width: "995px",
+              height: "208px",
+              top: "689px",
+              left: "372px",
+              border: "2px solid #F3C17E",
+            }}
+          >
+            <h3
+              style={{
+                position: "absolute",
+                top: "35px",
+                left: "62px",
+                fontFamily: "Montserrat",
+                fontWeight: 700,
+                fontSize: "26px",
+                color: "#FFFFFF",
+              }}
+            >
+              Quick Tips
+            </h3>
+
+            <ul
+              style={{
+                position: "absolute",
+                top: "82px",
+                left: "45px",
+                fontFamily: "Montserrat",
+                fontWeight: 500,
+                fontSize: "20px",
+                lineHeight: "32px",
+                color: "#FFFFFF",
+              }}
+            >
+              <li>Start your day with clarity.</li>
+              <li>Break goals into smaller steps.</li>
+              <li>Review wins weekly.</li>
+            </ul>
+          </div>
+        </main>
+      </div>
     </div>
   );
 }
