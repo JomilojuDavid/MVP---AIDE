@@ -107,7 +107,7 @@ export default function Quiz() {
                       key={option}
                       onClick={() => setQuestion1(option)}
                       className={cn(
-                        "h-12 px-6 text-[0.95rem] rounded-[2px] border-[1.5px] border-[#ff000033] transition-all",
+                        "h-12 px-6 text-[0.95rem] rounded-[0px] border-[1.5px] border-[#ff000033] transition-all",
                         question1 === option
                           ? "bg-secondary text-foreground"
                           : "bg-white text-foreground hover:bg-[#F3C17E]"
