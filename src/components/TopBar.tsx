@@ -1,94 +1,86 @@
 import { Settings, Bell } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 
 export const TopBar = () => {
   const navigate = useNavigate();
 
   return (
-    <div
-      className="
-        fixed
-        top-[41px]
-        right-[30px]
-        z-[999]
-        flex
-        items-center
-        gap-[20px]
-        pointer-events-auto
-      "
-    >
-      {/* SETTINGS — 42.6 × 41 */}
-      <button
+    <>
+      {/* === Settings (Gear) Icon === */}
+      <Button
+        variant="ghost"
+        size="icon"
         onClick={() => navigate("/settings")}
-        className="
-          w-[42.6px] 
-          h-[41px] 
-          flex 
-          items-center 
-          justify-center
-          transform
-          transition-all
-          duration-200
-          hover:scale-110
-          hover:brightness-125
-          active:scale-95
-        "
+        style={{
+          position: "absolute",
+          width: "42.62px",
+          height: "41px",
+          top: "43px",
+          left: "1356px",
+          padding: 0,
+          color: "#FFFFFF",
+        }}
       >
         <Settings
-          style={{ width: "42.6px", height: "41px" }}
-          strokeWidth={2} // semi-bold stroke
-          className="text-white"
+          style={{
+            width: "42.62px",
+            height: "41px",
+          }}
         />
-      </button>
+      </Button>
 
-      {/* BELL — 44 × 44 */}
-      <button
+      {/* === Notifications (Bell) === */}
+      <Button
+        variant="ghost"
+        size="icon"
         onClick={() => navigate("/notifications")}
-        className="
-          relative 
-          w-[44px] 
-          h-[44px] 
-          flex 
-          items-center 
-          justify-center
-          transform
-          transition-all
-          duration-200
-          hover:scale-110
-          hover:brightness-125
-          active:scale-95
-        "
+        style={{
+          position: "absolute",
+          width: "44px",
+          height: "44px",
+          top: "41px",
+          left: "1417px",
+          padding: 0,
+          color: "#FFFFFF",
+        }}
       >
         <Bell
-          style={{ width: "44px", height: "44px" }}
-          strokeWidth={3} // slightly bolder
-          className="text-white"
+          style={{
+            width: "44px",
+            height: "44px",
+          }}
         />
 
-        {/* BADGE — EXACT FIGMA */}
-        <span
-          className="
-            absolute
-            top-[1px]
-            right-[1px]
-            w-[30px]
-            h-[25px]
-            bg-[#DF1516]
-            border
-            border-[#F3C17E]
-            rounded-full
-            flex
-            items-center
-            justify-center
-            text-white
-            text-[16px]
-            font-extrabold
-            leading-none
-          "
+        {/* === Notification Ellipse === */}
+        <div
+          style={{
+            position: "absolute",
+            width: "30px",
+            height: "25px",
+            top: "1px", // 42 - 41
+            left: "26px", // 1443 - 1417
+            backgroundColor: "#DF1516",
+            border: "1px solid #F3C17E",
+            borderRadius: "50%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
         >
-          3
-        </span>
-      </button>
-    </div>
+          <span
+            style={{
+              fontFamily: "Montserrat, sans-serif",
+              fontWeight: 800,
+              fontSize: "16px",
+              lineHeight: "16px",
+              color: "#FFFFFF",
+            }}
+          >
+            3
+          </span>
+        </div>
+      </Button>
+    </>
   );
 };
