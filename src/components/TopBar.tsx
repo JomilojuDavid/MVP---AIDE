@@ -1,86 +1,69 @@
 import { Settings, Bell } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 
 export const TopBar = () => {
   const navigate = useNavigate();
 
   return (
-    <>
-      {/* === Settings (Gear) Icon === */}
-      <Button
-        variant="ghost"
-        size="icon"
+    <div
+      className="
+        fixed
+        top-[41px]
+        right-[30px]
+        z-[999]
+        flex
+        items-center
+        gap-[20px]
+        pointer-events-auto
+      "
+    >
+      {/* SETTINGS — 42.6 × 41 */}
+      <button
         onClick={() => navigate("/settings")}
-        style={{
-          position: "absolute",
-          width: "42.62px",
-          height: "41px",
-          top: "43px",
-          left: "1356px",
-          padding: 0,
-          color: "#FFFFFF",
-        }}
+        className="w-[42.6px] h-[41px] flex items-center justify-center"
       >
         <Settings
-          style={{
-            width: "42.62px",
-            height: "41px",
-          }}
+          style={{ width: "42.6px", height: "41px" }}
+          strokeWidth={2.4}
+          className="text-white"
         />
-      </Button>
+      </button>
 
-      {/* === Notifications (Bell) === */}
-      <Button
-        variant="ghost"
-        size="icon"
+      {/* BELL — 44 × 44 */}
+      <button
         onClick={() => navigate("/notifications")}
-        style={{
-          position: "absolute",
-          width: "44px",
-          height: "44px",
-          top: "41px",
-          left: "1417px",
-          padding: 0,
-          color: "#FFFFFF",
-        }}
+        className="relative w-[44px] h-[44px] flex items-center justify-center"
       >
         <Bell
-          style={{
-            width: "44px",
-            height: "44px",
-          }}
+          style={{ width: "44px", height: "44px" }}
+          strokeWidth={2.4}
+          className="text-white"
         />
 
-        {/* === Notification Ellipse === */}
-        <div
-          style={{
-            position: "absolute",
-            width: "30px",
-            height: "25px",
-            top: "1px", // 42 - 41
-            left: "26px", // 1443 - 1417
-            backgroundColor: "#DF1516",
-            border: "1px solid #F3C17E",
-            borderRadius: "50%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
+        {/* BADGE — EXACT FIGMA */}
+        <span
+          className="
+            absolute
+            top-[1px]
+            right-[1px]
+            w-[30px]
+            h-[25px]
+            bg-[#DF1516]
+            border
+            border-[#F3C17E]
+            rounded-full
+            flex
+            items-center
+            justify-center
+            text-white
+            text-[16px]
+            font-extrabold
+            leading-none
+          "
         >
-          <span
-            style={{
-              fontFamily: "Montserrat, sans-serif",
-              fontWeight: 800,
-              fontSize: "16px",
-              lineHeight: "16px",
-              color: "#FFFFFF",
-            }}
-          >
-            3
-          </span>
-        </div>
-      </Button>
-    </>
+          3
+        </span>
+      </button>
+    </div>
   );
 };
