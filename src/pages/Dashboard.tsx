@@ -1,10 +1,9 @@
 import { Sidebar } from "@/components/Sidebar";
 import { TopBar } from "@/components/TopBar";
-import LockedCanvas from "@/components/LockedCanvas";
-import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { motion } from "framer-motion";
 
 interface DashboardProps {
   showQuizPrompt?: boolean;
@@ -25,58 +24,59 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
         return;
       }
 
-      const { data } = await supabase
+      const { data: profile } = await supabase
         .from("profiles")
         .select("first_name")
         .eq("id", user.id)
         .single();
 
-      if (data?.first_name) setFirstName(data.first_name);
+      if (profile?.first_name) {
+        setFirstName(profile.first_name);
+      }
     };
 
     fetchProfile();
   }, [navigate]);
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden bg-white">
-      {/* FIXED ELEMENTS */}
+    <div className="relative flex bg-primary overflow-hidden">
       <Sidebar showTasksAndResources />
       <TopBar />
 
-      {/* LOCKED FIGMA CANVAS */}
-      <LockedCanvas width={1512} height={982}>
-        {/* RED BACKGROUND (FIGMA CANVAS) */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            backgroundColor: "#DF1516",
-            borderRadius: 30,
-          }}
-        />
-
-        {/* Welcome Card */}
+      {/* === Desktop Canvas === */}
+      <main
+        className="relative"
+        style={{
+          width: "1512px",
+          height: "982px",
+          borderRadius: "30px",
+        }}
+      >
+        {/* === Welcome Card === */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
+          transition={{ duration: 0.5 }}
           style={{
             position: "absolute",
-            top: 111,
-            left: 372,
-            width: 995,
-            height: 152,
+            width: "995px",
+            height: "152px",
+            top: "111px",
+            left: "372px",
             backgroundColor: "#FFFFFF",
-            borderRadius: 17,
+            borderRadius: "17px",
             boxShadow: "0px 4px 4px rgba(0,0,0,0.25)",
-            padding: 24,
           }}
         >
           <h1
             style={{
-              fontFamily: "Arial",
-              fontSize: 45,
+              position: "absolute",
+              top: "24px",
+              left: "65px",
+              fontFamily: "Arial, sans-serif",
               fontWeight: 400,
+              fontSize: "45px",
+              lineHeight: "45px",
             }}
           >
             Welcome,{" "}
@@ -84,124 +84,202 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
               {firstName || "Name"}!
             </span>
           </h1>
-
-          <p
-            style={{
-              marginTop: 16,
-              fontFamily: "Montserrat",
-              fontSize: 18,
-            }}
-          >
-            Moving from Stuck & Stagnant to Clear & Confident
-          </p>
         </motion.div>
 
-        {/* Roadmap */}
-        <div
+        {/* === AIDE Roadmap === */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
           style={{
             position: "absolute",
-            top: 285,
-            left: 372,
-            width: 995,
-            height: 185,
+            width: "995px",
+            height: "185px",
+            top: "285px",
+            left: "372px",
             backgroundColor: "#FFFFFF",
+            borderRadius: "17px",
             boxShadow: "0px 4px 4px rgba(0,0,0,0.25)",
-            padding: 24,
           }}
         >
-          <h2 style={{ fontSize: 24, fontFamily: "Montserrat" }}>
+          <h2
+            style={{
+              position: "absolute",
+              top: "37px",
+              left: "49px",
+              fontFamily: "Montserrat, sans-serif",
+              fontWeight: 500,
+              fontSize: "24px",
+            }}
+          >
             Your AIDE Roadmap
           </h2>
 
+          {/* Progress Bar */}
           <div
             style={{
-              marginTop: 20,
-              width: 798,
-              height: 26,
-              borderRadius: 50,
+              position: "absolute",
+              top: "82px",
+              left: "53px",
+              width: "798px",
+              height: "26px",
+              borderRadius: "50px",
               border: "1px solid #F3C17E",
+              backgroundColor: "#FFFFFF",
             }}
           >
             <div
               style={{
-                width: showQuizPrompt ? 40 : 482,
+                width: showQuizPrompt ? "40px" : "482px",
                 height: "100%",
+                borderRadius: "50px",
                 backgroundColor: "#DF1516",
-                borderRadius: 50,
+                border: "3px solid #DF1516",
               }}
             />
           </div>
 
-          <p style={{ marginTop: 12, fontSize: 20 }}>
+          <p
+            style={{
+              position: "absolute",
+              top: "124px",
+              left: "42px",
+              fontFamily: "Montserrat, sans-serif",
+              fontWeight: 400,
+              fontSize: "20px",
+            }}
+          >
             Awareness → Intention → Decisiveness → Execution
           </p>
-        </div>
+        </motion.div>
 
-        {/* Daily Prompt */}
+        {/* === Daily Prompt === */}
         <div
+          onClick={() => window.open("https://calendar.google.com", "_blank")}
           style={{
             position: "absolute",
-            top: 493,
-            left: 372,
-            width: 482,
-            height: 179,
+            width: "482px",
+            height: "179px",
+            top: "493px",
+            left: "372px",
             border: "2px solid #F3C17E",
-            padding: 24,
-            color: "#FFFFFF",
+            cursor: "pointer",
           }}
         >
-          <h3 style={{ fontSize: 26, fontWeight: 700 }}>
+          <h3
+            style={{
+              position: "absolute",
+              top: "34px",
+              left: "62px",
+              fontFamily: "Montserrat, sans-serif",
+              fontWeight: 700,
+              fontSize: "26px",
+              color: "#FFFFFF",
+            }}
+          >
             Daily Prompt
           </h3>
-          <p style={{ marginTop: 12, fontSize: 20, lineHeight: "32px" }}>
+
+          <p
+            style={{
+              position: "absolute",
+              top: "90px",
+              left: "62px",
+              fontFamily: "Montserrat, sans-serif",
+              fontWeight: 500,
+              fontSize: "20px",
+              lineHeight: "32px",
+              color: "#FFFFFF",
+            }}
+          >
             Set one clear intention for today and take one step toward it.
           </p>
         </div>
 
-        {/* Progress Tracker */}
+        {/* === Progress Tracker === */}
         <div
           style={{
             position: "absolute",
-            top: 493,
-            left: 900,
-            width: 467,
-            height: 179,
+            width: "467px",
+            height: "179px",
+            top: "493px",
+            left: "900px",
             border: "2px solid #F3C17E",
-            padding: 24,
-            color: "#FFFFFF",
           }}
         >
-          <h3 style={{ fontSize: 26, fontWeight: 700 }}>
+          <h3
+            style={{
+              position: "absolute",
+              top: "34px",
+              left: "47px",
+              fontFamily: "Montserrat, sans-serif",
+              fontWeight: 700,
+              fontSize: "26px",
+              color: "#FFFFFF",
+            }}
+          >
             Progress Tracker
           </h3>
-          <p style={{ marginTop: 12, fontSize: 20 }}>
+
+          <p
+            style={{
+              position: "absolute",
+              top: "90px",
+              left: "47px",
+              fontFamily: "Montserrat, sans-serif",
+              fontWeight: 500,
+              fontSize: "20px",
+              lineHeight: "32px",
+              color: "#FFFFFF",
+            }}
+          >
             You’ve completed 2 of 4 stages this month.
           </p>
         </div>
 
-        {/* Quick Tips */}
+        {/* === Quick Tips === */}
         <div
           style={{
             position: "absolute",
-            top: 689,
-            left: 372,
-            width: 995,
-            height: 208,
+            width: "995px",
+            height: "208px",
+            top: "689px",
+            left: "372px",
             border: "2px solid #F3C17E",
-            padding: 32,
-            color: "#FFFFFF",
           }}
         >
-          <h3 style={{ fontSize: 26, fontWeight: 700 }}>
+          <h3
+            style={{
+              position: "absolute",
+              top: "35px",
+              left: "62px",
+              fontFamily: "Montserrat, sans-serif",
+              fontWeight: 700,
+              fontSize: "26px",
+              color: "#FFFFFF",
+            }}
+          >
             Quick Tips
           </h3>
-          <ul style={{ marginTop: 16, fontSize: 20, lineHeight: "32px" }}>
+
+          <ul
+            style={{
+              position: "absolute",
+              top: "82px",
+              left: "45px",
+              fontFamily: "Montserrat, sans-serif",
+              fontWeight: 500,
+              fontSize: "20px",
+              lineHeight: "32px",
+              color: "#FFFFFF",
+            }}
+          >
             <li>Start your day with clarity.</li>
             <li>Break goals into smaller steps.</li>
             <li>Review wins weekly.</li>
           </ul>
         </div>
-      </LockedCanvas>
+      </main>
     </div>
   );
 }
