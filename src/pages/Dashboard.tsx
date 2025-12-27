@@ -9,7 +9,7 @@ interface DashboardProps {
   showQuizPrompt?: boolean;
 }
 
-const TOPBAR_OFFSET = 52; // px — adjust only if your TopBar height changes
+const TOPBAR_OFFSET = 32; // px — adjust only if your TopBar height changes
 
 export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
   const navigate = useNavigate();
@@ -140,7 +140,7 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
                 top: "285px",
                 left: "372px",
                 background: "#FFFFFF",
-                borderRadius: "17px",
+                borderRadius: "0px",
                 boxShadow: "0px 4px 4px rgba(0,0,0,0.25)",
               }}
             >
