@@ -6,9 +6,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
-const SIDEBAR_WIDTH = 293; // Sidebar untouched
-const CANVAS_WIDTH = 1512;
-const CANVAS_HEIGHT = 982;
+/* ================================
+   DESIGN CONSTANTS (MATCH DASHBOARD)
+================================ */
+const FRAME_WIDTH = 1512;
+const FRAME_HEIGHT = 982;
+const SIDEBAR_WIDTH = 293; // untouched
+const TOPBAR_HEIGHT = 72;  // visual topbar height
 
 const resources = [
   {
@@ -32,17 +36,20 @@ const resources = [
   {
     id: 4,
     title: "Leadership & Influence Playbook",
-    description: "Develop leadership skills that help you inspire and influence people effectively.",
+    description:
+      "Develop leadership skills that help you inspire and influence people effectively.",
     variant: "white" as const,
   },
 ];
 
 export default function Resources() {
-  const [firstName, setFirstName] = useState<string>("");
+  const [firstName, setFirstName] = useState("");
   const [scale, setScale] = useState(1);
   const navigate = useNavigate();
 
-  // Fetch user profile
+  /* ================================
+     AUTH
+  ================================= */
   useEffect(() => {
     const fetchProfile = async () => {
       const { data: { user } } = await supabase.auth.getUser();
@@ -51,22 +58,29 @@ export default function Resources() {
         return;
       }
 
-      const { data: profile } = await supabase
+      const { data } = await supabase
         .from("profiles")
         .select("first_name")
         .eq("id", user.id)
         .single();
 
-      if (profile?.first_name) setFirstName(profile.first_name);
+      if (data?.first_name) setFirstName(data.first_name);
     };
+
     fetchProfile();
   }, [navigate]);
 
-  // Industry-standard scaling for viewport fit
+  /* ================================
+     SCALE TO VIEWPORT (DESKTOP ONLY)
+  ================================= */
   useEffect(() => {
     const updateScale = () => {
-      const scaleX = window.innerWidth / CANVAS_WIDTH;
-      const scaleY = window.innerHeight / CANVAS_HEIGHT;
+      const availableWidth = window.innerWidth - SIDEBAR_WIDTH;
+      const availableHeight = window.innerHeight - TOPBAR_HEIGHT;
+
+      const scaleX = availableWidth / FRAME_WIDTH;
+      const scaleY = availableHeight / FRAME_HEIGHT;
+
       setScale(Math.min(scaleX, scaleY));
     };
 
@@ -76,94 +90,123 @@ export default function Resources() {
   }, []);
 
   return (
-    <div className="flex h-screen bg-primary overflow-hidden">
+    <div className="relative flex bg-primary h-screen w-screen overflow-hidden">
       <Sidebar showTasksAndResources />
       <TopBar />
 
-      {/* === CENTERING + SIDEBAR + TOPBAR OFFSET === */}
+      {/* === RED CANVAS AREA === */}
       <div
-        style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          justifyContent: "center",
-          paddingLeft: SIDEBAR_WIDTH / 2,
-          paddingTop: 10, // TopBar offset
-        }}
+        className="relative flex items-center justify-center w-full h-full"
+        style={{ paddingLeft: SIDEBAR_WIDTH }}
       >
         {/* === SCALE WRAPPER === */}
         <div
           style={{
-            width: CANVAS_WIDTH,
-            height: CANVAS_HEIGHT,
+            width: FRAME_WIDTH,
+            height: FRAME_HEIGHT,
             transform: `scale(${scale})`,
             transformOrigin: "top left",
-            position: "relative",
           }}
         >
-          <main className="flex-1 flex flex-col px-6 pt-8">
-            <div className="max-w-4xl mx-auto w-full flex flex-col gap-6 flex-1">
-              {/* Header */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="bg-white rounded-2xl py-8 px-10"
-              >
-                <h1 className="text-4xl md:text-5xl font-bold mb-3">
-                  Here's Your Resource Library,{" "}
-                  <span className="text-primary">{firstName || "Name"}!</span>
-                </h1>
-                <p className="text-lg md:text-xl text-foreground">
-                  Access your personalized materials to enhance your AIDE journey.
-                </p>
-              </motion.div>
+          {/* === FIXED DESKTOP FRAME === */}
+          <main
+            style={{
+              position: "relative",
+              width: FRAME_WIDTH,
+              height: FRAME_HEIGHT,
+            }}
+          >
+            {/* HEADER */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              style={{
+                position: "absolute",
+                top: 111,
+                left: 372,
+                width: 995,
+                height: 111,
+                background: "#FFFFFF",
+                borderRadius: 20,
+                padding: "24px 32px",
+              }}
+            >
+              <h1 style={{ fontSize: 36, fontWeight: 600 }}>
+                Here’s Your Resource Library,{" "}
+                <span style={{ color: "#DF1516" }}>
+                  {firstName || "Name"}!
+                </span>
+              </h1>
+              <p style={{ marginTop: 8, fontSize: 18 }}>
+                Access your personalized materials to enhance your AIDE journey.
+              </p>
+            </motion.div>
 
-              {/* Resources Grid */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-                className="grid grid-cols-2 gap-6 flex-1"
-              >
-                {resources.map((resource) => (
-                  <div
-                    key={resource.id}
-                    className={`py-6 px-8 flex flex-col ${
+            {/* RESOURCE GRID */}
+            <div
+              style={{
+                position: "absolute",
+                top: 260,
+                left: 372,
+                width: 995,
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: 24,
+              }}
+            >
+              {resources.map((resource) => (
+                <div
+                  key={resource.id}
+                  style={{
+                    height: 190,
+                    padding: 32,
+                    background:
                       resource.variant === "secondary"
-                        ? "bg-secondary"
-                        : "bg-white"
-                    }`}
-                  >
-                    <h3 className="text-2xl font-bold mb-3 text-foreground">
+                        ? "#F6C888"
+                        : "#FFFFFF",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <div>
+                    <h3 style={{ fontSize: 24, fontWeight: 600 }}>
                       {resource.title}
                     </h3>
-                    <p className="text-lg text-foreground mb-5 flex-1">
+                    <p style={{ marginTop: 12, fontSize: 18 }}>
                       {resource.description}
                     </p>
-                    <div>
-                      <Button className="bg-primary text-white hover:bg-primary/90 h-12 px-6 text-base font-bold rounded-full">
-                        Access Now
-                      </Button>
-                    </div>
                   </div>
-                ))}
-              </motion.div>
 
-              {/* Quick Tips */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.6 }}
-                className="bg-primary border-2 border-secondary py-6 px-10 text-white"
-              >
-                <h3 className="text-2xl font-bold mb-4">Quick Tips</h3>
-                <ul className="space-y-2 text-lg list-disc list-inside">
-                  <li>Start your day with clarity.</li>
-                  <li>Break goals into smaller steps.</li>
-                  <li>Review wins weekly.</li>
-                </ul>
-              </motion.div>
+                  <Button
+                    className="bg-[#DF1516] hover:bg-[#c01314] text-white rounded-full w-fit px-6"
+                  >
+                    Access Now
+                  </Button>
+                </div>
+              ))}
+            </div>
+
+            {/* QUICK TIPS */}
+            <div
+              style={{
+                position: "absolute",
+                top: 720,
+                left: 372,
+                width: 995,
+                height: 200,
+                border: "2px solid #F3C17E",
+                padding: 32,
+                color: "#FFFFFF",
+              }}
+            >
+              <h3 style={{ fontSize: 26, fontWeight: 700 }}>Quick Tips</h3>
+              <ul style={{ marginTop: 16, fontSize: 20, lineHeight: "32px" }}>
+                <li>Start your day with clarity.</li>
+                <li>Break goals into smaller steps.</li>
+                <li>Review wins weekly.</li>
+              </ul>
             </div>
           </main>
         </div>
