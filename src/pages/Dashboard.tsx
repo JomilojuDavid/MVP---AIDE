@@ -9,7 +9,8 @@ interface DashboardProps {
   showQuizPrompt?: boolean;
 }
 
-const TOPBAR_OFFSET = 10; // px — adjust only if your TopBar height changes
+const TOPBAR_OFFSET = 10; // px
+const SIDEBAR_WIDTH = 293; // px — sidebar untouched
 
 export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
   const navigate = useNavigate();
@@ -21,7 +22,10 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
   ================================= */
   useEffect(() => {
     const fetchProfile = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
       if (!user) {
         navigate("/auth");
         return;
@@ -59,10 +63,13 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
       <Sidebar showTasksAndResources />
       <TopBar />
 
-      {/* === CENTERING + TOPBAR OFFSET === */}
+      {/* === CENTERING + OPTICAL ADJUSTMENT === */}
       <div
         className="relative flex items-start justify-center w-full h-full"
-        style={{ paddingTop: TOPBAR_OFFSET }}
+        style={{
+          paddingTop: TOPBAR_OFFSET,
+          paddingLeft: SIDEBAR_WIDTH / 2, // 👈 visual centering fix
+        }}
       >
         {/* === SCALE WRAPPER === */}
         <div
