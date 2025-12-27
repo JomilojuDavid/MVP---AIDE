@@ -9,7 +9,7 @@ interface DashboardProps {
   showQuizPrompt?: boolean;
 }
 
-const TOPBAR_OFFSET = 72; // px — adjust only if your TopBar height changes
+const TOPBAR_OFFSET = 52; // px — adjust only if your TopBar height changes
 
 export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
   const navigate = useNavigate();
@@ -124,7 +124,7 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
                   fontSize: "22px",
                 }}
               >
-                Moving From Stuck to Clear & Confident.
+                Moving From Stuck & Stagnant to Clear & Confident.
               </p>
             </motion.div>
 
