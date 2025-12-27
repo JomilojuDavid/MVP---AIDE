@@ -6,7 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
-const SIDEBAR_WIDTH = 293; // px
+const SIDEBAR_WIDTH = 293; // Sidebar untouched
 const CANVAS_WIDTH = 1512;
 const CANVAS_HEIGHT = 982;
 
@@ -42,10 +42,10 @@ export default function Resources() {
   const [scale, setScale] = useState(1);
   const navigate = useNavigate();
 
+  // Fetch user profile
   useEffect(() => {
     const fetchProfile = async () => {
       const { data: { user } } = await supabase.auth.getUser();
-
       if (!user) {
         navigate("/auth");
         return;
@@ -59,7 +59,6 @@ export default function Resources() {
 
       if (profile?.first_name) setFirstName(profile.first_name);
     };
-
     fetchProfile();
   }, [navigate]);
 
@@ -89,7 +88,7 @@ export default function Resources() {
           display: "flex",
           justifyContent: "center",
           paddingLeft: SIDEBAR_WIDTH / 2,
-          paddingTop: 10, // top offset for TopBar
+          paddingTop: 10, // TopBar offset
         }}
       >
         {/* === SCALE WRAPPER === */}
@@ -103,19 +102,19 @@ export default function Resources() {
           }}
         >
           <main className="flex-1 flex flex-col px-6 pt-8">
-            <div className="max-w-4xl mx-auto w-full flex flex-col gap-3 flex-1">
+            <div className="max-w-4xl mx-auto w-full flex flex-col gap-6 flex-1">
               {/* Header */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="bg-white rounded-2xl py-5 px-8"
+                className="bg-white rounded-2xl py-8 px-10"
               >
-                <h1 className="text-3xl font-bold mb-1">
+                <h1 className="text-4xl md:text-5xl font-bold mb-3">
                   Here's Your Resource Library,{" "}
                   <span className="text-primary">{firstName || "Name"}!</span>
                 </h1>
-                <p className="text-base text-foreground">
+                <p className="text-lg md:text-xl text-foreground">
                   Access your personalized materials to enhance your AIDE journey.
                 </p>
               </motion.div>
@@ -125,25 +124,25 @@ export default function Resources() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
-                className="grid grid-cols-2 gap-4 flex-1"
+                className="grid grid-cols-2 gap-6 flex-1"
               >
                 {resources.map((resource) => (
                   <div
                     key={resource.id}
-                    className={`py-5 px-6 flex flex-col ${
+                    className={`py-6 px-8 flex flex-col ${
                       resource.variant === "secondary"
                         ? "bg-secondary"
                         : "bg-white"
                     }`}
                   >
-                    <h3 className="text-xl font-bold mb-2 text-foreground">
+                    <h3 className="text-2xl font-bold mb-3 text-foreground">
                       {resource.title}
                     </h3>
-                    <p className="text-base text-foreground mb-4 flex-1">
+                    <p className="text-lg text-foreground mb-5 flex-1">
                       {resource.description}
                     </p>
                     <div>
-                      <Button className="bg-primary text-white hover:bg-primary/90 h-10 px-5 text-sm font-bold rounded-full">
+                      <Button className="bg-primary text-white hover:bg-primary/90 h-12 px-6 text-base font-bold rounded-full">
                         Access Now
                       </Button>
                     </div>
@@ -156,10 +155,10 @@ export default function Resources() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.6 }}
-                className="bg-primary border-2 border-secondary py-5 px-8 text-white"
+                className="bg-primary border-2 border-secondary py-6 px-10 text-white"
               >
-                <h3 className="text-xl font-bold mb-3">Quick Tips</h3>
-                <ul className="space-y-1 text-base list-disc list-inside">
+                <h3 className="text-2xl font-bold mb-4">Quick Tips</h3>
+                <ul className="space-y-2 text-lg list-disc list-inside">
                   <li>Start your day with clarity.</li>
                   <li>Break goals into smaller steps.</li>
                   <li>Review wins weekly.</li>
