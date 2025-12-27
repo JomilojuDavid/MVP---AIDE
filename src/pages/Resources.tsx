@@ -7,12 +7,12 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
 /* ================================
-   DESIGN CONSTANTS (MATCH DASHBOARD)
+   DESIGN CONSTANTS (FROM FIGMA)
 ================================ */
 const FRAME_WIDTH = 1512;
 const FRAME_HEIGHT = 982;
-const SIDEBAR_WIDTH = 293; // untouched
-const TOPBAR_HEIGHT = 72;  // visual topbar height
+const SIDEBAR_WIDTH = 293;
+const TOPBAR_HEIGHT = 72;
 
 const resources = [
   {
@@ -71,16 +71,17 @@ export default function Resources() {
   }, [navigate]);
 
   /* ================================
-     SCALE TO VIEWPORT (DESKTOP ONLY)
+     SCALE (MAX POSSIBLE, NO OVERLAP)
   ================================= */
   useEffect(() => {
     const updateScale = () => {
-      const availableWidth = window.innerWidth - SIDEBAR_WIDTH;
-      const availableHeight = window.innerHeight - TOPBAR_HEIGHT;
+      const usableWidth = window.innerWidth - SIDEBAR_WIDTH;
+      const usableHeight = window.innerHeight - TOPBAR_HEIGHT;
 
-      const scaleX = availableWidth / FRAME_WIDTH;
-      const scaleY = availableHeight / FRAME_HEIGHT;
+      const scaleX = usableWidth / FRAME_WIDTH;
+      const scaleY = usableHeight / FRAME_HEIGHT;
 
+      // 👇 allow it to be BIG (no artificial cap)
       setScale(Math.min(scaleX, scaleY));
     };
 
@@ -90,14 +91,20 @@ export default function Resources() {
   }, []);
 
   return (
-    <div className="relative flex bg-primary h-screen w-screen overflow-hidden">
+    <div className="relative flex h-screen w-screen bg-primary overflow-hidden">
       <Sidebar showTasksAndResources />
       <TopBar />
 
-      {/* === RED CANVAS AREA === */}
+      {/* === RED CANVAS (REAL TOPBAR OFFSET) === */}
       <div
-        className="relative flex items-center justify-center w-full h-full"
-        style={{ paddingLeft: SIDEBAR_WIDTH }}
+        style={{
+          flex: 1,
+          paddingLeft: SIDEBAR_WIDTH,
+          paddingTop: TOPBAR_HEIGHT,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "flex-start", // 👈 IMPORTANT
+        }}
       >
         {/* === SCALE WRAPPER === */}
         <div
@@ -105,7 +112,7 @@ export default function Resources() {
             width: FRAME_WIDTH,
             height: FRAME_HEIGHT,
             transform: `scale(${scale})`,
-            transformOrigin: "top left",
+            transformOrigin: "top center",
           }}
         >
           {/* === FIXED DESKTOP FRAME === */}
@@ -126,19 +133,19 @@ export default function Resources() {
                 top: 111,
                 left: 372,
                 width: 995,
-                height: 111,
+                height: 120,
                 background: "#FFFFFF",
                 borderRadius: 20,
-                padding: "24px 32px",
+                padding: "28px 36px",
               }}
             >
-              <h1 style={{ fontSize: 36, fontWeight: 600 }}>
+              <h1 style={{ fontSize: 40, fontWeight: 600 }}>
                 Here’s Your Resource Library,{" "}
                 <span style={{ color: "#DF1516" }}>
                   {firstName || "Name"}!
                 </span>
               </h1>
-              <p style={{ marginTop: 8, fontSize: 18 }}>
+              <p style={{ marginTop: 10, fontSize: 20 }}>
                 Access your personalized materials to enhance your AIDE journey.
               </p>
             </motion.div>
@@ -147,41 +154,37 @@ export default function Resources() {
             <div
               style={{
                 position: "absolute",
-                top: 260,
+                top: 270,
                 left: 372,
                 width: 995,
                 display: "grid",
                 gridTemplateColumns: "1fr 1fr",
-                gap: 24,
+                gap: 28,
               }}
             >
-              {resources.map((resource) => (
+              {resources.map((r) => (
                 <div
-                  key={resource.id}
+                  key={r.id}
                   style={{
-                    height: 190,
-                    padding: 32,
+                    height: 210,
+                    padding: 36,
                     background:
-                      resource.variant === "secondary"
-                        ? "#F6C888"
-                        : "#FFFFFF",
+                      r.variant === "secondary" ? "#F6C888" : "#FFFFFF",
                     display: "flex",
                     flexDirection: "column",
                     justifyContent: "space-between",
                   }}
                 >
                   <div>
-                    <h3 style={{ fontSize: 24, fontWeight: 600 }}>
-                      {resource.title}
+                    <h3 style={{ fontSize: 26, fontWeight: 600 }}>
+                      {r.title}
                     </h3>
-                    <p style={{ marginTop: 12, fontSize: 18 }}>
-                      {resource.description}
+                    <p style={{ marginTop: 14, fontSize: 20 }}>
+                      {r.description}
                     </p>
                   </div>
 
-                  <Button
-                    className="bg-[#DF1516] hover:bg-[#c01314] text-white rounded-full w-fit px-6"
-                  >
+                  <Button className="bg-[#DF1516] hover:bg-[#c01314] text-white rounded-full w-fit px-8 h-11 text-base">
                     Access Now
                   </Button>
                 </div>
@@ -192,17 +195,17 @@ export default function Resources() {
             <div
               style={{
                 position: "absolute",
-                top: 720,
+                top: 740,
                 left: 372,
                 width: 995,
-                height: 200,
+                height: 220,
                 border: "2px solid #F3C17E",
-                padding: 32,
+                padding: 36,
                 color: "#FFFFFF",
               }}
             >
-              <h3 style={{ fontSize: 26, fontWeight: 700 }}>Quick Tips</h3>
-              <ul style={{ marginTop: 16, fontSize: 20, lineHeight: "32px" }}>
+              <h3 style={{ fontSize: 28, fontWeight: 700 }}>Quick Tips</h3>
+              <ul style={{ marginTop: 18, fontSize: 22, lineHeight: "34px" }}>
                 <li>Start your day with clarity.</li>
                 <li>Break goals into smaller steps.</li>
                 <li>Review wins weekly.</li>
