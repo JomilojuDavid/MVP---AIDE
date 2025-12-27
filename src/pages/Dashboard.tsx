@@ -9,6 +9,8 @@ interface DashboardProps {
   showQuizPrompt?: boolean;
 }
 
+const TOPBAR_OFFSET = 72; // px — adjust only if your TopBar height changes
+
 export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
   const navigate = useNavigate();
   const [firstName, setFirstName] = useState("");
@@ -57,8 +59,11 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
       <Sidebar showTasksAndResources />
       <TopBar />
 
-      {/* === CENTERING WRAPPER === */}
-      <div className="relative flex items-center justify-center w-full h-full">
+      {/* === CENTERING + TOPBAR OFFSET === */}
+      <div
+        className="relative flex items-start justify-center w-full h-full"
+        style={{ paddingTop: TOPBAR_OFFSET }}
+      >
         {/* === SCALE WRAPPER === */}
         <div
           style={{
@@ -109,6 +114,18 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
                   {firstName || "Name"}!
                 </span>
               </h1>
+
+              <p
+                style={{
+                  position: "absolute",
+                  top: "80px",
+                  left: "65px",
+                  fontFamily: "Montserrat",
+                  fontSize: "22px",
+                }}
+              >
+                Moving From Stuck to Clear & Confident.
+              </p>
             </motion.div>
 
             {/* === AIDE ROADMAP === */}
