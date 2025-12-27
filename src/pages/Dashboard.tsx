@@ -9,7 +9,7 @@ interface DashboardProps {
   showQuizPrompt?: boolean;
 }
 
-const TOPBAR_OFFSET = 10; // px
+const TOPBAR_OFFSET = 5 ; // px
 const SIDEBAR_WIDTH = 293; // px — sidebar untouched
 
 export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
