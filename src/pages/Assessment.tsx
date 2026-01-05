@@ -175,10 +175,11 @@ export default function Assessment() {
               color: "#FFFFFF",
             }}
           >
-            <h2 style={{ fontSize: 26, fontWeight: 700 }}>Quick Tips</h2>
+            <h2 style={{ fontSize: 26, fontWeight: 500 }}>Quick Tips</h2>
             <ul
               style={{
                 marginTop: 16,
+                fontWeight: 300,
                 fontSize: 20,
                 lineHeight: "32px",
                 fontFamily: "Montserrat",
