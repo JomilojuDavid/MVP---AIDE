@@ -90,7 +90,7 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
             alt="Support"
             className="w-[46px] h-[52px] rounded-full object-cover"
           />
-          <span className="text-[24px] font-normal font-sans text-black">
+          <span className="text-[24px] font-arial font-sans text-black">
             Support
           </span>
         </button>
