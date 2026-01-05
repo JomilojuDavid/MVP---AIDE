@@ -8,7 +8,7 @@ export default function Submission() {
   const navigate = useNavigate();
 
   return (
-    <LockedCanvas width={1512} height={982}>
+    <LockedCanvas>
       {/* LOGO */}
       <img
         src={aideLogo}
