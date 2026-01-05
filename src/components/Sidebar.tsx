@@ -10,6 +10,7 @@ import iconResources from "@/assets/icon-resources.png";
 import iconTasks from "@/assets/icon-tasks.png";
 import iconAnalytics from "@/assets/icon-analytics.png";
 import supportWoman from "@/assets/support-woman.jpg";
+import { SupportModal } from "./SupportModal";
 
 interface SidebarProps {
   showTasksAndResources?: boolean;
@@ -17,6 +18,7 @@ interface SidebarProps {
 
 export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [supportModalOpen, setSupportModalOpen] = useState(false);
   const location = useLocation();
 
   const isActive = (path: string) => location.pathname === path;
@@ -205,25 +207,32 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
         )}
 
         {/* === Support === */}
-        <div>
+        <button
+          onClick={() => setSupportModalOpen(true)}
+          className="absolute cursor-pointer hover:opacity-80 transition-opacity"
+          style={{
+            top: "871px",
+            left: "34px",
+            background: "none",
+            border: "none",
+            padding: 0,
+            display: "flex",
+            alignItems: "center",
+            gap: "20px",
+          }}
+        >
           <img
             src={supportWoman}
             alt="Support"
             style={{
-              position: "absolute",
               width: "46px",
               height: "52px",
-              top: "871px",
-              left: "34px",
               borderRadius: "50%",
               objectFit: "cover",
             }}
           />
           <span
             style={{
-              position: "absolute",
-              top: "883px",
-              left: "100px",
               fontFamily: "Arial, sans-serif",
               fontWeight: 400,
               fontSize: "24px",
@@ -232,7 +241,9 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
           >
             Support
           </span>
-        </div>
+        </button>
+
+        <SupportModal open={supportModalOpen} onOpenChange={setSupportModalOpen} />
       </aside>
 
       {/* === Mobile Sidebar (unchanged behavior) === */}
