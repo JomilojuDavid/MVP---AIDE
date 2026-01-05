@@ -1,6 +1,5 @@
 import { Sidebar } from "@/components/Sidebar";
 import { TopBar } from "@/components/TopBar";
-import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
@@ -9,39 +8,36 @@ interface DashboardProps {
   showQuizPrompt?: boolean;
 }
 
-const TOPBAR_OFFSET = 5 ; // px
+const TOPBAR_OFFSET = 5; // px
 const SIDEBAR_WIDTH = 293; // px — sidebar untouched
 
 export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
-  const navigate = useNavigate();
   const [firstName, setFirstName] = useState("");
   const [scale, setScale] = useState(1);
 
   /* ================================
-     AUTH / PROFILE
+     PROFILE ONLY (NO AUTH REDIRECT)
   ================================= */
   useEffect(() => {
     const fetchProfile = async () => {
       const {
-        data: { user },
-      } = await supabase.auth.getUser();
+        data: { session },
+      } = await supabase.auth.getSession();
 
-      if (!user) {
-        navigate("/auth");
-        return;
-      }
+      // ⛔ NO REDIRECT HERE
+      if (!session?.user) return;
 
       const { data: profile } = await supabase
         .from("profiles")
         .select("first_name")
-        .eq("id", user.id)
+        .eq("id", session.user.id)
         .single();
 
       if (profile?.first_name) setFirstName(profile.first_name);
     };
 
     fetchProfile();
-  }, [navigate]);
+  }, []);
 
   /* ================================
      INDUSTRY-STANDARD SCALING
@@ -68,7 +64,7 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
         className="relative flex items-start justify-center w-full h-full"
         style={{
           paddingTop: TOPBAR_OFFSET,
-          paddingLeft: SIDEBAR_WIDTH / 2, // 👈 visual centering fix
+          paddingLeft: SIDEBAR_WIDTH / 2,
         }}
       >
         {/* === SCALE WRAPPER === */}
@@ -147,7 +143,6 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
                 top: "285px",
                 left: "372px",
                 background: "#FFFFFF",
-                borderRadius: "0px",
                 boxShadow: "0px 4px 4px rgba(0,0,0,0.25)",
               }}
             >
