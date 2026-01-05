@@ -1,31 +1,39 @@
 import { Sidebar } from "@/components/Sidebar";
 import { TopBar } from "@/components/TopBar";
-import { useAppLayout } from "@/hooks/useAppLayout";
 import { Outlet } from "react-router-dom";
+import { useRef, useState, useEffect } from "react";
 
 export default function AppLayout() {
-  const {
-    topBarRef,
-    contentStyle, // global offset + locked spacing
-  } = useAppLayout();
+  const topBarRef = useRef<HTMLDivElement>(null);
+  const [topBarHeight, setTopBarHeight] = useState(0);
+
+  // Measure TopBar height to offset content
+  useEffect(() => {
+    if (topBarRef.current) {
+      setTopBarHeight(topBarRef.current.offsetHeight);
+    }
+  }, []);
 
   return (
-    <div className="relative w-screen h-screen bg-primary overflow-hidden">
+    <div className="flex w-screen h-screen bg-primary">
       {/* Sidebar */}
       <Sidebar showTasksAndResources />
 
-      {/* TopBar (measured for offset) */}
-      <div ref={topBarRef} className="fixed top-0 left-0 right-0 z-50">
-        <TopBar />
-      </div>
+      {/* Main area (TopBar + Content) */}
+      <div className="flex-1 flex flex-col">
+        {/* TopBar */}
+        <div ref={topBarRef} className="w-full">
+          <TopBar />
+        </div>
 
-      {/* Main Content (ALL pages rendered here) */}
-      <main
-        style={contentStyle}
-        className="absolute inset-0"
-      >
-        <Outlet />
-      </main>
+        {/* Main content */}
+        <main
+          style={{ height: `calc(100vh - ${topBarHeight}px)` }}
+          className="w-full"
+        >
+          <Outlet />
+        </main>
+      </div>
     </div>
   );
 }
