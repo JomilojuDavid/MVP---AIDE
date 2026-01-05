@@ -23,9 +23,21 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
 
   const isActive = (path: string) => location.pathname === path;
 
+  const menuItems = [
+    { label: "Home", icon: iconHome, path: "/dashboard" },
+    ...(showTasksAndResources
+      ? [
+          { label: "Assessment", icon: iconAssessment, path: "/assessment" },
+          { label: "Resources", icon: iconResources, path: "/resources" },
+          { label: "Tasks", icon: iconTasks, path: "/tasks" },
+          { label: "Analytics", icon: iconAnalytics, path: "/analytics" },
+        ]
+      : []),
+  ];
+
   return (
     <>
-      {/* === Mobile Menu Button (unchanged) === */}
+      {/* === Mobile Menu Button === */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="md:hidden fixed top-4 left-4 z-50 p-2 bg-primary text-primary-foreground rounded-lg"
@@ -33,212 +45,52 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
         <Menu className="w-6 h-6" />
       </button>
 
-      {/* === Sidebar Canvas === */}
-      <aside
-        className={cn(
-          "fixed left-0 top-0 bg-background text-black z-40",
-          "w-[260px] h-[982px]",
-          "hidden md:block"
-        )}
-      >
-        {/* === Logo === */}
-        <Link to="/dashboard">
-          <img
-            src={aideLogo}
-            alt="AIDE Logo"
-            style={{
-              position: "absolute",
-              width: "167px",
-              height: "132px",
-              top: "76px",
-              left: "30px",
-              objectFit: "contain",
-              cursor: "pointer",
-            }}
-          />
-        </Link>
-
-        {/* === Home === */}
-        <Link to="/dashboard">
-          <img
-            src={iconHome}
-            alt="Home"
-            style={{
-              position: "absolute",
-              width: "23.91px",
-              height: "23px",
-              top: "270px",
-              left: "53px",
-            }}
-          />
-          <span
-            style={{
-              position: "absolute",
-              top: "274px",
-              left: "85.91px",
-              fontFamily: "Arial, sans-serif",
-              fontWeight: 400,
-              fontSize: "21px",
-              color: "#000",
-            }}
-          >
-            Home
-          </span>
-        </Link>
-
-        {/* === Assessment === */}
-        {showTasksAndResources && (
-          <Link to="/assessment">
+      {/* === Desktop Sidebar === */}
+      <aside className="hidden md:flex flex-col justify-between fixed left-0 top-0 w-[260px] h-screen bg-background text-black z-40 shadow-md">
+        {/* Top: Logo + Menu */}
+        <div className="flex flex-col pt-6 px-6 gap-8">
+          {/* Logo */}
+          <Link to="/dashboard" className="mb-4">
             <img
-              src={iconAssessment}
-              alt="Assessment"
-              style={{
-                position: "absolute",
-                width: "31.18px",
-                height: "30px",
-                top: "332px",
-                left: "53px",
-              }}
+              src={aideLogo}
+              alt="AIDE Logo"
+              className="w-[167px] h-[132px] object-contain cursor-pointer"
             />
-            <span
-              style={{
-                position: "absolute",
-                top: "338px",
-                left: "89.18px",
-                fontFamily: "Arial, sans-serif",
-                fontWeight: 400,
-                fontSize: "21px",
-                color: "#000",
-              }}
-            >
-              Assessment
-            </span>
           </Link>
-        )}
 
-        {/* === Resources === */}
-        {showTasksAndResources && (
-          <Link to="/resources">
-            <img
-              src={iconResources}
-              alt="Resources"
-              style={{
-                position: "absolute",
-                width: "31.18px",
-                height: "30px",
-                top: "401px",
-                left: "53px",
-              }}
-            />
-            <span
-              style={{
-                position: "absolute",
-                top: "406px",
-                left: "93.18px",
-                fontFamily: "Arial, sans-serif",
-                fontWeight: 400,
-                fontSize: "21px",
-                color: "#000",
-              }}
-            >
-              Resources
-            </span>
-          </Link>
-        )}
+          {/* Menu Items */}
+          <nav className="flex flex-col gap-6">
+            {menuItems.map((item) => (
+              <Link
+                key={item.label}
+                to={item.path}
+                className={cn(
+                  "flex items-center gap-4 text-[21px] font-normal font-sans hover:opacity-80 transition-opacity",
+                  isActive(item.path) ? "font-bold text-black" : "text-black/70"
+                )}
+              >
+                <img
+                  src={item.icon}
+                  alt={item.label}
+                  className="w-[30px] h-[30px]"
+                />
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+        </div>
 
-        {/* === Tasks === */}
-        {showTasksAndResources && (
-          <Link to="/tasks">
-            <img
-              src={iconTasks}
-              alt="Tasks"
-              style={{
-                position: "absolute",
-                width: "31.18px",
-                height: "30px",
-                top: "469px",
-                left: "53px",
-              }}
-            />
-            <span
-              style={{
-                position: "absolute",
-                top: "474px",
-                left: "88.18px",
-                fontFamily: "Arial, sans-serif",
-                fontWeight: 400,
-                fontSize: "21px",
-                color: "#000",
-              }}
-            >
-              Tasks
-            </span>
-          </Link>
-        )}
-
-        {/* === Analytics === */}
-        {showTasksAndResources && (
-          <Link to="/analytics">
-            <img
-              src={iconAnalytics}
-              alt="Analytics"
-              style={{
-                position: "absolute",
-                width: "31.18px",
-                height: "30px",
-                top: "534px",
-                left: "53px",
-              }}
-            />
-            <span
-              style={{
-                position: "absolute",
-                top: "542px",
-                left: "88.18px",
-                fontFamily: "Arial, sans-serif",
-                fontWeight: 400,
-                fontSize: "21px",
-                color: "#000",
-              }}
-            >
-              Analytics
-            </span>
-          </Link>
-        )}
-
-        {/* === Support === */}
+        {/* Bottom: Support Button */}
         <button
           onClick={() => setSupportModalOpen(true)}
-          className="absolute cursor-pointer hover:opacity-80 transition-opacity"
-          style={{
-            top: "871px",
-            left: "34px",
-            background: "none",
-            border: "none",
-            padding: 0,
-            display: "flex",
-            alignItems: "center",
-            gap: "20px",
-          }}
+          className="flex items-center gap-4 p-4 cursor-pointer hover:opacity-80 transition-opacity mx-6 mb-6 bg-transparent border-none"
         >
           <img
             src={supportWoman}
             alt="Support"
-            style={{
-              width: "46px",
-              height: "52px",
-              borderRadius: "50%",
-              objectFit: "cover",
-            }}
+            className="w-[46px] h-[52px] rounded-full object-cover"
           />
-          <span
-            style={{
-              fontFamily: "Arial, sans-serif",
-              fontWeight: 400,
-              fontSize: "24px",
-              color: "#000",
-            }}
-          >
+          <span className="text-[24px] font-normal font-sans text-black">
             Support
           </span>
         </button>
@@ -246,12 +98,64 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
         <SupportModal open={supportModalOpen} onOpenChange={setSupportModalOpen} />
       </aside>
 
-      {/* === Mobile Sidebar (unchanged behavior) === */}
+      {/* === Mobile Sidebar Overlay === */}
       {isOpen && (
-        <div
-          className="md:hidden fixed inset-0 bg-black/50 z-30"
-          onClick={() => setIsOpen(false)}
-        />
+        <>
+          <div
+            className="md:hidden fixed inset-0 bg-black/50 z-30"
+            onClick={() => setIsOpen(false)}
+          />
+          <aside className="md:hidden fixed left-0 top-0 w-64 h-screen bg-background text-black z-40 p-6 flex flex-col justify-between">
+            {/* Logo */}
+            <Link to="/dashboard">
+              <img
+                src={aideLogo}
+                alt="AIDE Logo"
+                className="w-[167px] h-[132px] object-contain cursor-pointer mb-4"
+              />
+            </Link>
+
+            {/* Menu */}
+            <nav className="flex flex-col gap-6">
+              {menuItems.map((item) => (
+                <Link
+                  key={item.label}
+                  to={item.path}
+                  className={cn(
+                    "flex items-center gap-4 text-[21px] font-normal font-sans hover:opacity-80 transition-opacity",
+                    isActive(item.path) ? "font-bold text-black" : "text-black/70"
+                  )}
+                  onClick={() => setIsOpen(false)}
+                >
+                  <img
+                    src={item.icon}
+                    alt={item.label}
+                    className="w-[30px] h-[30px]"
+                  />
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+
+            {/* Support */}
+            <button
+              onClick={() => {
+                setSupportModalOpen(true);
+                setIsOpen(false);
+              }}
+              className="flex items-center gap-4 p-4 cursor-pointer hover:opacity-80 transition-opacity bg-transparent border-none"
+            >
+              <img
+                src={supportWoman}
+                alt="Support"
+                className="w-[46px] h-[52px] rounded-full object-cover"
+              />
+              <span className="text-[24px] font-normal font-sans text-black">
+                Support
+              </span>
+            </button>
+          </aside>
+        </>
       )}
     </>
   );
