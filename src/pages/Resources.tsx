@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
 /* ================================
-   DESIGN CONSTANTS (FROM FIGMA)
+   FIGMA FRAME CONSTANTS
 ================================ */
 const FRAME_WIDTH = 1512;
 const FRAME_HEIGHT = 982;
@@ -31,14 +31,14 @@ const resources = [
     id: 3,
     title: "Execution Masterclass",
     description: "Download or explore to apply AIDE principles effectively.",
-    variant: "secondary" as const,
+    variant: "white" as const,
   },
   {
     id: 4,
     title: "Leadership & Influence Playbook",
     description:
       "Develop leadership skills that help you inspire and influence people effectively.",
-    variant: "white" as const,
+    variant: "secondary" as const,
   },
 ];
 
@@ -52,7 +52,10 @@ export default function Resources() {
   ================================= */
   useEffect(() => {
     const fetchProfile = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
       if (!user) {
         navigate("/auth");
         return;
@@ -71,18 +74,14 @@ export default function Resources() {
   }, [navigate]);
 
   /* ================================
-     SCALE (MAX POSSIBLE, NO OVERLAP)
+     SCALE — FILL HEIGHT (FIGMA-ACCURATE)
   ================================= */
   useEffect(() => {
     const updateScale = () => {
-      const usableWidth = window.innerWidth - SIDEBAR_WIDTH;
       const usableHeight = window.innerHeight - TOPBAR_HEIGHT;
-
-      const scaleX = usableWidth / FRAME_WIDTH;
       const scaleY = usableHeight / FRAME_HEIGHT;
 
-      // 👇 allow it to be BIG (no artificial cap)
-      setScale(Math.min(scaleX, scaleY));
+      setScale(scaleY);
     };
 
     updateScale();
@@ -95,7 +94,7 @@ export default function Resources() {
       <Sidebar showTasksAndResources />
       <TopBar />
 
-      {/* === RED CANVAS (REAL TOPBAR OFFSET) === */}
+      {/* ===== RED CANVAS ===== */}
       <div
         style={{
           flex: 1,
@@ -103,10 +102,10 @@ export default function Resources() {
           paddingTop: TOPBAR_HEIGHT,
           display: "flex",
           justifyContent: "center",
-          alignItems: "flex-start", // 👈 IMPORTANT
+          alignItems: "flex-start",
         }}
       >
-        {/* === SCALE WRAPPER === */}
+        {/* ===== SCALE WRAPPER ===== */}
         <div
           style={{
             width: FRAME_WIDTH,
@@ -115,7 +114,6 @@ export default function Resources() {
             transformOrigin: "top center",
           }}
         >
-          {/* === FIXED DESKTOP FRAME === */}
           <main
             style={{
               position: "relative",
@@ -123,38 +121,38 @@ export default function Resources() {
               height: FRAME_HEIGHT,
             }}
           >
-            {/* HEADER */}
+            {/* ===== HEADER ===== */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               style={{
                 position: "absolute",
-                top: 111,
+                top: 110,
                 left: 372,
                 width: 995,
-                height: 120,
+                height: 128,
                 background: "#FFFFFF",
                 borderRadius: 20,
-                padding: "28px 36px",
+                padding: "32px 40px",
               }}
             >
-              <h1 style={{ fontSize: 40, fontWeight: 600 }}>
+              <h1 style={{ fontSize: 42, fontWeight: 600 }}>
                 Here’s Your Resource Library,{" "}
                 <span style={{ color: "#DF1516" }}>
                   {firstName || "Name"}!
                 </span>
               </h1>
-              <p style={{ marginTop: 10, fontSize: 20 }}>
+              <p style={{ marginTop: 12, fontSize: 20 }}>
                 Access your personalized materials to enhance your AIDE journey.
               </p>
             </motion.div>
 
-            {/* RESOURCE GRID */}
+            {/* ===== RESOURCE GRID ===== */}
             <div
               style={{
                 position: "absolute",
-                top: 270,
+                top: 280,
                 left: 372,
                 width: 995,
                 display: "grid",
@@ -166,13 +164,14 @@ export default function Resources() {
                 <div
                   key={r.id}
                   style={{
-                    height: 210,
+                    height: 220,
                     padding: 36,
                     background:
                       r.variant === "secondary" ? "#F6C888" : "#FFFFFF",
                     display: "flex",
                     flexDirection: "column",
                     justifyContent: "space-between",
+                    borderRadius: 6,
                   }}
                 >
                   <div>
@@ -184,28 +183,34 @@ export default function Resources() {
                     </p>
                   </div>
 
-                  <Button className="bg-[#DF1516] hover:bg-[#c01314] text-white rounded-full w-fit px-8 h-11 text-base">
+                  <Button className="bg-[#DF1516] hover:bg-[#c01314] text-white rounded-full w-fit px-10 h-11 text-base">
                     Access Now
                   </Button>
                 </div>
               ))}
             </div>
 
-            {/* QUICK TIPS */}
+            {/* ===== QUICK TIPS ===== */}
             <div
               style={{
                 position: "absolute",
                 top: 740,
                 left: 372,
                 width: 995,
-                height: 220,
+                height: 230,
                 border: "2px solid #F3C17E",
-                padding: 36,
+                padding: 40,
                 color: "#FFFFFF",
               }}
             >
               <h3 style={{ fontSize: 28, fontWeight: 700 }}>Quick Tips</h3>
-              <ul style={{ marginTop: 18, fontSize: 22, lineHeight: "34px" }}>
+              <ul
+                style={{
+                  marginTop: 18,
+                  fontSize: 22,
+                  lineHeight: "36px",
+                }}
+              >
                 <li>Start your day with clarity.</li>
                 <li>Break goals into smaller steps.</li>
                 <li>Review wins weekly.</li>
