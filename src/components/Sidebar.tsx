@@ -37,7 +37,7 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
 
   return (
     <>
-      {/* === Mobile Menu Button === */}
+      {/* Mobile Hamburger Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="md:hidden fixed top-4 left-4 z-50 p-2 bg-primary text-primary-foreground rounded-lg"
@@ -45,12 +45,11 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
         <Menu className="w-6 h-6" />
       </button>
 
-      {/* === Desktop Sidebar === */}
+      {/* Desktop Sidebar */}
       <aside className="hidden md:flex flex-col justify-between fixed left-0 top-0 w-[260px] h-screen bg-background text-black z-40 shadow-md">
         {/* Top: Logo + Menu */}
         <div className="flex flex-col pt-6 px-6 gap-8">
-          {/* Logo */}
-          <Link to="/dashboard" className="mb-4">
+          <Link to="/dashboard">
             <img
               src={aideLogo}
               alt="AIDE Logo"
@@ -58,7 +57,6 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
             />
           </Link>
 
-          {/* Menu Items */}
           <nav className="flex flex-col gap-6">
             {menuItems.map((item) => (
               <Link
@@ -69,11 +67,7 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
                   isActive(item.path) ? "font-bold text-black" : "text-black/70"
                 )}
               >
-                <img
-                  src={item.icon}
-                  alt={item.label}
-                  className="w-[30px] h-[30px]"
-                />
+                <img src={item.icon} alt={item.label} className="w-[30px] h-[30px]" />
                 {item.label}
               </Link>
             ))}
@@ -90,7 +84,7 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
             alt="Support"
             className="w-[46px] h-[52px] rounded-full object-cover"
           />
-          <span className="text-[24px] font-arial font-sans text-black">
+          <span className="text-[24px] font-normal font-sans text-black">
             Support
           </span>
         </button>
@@ -98,7 +92,7 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
         <SupportModal open={supportModalOpen} onOpenChange={setSupportModalOpen} />
       </aside>
 
-      {/* === Mobile Sidebar Overlay === */}
+      {/* Mobile Sidebar */}
       {isOpen && (
         <>
           <div
@@ -106,7 +100,6 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
             onClick={() => setIsOpen(false)}
           />
           <aside className="md:hidden fixed left-0 top-0 w-64 h-screen bg-background text-black z-40 p-6 flex flex-col justify-between">
-            {/* Logo */}
             <Link to="/dashboard">
               <img
                 src={aideLogo}
@@ -115,7 +108,6 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
               />
             </Link>
 
-            {/* Menu */}
             <nav className="flex flex-col gap-6">
               {menuItems.map((item) => (
                 <Link
@@ -127,17 +119,12 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
                   )}
                   onClick={() => setIsOpen(false)}
                 >
-                  <img
-                    src={item.icon}
-                    alt={item.label}
-                    className="w-[30px] h-[30px]"
-                  />
+                  <img src={item.icon} alt={item.label} className="w-[30px] h-[30px]" />
                   {item.label}
                 </Link>
               ))}
             </nav>
 
-            {/* Support */}
             <button
               onClick={() => {
                 setSupportModalOpen(true);
