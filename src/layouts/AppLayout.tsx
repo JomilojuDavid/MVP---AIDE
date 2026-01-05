@@ -7,11 +7,17 @@ export default function AppLayout() {
   const topBarRef = useRef<HTMLDivElement>(null);
   const [topBarHeight, setTopBarHeight] = useState(0);
 
-  // Measure TopBar height to offset content
+  // Measure TopBar height dynamically
   useEffect(() => {
-    if (topBarRef.current) {
-      setTopBarHeight(topBarRef.current.offsetHeight);
-    }
+    const updateHeight = () => {
+      if (topBarRef.current) {
+        setTopBarHeight(topBarRef.current.offsetHeight);
+      }
+    };
+
+    updateHeight();
+    window.addEventListener("resize", updateHeight);
+    return () => window.removeEventListener("resize", updateHeight);
   }, []);
 
   return (
