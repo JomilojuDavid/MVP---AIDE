@@ -104,6 +104,20 @@
 }
 
 /* --------------------------------------------
+   HOVER BUBBLE ANIMATION
+--------------------------------------------- */
+
+@layer utilities {
+  .hover-bubble {
+    @apply transition-all duration-300 ease-out;
+  }
+  .hover-bubble:hover {
+    transform: scale(1.02) translateY(-4px);
+    box-shadow: 0 12px 40px -8px rgba(0, 0, 0, 0.15);
+  }
+}
+
+/* --------------------------------------------
    GLOBAL FONTS (Poppins + Montserrat)
 --------------------------------------------- */
 

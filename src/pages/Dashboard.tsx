@@ -87,9 +87,10 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
           >
             {/* === WELCOME CARD === */}
             <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
+              initial={{ opacity: 0, y: 30, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="hover-bubble"
               style={{
                 position: "absolute",
                 width: "995px",
@@ -133,9 +134,10 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
 
             {/* === AIDE ROADMAP === */}
             <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
+              initial={{ opacity: 0, y: 30, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.15, ease: "easeOut" }}
+              className="hover-bubble"
               style={{
                 position: "absolute",
                 width: "995px",
@@ -194,8 +196,12 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
             </motion.div>
 
             {/* === DAILY PROMPT === */}
-            <div
+            <motion.div
+              initial={{ opacity: 0, y: 30, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
               onClick={() => window.open("https://calendar.google.com")}
+              className="hover-bubble"
               style={{
                 position: "absolute",
                 width: "482px",
@@ -234,7 +240,7 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
               >
                 Set one clear intention for today and take one step toward it.
               </p>
-            </div>
+            </motion.div>
 
             {/* === PROGRESS TRACKER === */}
             <div
@@ -278,7 +284,11 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
             </div>
 
             {/* === QUICK TIPS === */}
-            <div
+            <motion.div
+              initial={{ opacity: 0, y: 30, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
+              className="hover-bubble"
               style={{
                 position: "absolute",
                 width: "995px",
@@ -318,7 +328,7 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
                 <li>Break goals into smaller steps.</li>
                 <li>Review wins weekly.</li>
               </ul>
-            </div>
+            </motion.div>
           </main>
         </div>
       </div>

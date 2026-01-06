@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Weight } from "lucide-react";
+
 
 
 const FRAME_WIDTH = 1512;
@@ -141,7 +141,7 @@ export default function Resources() {
                 </span>
               </p>
 
-              <p style={{ marginTop: 18, fontFamily: "Montserrat", fontSize: 18, Weight: 400, }}>
+              <p style={{ marginTop: 18, fontFamily: "Montserrat", fontSize: 18, fontWeight: 400 }}>
                 Access your personalized materials to enhance your AIDE journey.
               </p>
             </motion.div>
@@ -155,6 +155,7 @@ export default function Resources() {
               description="Download or explore to apply AIDE principles effectively."
               file={RESOURCES.mindset}
               buttonWidth={203}
+              delay={0.15}
             />
 
             {/* ================= CARD 2 ================= */}
@@ -166,6 +167,7 @@ export default function Resources() {
               description="Download or explore to apply AIDE principles effectively."
               file={RESOURCES.growth}
               buttonWidth={208}
+              delay={0.25}
             />
 
             {/* ================= CARD 3 ================= */}
@@ -177,6 +179,7 @@ export default function Resources() {
               description="Download or explore to apply AIDE principles effectively."
               file={RESOURCES.execution}
               buttonWidth={203}
+              delay={0.35}
             />
 
             {/* ================= CARD 4 ================= */}
@@ -188,10 +191,15 @@ export default function Resources() {
               description="Develop leadership skills that help you inspire and influence people effectively."
               file={RESOURCES.leadership}
               buttonWidth={208}
+              delay={0.45}
             />
 
             {/* ================= QUICK TIPS ================= */}
-            <div
+            <motion.div
+              initial={{ opacity: 0, y: 30, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.7, delay: 0.55, ease: "easeOut" }}
+              className="hover-bubble"
               style={{
                 position: "absolute",
                 top: 747,
@@ -203,7 +211,7 @@ export default function Resources() {
                 color: "#FFFFFF",
               }}
             >
-              <p style={{ fontFamily: "Montserrat", fontSize: 26, fontWeight: 700, }}>
+              <p style={{ fontFamily: "Montserrat", fontSize: 26, fontWeight: 700 }}>
                 Quick Tips
               </p>
 
@@ -219,7 +227,7 @@ export default function Resources() {
                 <li>Break goals into smaller steps.</li>
                 <li>Review wins weekly.</li>
               </ul>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>
@@ -238,6 +246,7 @@ function ResourceCard({
   description,
   file,
   buttonWidth,
+  delay = 0,
 }: {
   top: number;
   left: number;
@@ -246,9 +255,14 @@ function ResourceCard({
   description: string;
   file: string;
   buttonWidth: number;
+  delay?: number;
 }) {
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, y: 30, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.7, delay, ease: "easeOut" }}
+      className="hover-bubble"
       style={{
         position: "absolute",
         top,
@@ -285,6 +299,6 @@ function ResourceCard({
           Access Now
         </Button>
       </a>
-    </div>
+    </motion.div>
   );
 }
