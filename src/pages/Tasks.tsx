@@ -37,7 +37,7 @@ export default function Tasks() {
   useEffect(() => {
     const fetchProfile = async () => {
       const { data: { user } } = await supabase.auth.getUser();
-      
+
       if (!user) {
         navigate("/auth");
         return;
@@ -61,18 +61,20 @@ export default function Tasks() {
     <div className="flex h-screen bg-primary overflow-hidden">
       <Sidebar showTasksAndResources />
       <TopBar />
-      
-      <main className="flex-1 md:ml-64 pt-8 px-6 flex flex-col">
-        <div className="max-w-4xl mx-auto w-full flex flex-col gap-3 flex-1">
+
+      <main className="flex-1 md:ml-64 px-6 pt-14 overflow-y-auto">
+        <div className="max-w-[880px] mx-auto w-full flex flex-col gap-6">
+          
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="bg-white rounded-2xl py-5 px-8"
+            className="bg-white rounded-2xl py-6 px-10"
           >
-            <h1 className="text-3xl font-bold mb-1">
-              Complete Your AIDE Tasks, <span className="text-primary">{firstName || "Name"}!</span>
+            <h1 className="text-3xl font-bold mb-2">
+              Complete Your AIDE Tasks,{" "}
+              <span className="text-primary">{firstName || "Name"}!</span>
             </h1>
             <p className="text-base text-foreground">
               Each step brings you closer to clarity, confidence, and execution.
@@ -81,15 +83,18 @@ export default function Tasks() {
 
           {/* Tasks Card */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="bg-white py-5 px-8 flex-1"
+            transition={{ duration: 0.6, delay: 0.35 }}
+            className="bg-white py-6 px-10 rounded-2xl"
           >
-            <div className="space-y-4">
+            <div className="space-y-5">
               {tasksList.map((task, index) => (
-                <div key={task.id} className="flex items-start gap-4">
-                  <Checkbox id={task.id} className="mt-1 h-5 w-5 border-2 border-secondary" />
+                <div key={task.id} className="flex items-start gap-5">
+                  <Checkbox
+                    id={task.id}
+                    className="mt-1 h-5 w-5 border-2 border-secondary"
+                  />
                   <div className="flex-1">
                     <label
                       htmlFor={task.id}
@@ -97,10 +102,13 @@ export default function Tasks() {
                     >
                       {task.title}
                     </label>
-                    <p className="text-base text-foreground">{task.description}</p>
+                    <p className="text-base text-foreground">
+                      {task.description}
+                    </p>
                   </div>
+
                   {index === tasksList.length - 1 && (
-                    <Button className="bg-primary text-white hover:bg-primary/90 h-10 px-5 text-sm font-bold rounded-full">
+                    <Button className="bg-primary text-white hover:bg-primary/90 h-10 px-6 text-sm font-bold rounded-full">
                       Start Tasks
                     </Button>
                   )}
@@ -113,16 +121,17 @@ export default function Tasks() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-            className="bg-primary border-2 border-secondary py-5 px-8 text-white"
+            transition={{ duration: 0.6, delay: 0.5 }}
+            className="bg-primary border-2 border-secondary py-6 px-10 text-white"
           >
-            <h3 className="text-xl font-bold mb-3">Quick Tips</h3>
-            <ul className="space-y-1 text-base list-disc list-inside">
+            <h3 className="text-xl font-bold mb-4">Quick Tips</h3>
+            <ul className="space-y-2 text-base list-disc list-inside">
               <li>Start your day with clarity.</li>
               <li>Break goals into smaller steps.</li>
               <li>Review wins weekly.</li>
             </ul>
           </motion.div>
+
         </div>
       </main>
     </div>
