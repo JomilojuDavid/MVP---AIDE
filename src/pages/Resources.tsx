@@ -5,19 +5,16 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { Weight } from "lucide-react";
 
-/* ================================
-   FIGMA / LAYOUT CONSTANTS
-================================ */
+
 const FRAME_WIDTH = 1512;
 const FRAME_HEIGHT = 982;
 const SIDEBAR_WIDTH = 293;
 const TOPBAR_HEIGHT = 68;
-const TOPBAR_GAP = 24; 
+const TOPBAR_GAP = 15; 
 
-/* ================================
-   RESOURCE FILES (PLACEHOLDERS)
-================================ */
+
 const RESOURCES = {
   mindset: "/pdfs/mindset-reset-guide.pdf",
   growth: "/pdfs/business-growth-blueprint.pdf",
@@ -31,7 +28,7 @@ export default function Resources() {
   const navigate = useNavigate();
 
   /* ================================
-     AUTH
+     USER AUTH
   ================================= */
   useEffect(() => {
     const fetchProfile = async () => {
@@ -58,9 +55,7 @@ export default function Resources() {
     fetchProfile();
   }, [navigate]);
 
-  /* ================================
-     SCALE TO VIEWPORT (UNIFORM)
-  ================================= */
+ 
   useEffect(() => {
     const updateScale = () => {
       const usableWidth = window.innerWidth - SIDEBAR_WIDTH;
@@ -88,11 +83,10 @@ export default function Resources() {
         overflow: "hidden",
       }}
     >
-      {/* ===== SIDEBAR & TOPBAR (UNCHANGED) ===== */}
+      
       <Sidebar showTasksAndResources />
       <TopBar />
 
-      {/* ===== CONTENT AREA ===== */}
       <div
         style={{
           position: "absolute",
@@ -123,7 +117,7 @@ export default function Resources() {
               borderRadius: 30,
             }}
           >
-            {/* ================= HEADER ================= */}
+           
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
@@ -147,7 +141,7 @@ export default function Resources() {
                 </span>
               </p>
 
-              <p style={{ marginTop: 18, fontFamily: "Montserrat", fontSize: 18 }}>
+              <p style={{ marginTop: 18, fontFamily: "Montserrat", fontSize: 18, Weight: 400, }}>
                 Access your personalized materials to enhance your AIDE journey.
               </p>
             </motion.div>
@@ -209,7 +203,7 @@ export default function Resources() {
                 color: "#FFFFFF",
               }}
             >
-              <p style={{ fontFamily: "Montserrat", fontSize: 26, fontWeight: 700 }}>
+              <p style={{ fontFamily: "Montserrat", fontSize: 26, fontWeight: 700, }}>
                 Quick Tips
               </p>
 
