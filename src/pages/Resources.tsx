@@ -90,7 +90,7 @@ export default function Resources() {
           bottom: 0,
           display: "flex",
           justifyContent: "center",
-          alignItems: "flex-start",
+          alignItems: "center",
         }}
       >
         {/* ===== SCALE WRAPPER ===== */}
@@ -99,7 +99,7 @@ export default function Resources() {
             width: FRAME_WIDTH,
             height: FRAME_HEIGHT,
             transform: `scale(${scale})`,
-            transformOrigin: "top center",
+            transformOrigin: "top left",
           }}
         >
           {/* ===== RED FRAME ===== */}
@@ -169,33 +169,16 @@ export default function Resources() {
               }}
             >
               <div>
-                <p
-                  style={{
-                    fontFamily: "Montserrat",
-                    fontSize: 24,
-                    fontWeight: 500,
-                  }}
-                >
+                <p style={{ fontFamily: "Montserrat", fontSize: 24, fontWeight: 500 }}>
                   Mindset Reset Guide
                 </p>
-                <p
-                  style={{
-                    marginTop: 16,
-                    fontFamily: "Montserrat",
-                    fontSize: 18,
-                  }}
-                >
+                <p style={{ marginTop: 16, fontFamily: "Montserrat", fontSize: 18 }}>
                   Download or explore to apply AIDE principles effectively.
                 </p>
               </div>
 
               <Button
-                style={{
-                  width: 203,
-                  height: 44,
-                  borderRadius: 17,
-                  fontSize: 20,
-                }}
+                style={{ width: 203, height: 44, borderRadius: 17, fontSize: 20 }}
                 className="bg-[#DF1516] text-white"
               >
                 Access Now
@@ -219,33 +202,16 @@ export default function Resources() {
               }}
             >
               <div>
-                <p
-                  style={{
-                    fontFamily: "Montserrat",
-                    fontSize: 24,
-                    fontWeight: 500,
-                  }}
-                >
+                <p style={{ fontFamily: "Montserrat", fontSize: 24, fontWeight: 500 }}>
                   Business Growth Blueprint
                 </p>
-                <p
-                  style={{
-                    marginTop: 16,
-                    fontFamily: "Montserrat",
-                    fontSize: 18,
-                  }}
-                >
+                <p style={{ marginTop: 16, fontFamily: "Montserrat", fontSize: 18 }}>
                   Download or explore to apply AIDE principles effectively.
                 </p>
               </div>
 
               <Button
-                style={{
-                  width: 208,
-                  height: 44,
-                  borderRadius: 17,
-                  fontSize: 20,
-                }}
+                style={{ width: 208, height: 44, borderRadius: 17, fontSize: 20 }}
                 className="bg-[#DF1516] text-white"
               >
                 Access Now
@@ -269,33 +235,16 @@ export default function Resources() {
               }}
             >
               <div>
-                <p
-                  style={{
-                    fontFamily: "Montserrat",
-                    fontSize: 24,
-                    fontWeight: 500,
-                  }}
-                >
+                <p style={{ fontFamily: "Montserrat", fontSize: 24, fontWeight: 500 }}>
                   Execution Masterclass
                 </p>
-                <p
-                  style={{
-                    marginTop: 16,
-                    fontFamily: "Montserrat",
-                    fontSize: 18,
-                  }}
-                >
+                <p style={{ marginTop: 16, fontFamily: "Montserrat", fontSize: 18 }}>
                   Download or explore to apply AIDE principles effectively.
                 </p>
               </div>
 
               <Button
-                style={{
-                  width: 203,
-                  height: 44,
-                  borderRadius: 17,
-                  fontSize: 20,
-                }}
+                style={{ width: 203, height: 44, borderRadius: 17, fontSize: 20 }}
                 className="bg-[#DF1516] text-white"
               >
                 Access Now
@@ -319,34 +268,16 @@ export default function Resources() {
               }}
             >
               <div>
-                <p
-                  style={{
-                    fontFamily: "Montserrat",
-                    fontSize: 24,
-                    fontWeight: 500,
-                  }}
-                >
+                <p style={{ fontFamily: "Montserrat", fontSize: 24, fontWeight: 500 }}>
                   Leadership & Influence Playbook
                 </p>
-                <p
-                  style={{
-                    marginTop: 16,
-                    fontFamily: "Montserrat",
-                    fontSize: 18,
-                  }}
-                >
-                  Develop leadership skills that help you inspire and influence
-                  people effectively.
+                <p style={{ marginTop: 16, fontFamily: "Montserrat", fontSize: 18 }}>
+                  Develop leadership skills that help you inspire and influence people effectively.
                 </p>
               </div>
 
               <Button
-                style={{
-                  width: 208,
-                  height: 44,
-                  borderRadius: 17,
-                  fontSize: 20,
-                }}
+                style={{ width: 208, height: 44, borderRadius: 17, fontSize: 20 }}
                 className="bg-[#DF1516] text-white"
               >
                 Access Now
@@ -366,13 +297,7 @@ export default function Resources() {
                 color: "#FFFFFF",
               }}
             >
-              <p
-                style={{
-                  fontFamily: "Montserrat",
-                  fontSize: 26,
-                  fontWeight: 700,
-                }}
-              >
+              <p style={{ fontFamily: "Montserrat", fontSize: 26, fontWeight: 700 }}>
                 Quick Tips
               </p>
 
