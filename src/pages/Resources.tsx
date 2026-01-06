@@ -12,7 +12,18 @@ import { motion } from "framer-motion";
 const FRAME_WIDTH = 1512;
 const FRAME_HEIGHT = 982;
 const SIDEBAR_WIDTH = 293;
-const TOPBAR_HEIGHT = 72;
+const TOPBAR_HEIGHT = 68;
+const TOPBAR_GAP = 24; 
+
+/* ================================
+   RESOURCE FILES (PLACEHOLDERS)
+================================ */
+const RESOURCES = {
+  mindset: "/pdfs/mindset-reset-guide.pdf",
+  growth: "/pdfs/business-growth-blueprint.pdf",
+  execution: "/pdfs/execution-masterclass.pdf",
+  leadership: "/pdfs/leadership-influence-playbook.pdf",
+};
 
 export default function Resources() {
   const [firstName, setFirstName] = useState("");
@@ -53,7 +64,8 @@ export default function Resources() {
   useEffect(() => {
     const updateScale = () => {
       const usableWidth = window.innerWidth - SIDEBAR_WIDTH;
-      const usableHeight = window.innerHeight - TOPBAR_HEIGHT;
+      const usableHeight =
+        window.innerHeight - TOPBAR_HEIGHT - TOPBAR_GAP;
 
       const scaleX = usableWidth / FRAME_WIDTH;
       const scaleY = usableHeight / FRAME_HEIGHT;
@@ -80,17 +92,17 @@ export default function Resources() {
       <Sidebar showTasksAndResources />
       <TopBar />
 
-      {/* ===== CONTENT AREA (OFFSET BY SIDEBAR + TOPBAR) ===== */}
+      {/* ===== CONTENT AREA ===== */}
       <div
         style={{
           position: "absolute",
           left: SIDEBAR_WIDTH,
-          top: TOPBAR_HEIGHT,
+          top: TOPBAR_HEIGHT + TOPBAR_GAP,
           right: 0,
           bottom: 0,
           display: "flex",
           justifyContent: "center",
-          alignItems: "center",
+          alignItems: "flex-start",
         }}
       >
         {/* ===== SCALE WRAPPER ===== */}
@@ -111,7 +123,7 @@ export default function Resources() {
               borderRadius: 30,
             }}
           >
-            {/* ================= HEADER CARD ================= */}
+            {/* ================= HEADER ================= */}
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
@@ -128,161 +140,61 @@ export default function Resources() {
                 padding: "24px 36px",
               }}
             >
-              <p
-                style={{
-                  fontFamily: "Arial",
-                  fontSize: 45,
-                  lineHeight: "45px",
-                }}
-              >
+              <p style={{ fontFamily: "Arial", fontSize: 45, lineHeight: "45px" }}>
                 Here’s Your Resource Library,{" "}
                 <span style={{ color: "#DF1516" }}>
                   {firstName || "Name"}!
                 </span>
               </p>
 
-              <p
-                style={{
-                  marginTop: 18,
-                  fontFamily: "Montserrat",
-                  fontSize: 18,
-                }}
-              >
+              <p style={{ marginTop: 18, fontFamily: "Montserrat", fontSize: 18 }}>
                 Access your personalized materials to enhance your AIDE journey.
               </p>
             </motion.div>
 
             {/* ================= CARD 1 ================= */}
-            <div
-              style={{
-                position: "absolute",
-                top: 285,
-                left: 372,
-                width: 474,
-                height: 214,
-                backgroundColor: "#F6C888",
-                boxShadow: "0px 4px 4px rgba(0,0,0,0.25)",
-                padding: 28,
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-              }}
-            >
-              <div>
-                <p style={{ fontFamily: "Montserrat", fontSize: 24, fontWeight: 500 }}>
-                  Mindset Reset Guide
-                </p>
-                <p style={{ marginTop: 16, fontFamily: "Montserrat", fontSize: 18 }}>
-                  Download or explore to apply AIDE principles effectively.
-                </p>
-              </div>
-
-              <Button
-                style={{ width: 203, height: 44, borderRadius: 17, fontSize: 20 }}
-                className="bg-[#DF1516] text-white"
-              >
-                Access Now
-              </Button>
-            </div>
+            <ResourceCard
+              top={285}
+              left={372}
+              bg="#F6C888"
+              title="Mindset Reset Guide"
+              description="Download or explore to apply AIDE principles effectively."
+              file={RESOURCES.mindset}
+              buttonWidth={203}
+            />
 
             {/* ================= CARD 2 ================= */}
-            <div
-              style={{
-                position: "absolute",
-                top: 285,
-                left: 893,
-                width: 474,
-                height: 214,
-                backgroundColor: "#FFFFFF",
-                boxShadow: "0px 4px 4px rgba(0,0,0,0.25)",
-                padding: 28,
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-              }}
-            >
-              <div>
-                <p style={{ fontFamily: "Montserrat", fontSize: 24, fontWeight: 500 }}>
-                  Business Growth Blueprint
-                </p>
-                <p style={{ marginTop: 16, fontFamily: "Montserrat", fontSize: 18 }}>
-                  Download or explore to apply AIDE principles effectively.
-                </p>
-              </div>
-
-              <Button
-                style={{ width: 208, height: 44, borderRadius: 17, fontSize: 20 }}
-                className="bg-[#DF1516] text-white"
-              >
-                Access Now
-              </Button>
-            </div>
+            <ResourceCard
+              top={285}
+              left={893}
+              bg="#FFFFFF"
+              title="Business Growth Blueprint"
+              description="Download or explore to apply AIDE principles effectively."
+              file={RESOURCES.growth}
+              buttonWidth={208}
+            />
 
             {/* ================= CARD 3 ================= */}
-            <div
-              style={{
-                position: "absolute",
-                top: 516,
-                left: 372,
-                width: 474,
-                height: 214,
-                backgroundColor: "#FFFFFF",
-                boxShadow: "0px 4px 4px rgba(0,0,0,0.25)",
-                padding: 28,
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-              }}
-            >
-              <div>
-                <p style={{ fontFamily: "Montserrat", fontSize: 24, fontWeight: 500 }}>
-                  Execution Masterclass
-                </p>
-                <p style={{ marginTop: 16, fontFamily: "Montserrat", fontSize: 18 }}>
-                  Download or explore to apply AIDE principles effectively.
-                </p>
-              </div>
-
-              <Button
-                style={{ width: 203, height: 44, borderRadius: 17, fontSize: 20 }}
-                className="bg-[#DF1516] text-white"
-              >
-                Access Now
-              </Button>
-            </div>
+            <ResourceCard
+              top={516}
+              left={372}
+              bg="#FFFFFF"
+              title="Execution Masterclass"
+              description="Download or explore to apply AIDE principles effectively."
+              file={RESOURCES.execution}
+              buttonWidth={203}
+            />
 
             {/* ================= CARD 4 ================= */}
-            <div
-              style={{
-                position: "absolute",
-                top: 516,
-                left: 893,
-                width: 474,
-                height: 214,
-                backgroundColor: "#F6C888",
-                boxShadow: "0px 4px 4px rgba(0,0,0,0.25)",
-                padding: 28,
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-              }}
-            >
-              <div>
-                <p style={{ fontFamily: "Montserrat", fontSize: 24, fontWeight: 500 }}>
-                  Leadership & Influence Playbook
-                </p>
-                <p style={{ marginTop: 16, fontFamily: "Montserrat", fontSize: 18 }}>
-                  Develop leadership skills that help you inspire and influence people effectively.
-                </p>
-              </div>
-
-              <Button
-                style={{ width: 208, height: 44, borderRadius: 17, fontSize: 20 }}
-                className="bg-[#DF1516] text-white"
-              >
-                Access Now
-              </Button>
-            </div>
+            <ResourceCard
+              top={516}
+              left={893}
+              bg="#F6C888"
+              title="Leadership & Influence Playbook"
+              description="Develop leadership skills that help you inspire and influence people effectively."
+              file={RESOURCES.leadership}
+              buttonWidth={208}
+            />
 
             {/* ================= QUICK TIPS ================= */}
             <div
@@ -317,6 +229,68 @@ export default function Resources() {
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+/* ================================
+   REUSABLE RESOURCE CARD
+================================ */
+function ResourceCard({
+  top,
+  left,
+  bg,
+  title,
+  description,
+  file,
+  buttonWidth,
+}: {
+  top: number;
+  left: number;
+  bg: string;
+  title: string;
+  description: string;
+  file: string;
+  buttonWidth: number;
+}) {
+  return (
+    <div
+      style={{
+        position: "absolute",
+        top,
+        left,
+        width: 474,
+        height: 214,
+        backgroundColor: bg,
+        boxShadow: "0px 4px 4px rgba(0,0,0,0.25)",
+        padding: 28,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+      }}
+    >
+      <div>
+        <p style={{ fontFamily: "Montserrat", fontSize: 24, fontWeight: 500 }}>
+          {title}
+        </p>
+        <p style={{ marginTop: 16, fontFamily: "Montserrat", fontSize: 18 }}>
+          {description}
+        </p>
+      </div>
+
+      <a href={file} download style={{ width: buttonWidth }}>
+        <Button
+          style={{
+            width: "100%",
+            height: 44,
+            borderRadius: 17,
+            fontSize: 20,
+          }}
+          className="bg-[#DF1516] text-white"
+        >
+          Access Now
+        </Button>
+      </a>
     </div>
   );
 }
