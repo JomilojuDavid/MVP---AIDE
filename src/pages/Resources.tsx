@@ -12,7 +12,7 @@ const FRAME_WIDTH = 1512;
 const FRAME_HEIGHT = 982;
 const SIDEBAR_WIDTH = 293;
 const TOPBAR_HEIGHT = 68;
-const TOPBAR_GAP = 15; 
+const TOPBAR_GAP = 5; 
 
 
 const RESOURCES = {
