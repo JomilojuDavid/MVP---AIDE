@@ -1,6 +1,5 @@
 import { Sidebar } from "@/components/Sidebar";
 import { TopBar } from "@/components/TopBar";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -64,15 +63,15 @@ export default function Tasks() {
 
       <main className="flex-1 md:ml-64 px-6 pt-14 overflow-y-auto">
         <div className="max-w-[880px] mx-auto w-full flex flex-col gap-6">
-          
+
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.6 }}
             className="bg-white rounded-2xl py-6 px-10"
           >
-            <h1 className="text-3xl font-bold mb-2">
+            <h1 className="text-3xl font-semibold mb-2">
               Complete Your AIDE Tasks,{" "}
               <span className="text-primary">{firstName || "Name"}!</span>
             </h1>
@@ -83,22 +82,34 @@ export default function Tasks() {
 
           {/* Tasks Card */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
+            initial={{ opacity: 0, scale: 0.97 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.35 }}
+            transition={{ duration: 0.5 }}
             className="bg-white py-6 px-10 rounded-2xl"
           >
-            <div className="space-y-5">
+            <div className="space-y-6">
               {tasksList.map((task, index) => (
-                <div key={task.id} className="flex items-start gap-5">
-                  <Checkbox
+                <div key={task.id} className="flex items-start gap-4">
+                  
+                  {/* Square Checkbox */}
+                  <input
+                    type="checkbox"
                     id={task.id}
-                    className="mt-1 h-5 w-5 border-2 border-secondary"
+                    className="
+                      mt-1
+                      h-4 w-4
+                      border border-secondary
+                      appearance-none
+                      checked:bg-primary
+                      checked:border-primary
+                    "
                   />
+
+                  {/* Text */}
                   <div className="flex-1">
                     <label
                       htmlFor={task.id}
-                      className="text-lg font-bold text-foreground cursor-pointer block"
+                      className="block text-lg font-medium text-foreground cursor-pointer"
                     >
                       {task.title}
                     </label>
@@ -107,8 +118,9 @@ export default function Tasks() {
                     </p>
                   </div>
 
+                  {/* CTA */}
                   {index === tasksList.length - 1 && (
-                    <Button className="bg-primary text-white hover:bg-primary/90 h-10 px-6 text-sm font-bold rounded-full">
+                    <Button className="bg-primary text-white hover:bg-primary/90 h-10 px-6 text-sm font-semibold rounded-full">
                       Start Tasks
                     </Button>
                   )}
@@ -121,10 +133,10 @@ export default function Tasks() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
+            transition={{ duration: 0.5 }}
             className="bg-primary border-2 border-secondary py-6 px-10 text-white"
           >
-            <h3 className="text-xl font-bold mb-4">Quick Tips</h3>
+            <h3 className="text-xl font-semibold mb-4">Quick Tips</h3>
             <ul className="space-y-2 text-base list-disc list-inside">
               <li>Start your day with clarity.</li>
               <li>Break goals into smaller steps.</li>
