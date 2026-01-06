@@ -66,10 +66,10 @@ export default function Tasks() {
 
           {/* Header */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="bg-white rounded-2xl py-6 px-10"
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="bg-white rounded-2xl py-6 px-10 hover-bubble"
           >
             <h1 className="text-3xl font-semibold mb-2">
               Complete Your AIDE Tasks,{" "}
@@ -82,10 +82,10 @@ export default function Tasks() {
 
           {/* Tasks Card */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.97 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-            className="bg-white py-6 px-10 rounded-2xl"
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.15, ease: "easeOut" }}
+            className="bg-white py-6 px-10 rounded-2xl hover-bubble"
           >
             <div className="space-y-6">
               {tasksList.map((task, index) => (
@@ -131,10 +131,10 @@ export default function Tasks() {
 
           {/* Quick Tips */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="bg-primary border-2 border-secondary py-6 px-10 text-white"
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+            className="bg-primary border-2 border-secondary py-6 px-10 text-white hover-bubble"
           >
             <h3 className="text-xl font-semibold mb-4">Quick Tips</h3>
             <ul className="space-y-2 text-base list-disc list-inside">

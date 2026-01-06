@@ -77,9 +77,10 @@ export default function Assessment() {
         >
           {/* HEADER CARD */}
           <motion.div
-            initial={{ opacity: 0, y: -12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="hover-bubble"
             style={{
               position: "absolute",
               top: 111,
@@ -102,9 +103,10 @@ export default function Assessment() {
 
           {/* MAIN ASSESSMENT CARD */}
           <motion.div
-            initial={{ opacity: 0, y: -12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.05 }}
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.15, ease: "easeOut" }}
+            className="hover-bubble"
             style={{
               position: "absolute",
               top: 245,
@@ -161,9 +163,10 @@ export default function Assessment() {
 
           {/* QUICK TIPS */}
           <motion.div
-            initial={{ opacity: 0, y: -12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.1 }}
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+            className="hover-bubble"
             style={{
               position: "absolute",
               top: 689,
