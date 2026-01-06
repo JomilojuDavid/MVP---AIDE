@@ -5,16 +5,24 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Weight } from "lucide-react";
 
-
+/* ================================
+   FIGMA CONSTANTS (DO NOT TOUCH)
+================================ */
 const FRAME_WIDTH = 1512;
 const FRAME_HEIGHT = 982;
 const SIDEBAR_WIDTH = 293;
 const TOPBAR_HEIGHT = 68;
-const TOPBAR_GAP = 5; 
 
+/* ================================
+   SCALE LIMITS (LOCKED)
+================================ */
+const MIN_SCALE = 0.85;
+const MAX_SCALE = 1;
 
+/* ================================
+   RESOURCE FILES
+================================ */
 const RESOURCES = {
   mindset: "/pdfs/mindset-reset-guide.pdf",
   growth: "/pdfs/business-growth-blueprint.pdf",
@@ -28,7 +36,7 @@ export default function Resources() {
   const navigate = useNavigate();
 
   /* ================================
-     USER AUTH
+     AUTH
   ================================= */
   useEffect(() => {
     const fetchProfile = async () => {
@@ -47,25 +55,26 @@ export default function Resources() {
         .eq("id", user.id)
         .single();
 
-      if (data?.first_name) {
-        setFirstName(data.first_name);
-      }
+      if (data?.first_name) setFirstName(data.first_name);
     };
 
     fetchProfile();
   }, [navigate]);
 
- 
+  /* ================================
+     LOCKED SCALE (INDUSTRY SAFE)
+  ================================= */
   useEffect(() => {
     const updateScale = () => {
       const usableWidth = window.innerWidth - SIDEBAR_WIDTH;
-      const usableHeight =
-        window.innerHeight - TOPBAR_HEIGHT - TOPBAR_GAP;
+      const usableHeight = window.innerHeight - TOPBAR_HEIGHT;
 
       const scaleX = usableWidth / FRAME_WIDTH;
       const scaleY = usableHeight / FRAME_HEIGHT;
 
-      setScale(Math.min(scaleX, scaleY));
+      const nextScale = Math.min(scaleX, scaleY);
+
+      setScale(Math.max(MIN_SCALE, Math.min(MAX_SCALE, nextScale)));
     };
 
     updateScale();
@@ -83,15 +92,16 @@ export default function Resources() {
         overflow: "hidden",
       }}
     >
-      
+      {/* ===== SIDEBAR & TOPBAR (UNCHANGED) ===== */}
       <Sidebar showTasksAndResources />
       <TopBar />
 
+      {/* ===== CONTENT WRAPPER ===== */}
       <div
         style={{
           position: "absolute",
           left: SIDEBAR_WIDTH,
-          top: TOPBAR_HEIGHT + TOPBAR_GAP,
+          top: TOPBAR_HEIGHT - 8, // controlled breathing space
           right: 0,
           bottom: 0,
           display: "flex",
@@ -105,7 +115,7 @@ export default function Resources() {
             width: FRAME_WIDTH,
             height: FRAME_HEIGHT,
             transform: `scale(${scale})`,
-            transformOrigin: "top left",
+            transformOrigin: "top center",
           }}
         >
           {/* ===== RED FRAME ===== */}
@@ -117,7 +127,7 @@ export default function Resources() {
               borderRadius: 30,
             }}
           >
-           
+            {/* ================= HEADER ================= */}
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
@@ -141,12 +151,18 @@ export default function Resources() {
                 </span>
               </p>
 
-              <p style={{ marginTop: 18, fontFamily: "Montserrat", fontSize: 18, Weight: 400, }}>
+              <p
+                style={{
+                  marginTop: 18,
+                  fontFamily: "Montserrat",
+                  fontSize: 18,
+                }}
+              >
                 Access your personalized materials to enhance your AIDE journey.
               </p>
             </motion.div>
 
-            {/* ================= CARD 1 ================= */}
+            {/* ================= CARDS ================= */}
             <ResourceCard
               top={285}
               left={372}
@@ -157,7 +173,6 @@ export default function Resources() {
               buttonWidth={203}
             />
 
-            {/* ================= CARD 2 ================= */}
             <ResourceCard
               top={285}
               left={893}
@@ -168,7 +183,6 @@ export default function Resources() {
               buttonWidth={208}
             />
 
-            {/* ================= CARD 3 ================= */}
             <ResourceCard
               top={516}
               left={372}
@@ -179,7 +193,6 @@ export default function Resources() {
               buttonWidth={203}
             />
 
-            {/* ================= CARD 4 ================= */}
             <ResourceCard
               top={516}
               left={893}
@@ -203,7 +216,13 @@ export default function Resources() {
                 color: "#FFFFFF",
               }}
             >
-              <p style={{ fontFamily: "Montserrat", fontSize: 26, fontWeight: 700, }}>
+              <p
+                style={{
+                  fontFamily: "Montserrat",
+                  fontSize: 26,
+                  fontWeight: 700,
+                }}
+              >
                 Quick Tips
               </p>
 
@@ -228,7 +247,7 @@ export default function Resources() {
 }
 
 /* ================================
-   REUSABLE RESOURCE CARD
+   RESOURCE CARD (UNCHANGED)
 ================================ */
 function ResourceCard({
   top,
@@ -274,13 +293,13 @@ function ResourceCard({
 
       <a href={file} download style={{ width: buttonWidth }}>
         <Button
+          className="bg-[#DF1516] text-white"
           style={{
             width: "100%",
             height: 44,
             borderRadius: 17,
             fontSize: 20,
           }}
-          className="bg-[#DF1516] text-white"
         >
           Access Now
         </Button>
