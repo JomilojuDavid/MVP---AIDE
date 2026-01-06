@@ -6,9 +6,10 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
 
-const SIDEBAR_WIDTH = 293; // px — sidebar untouched
+const SIDEBAR_WIDTH = 293;
 const CANVAS_WIDTH = 1512;
 const CANVAS_HEIGHT = 982;
+const TOPBAR_GAP = 24; // breathing space (matches Resources page)
 
 export default function Assessment() {
   const navigate = useNavigate();
@@ -16,6 +17,9 @@ export default function Assessment() {
   const { topOffset } = useAppLayout();
   const [scale, setScale] = useState(1);
 
+  /* ================================
+     AUTH
+  ================================= */
   useEffect(() => {
     const fetchProfile = async () => {
       const {
@@ -39,30 +43,39 @@ export default function Assessment() {
     fetchProfile();
   }, [navigate]);
 
-  // Industry-standard scaling to keep content within viewport
+  /* ================================
+     CORRECT SCALE (VISIBLE RED AREA)
+  ================================= */
   useEffect(() => {
     const updateScale = () => {
-      const scaleX = window.innerWidth / CANVAS_WIDTH;
-      const scaleY = window.innerHeight / CANVAS_HEIGHT;
+      const usableWidth = window.innerWidth - SIDEBAR_WIDTH;
+      const usableHeight =
+        window.innerHeight - topOffset - TOPBAR_GAP;
+
+      const scaleX = usableWidth / CANVAS_WIDTH;
+      const scaleY = usableHeight / CANVAS_HEIGHT;
+
       setScale(Math.min(scaleX, scaleY));
     };
 
     updateScale();
     window.addEventListener("resize", updateScale);
     return () => window.removeEventListener("resize", updateScale);
-  }, []);
+  }, [topOffset]);
 
   return (
     <LockedCanvas>
-      {/* === CENTERING + SIDEBAR + TOPBAR OFFSET === */}
+      {/* === CONTENT AREA (REAL VISIBLE VIEWPORT) === */}
       <div
         style={{
-          width: "100%",
-          height: "100%",
+          position: "absolute",
+          left: SIDEBAR_WIDTH,
+          top: topOffset + TOPBAR_GAP,
+          right: 0,
+          bottom: 0,
           display: "flex",
           justifyContent: "center",
-          paddingLeft: SIDEBAR_WIDTH / 2,
-          paddingTop: topOffset, // ensure content is below TopBar
+          alignItems: "flex-start",
         }}
       >
         {/* === SCALE WRAPPER === */}
@@ -96,7 +109,9 @@ export default function Assessment() {
           >
             <p style={{ fontSize: 45, fontFamily: "Arial" }}>
               Your Weekly AIDE Assessment,{" "}
-              <span style={{ color: "#DF1516" }}>{firstName || "Name"}!</span>
+              <span style={{ color: "#DF1516" }}>
+                {firstName || "Name"}!
+              </span>
             </p>
           </motion.div>
 
@@ -147,7 +162,7 @@ export default function Assessment() {
 
             <Button
               onClick={() => navigate("/quizstep2")}
-              className="mt-8 bg-[#DF1516] hover:bg-[#c01314] focus:ring-2 focus:ring-offset-2 focus:ring-[#DF1516]"
+              className="mt-8 bg-[#DF1516] hover:bg-[#c01314]"
               style={{
                 width: 257,
                 height: 52,
