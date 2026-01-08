@@ -51,7 +51,14 @@ export default function Tasks() {
   }, []);
 
   return (
-    <div style={{ width: "100vw", height: "100vh", background: "#DF1516", overflow: "hidden" }}>
+    <div
+      style={{
+        width: "100vw",
+        height: "100vh",
+        background: "#DF1516",
+        overflow: "hidden",
+      }}
+    >
       <Sidebar showTasksAndResources />
       <TopBar />
 
@@ -77,23 +84,40 @@ export default function Tasks() {
         >
           {/* HEADER */}
           <motion.div
+            initial={{ opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
             style={{
               position: "absolute",
               top: 111,
               left: 372,
               width: 995,
               height: 152,
-              background: "#fff",
+              background: "#FFFFFF",
               borderRadius: 17,
               boxShadow: "0px 4px 4px #00000040",
               padding: "24px 36px",
             }}
           >
-            <p style={{ fontFamily: "Arial", fontSize: 45, lineHeight: "100%" }}>
+            <p
+              style={{
+                fontFamily: "Arial",
+                fontSize: 45,
+                lineHeight: "100%",
+              }}
+            >
               Complete Your AIDE Tasks,{" "}
-              <span style={{ color: "#DF1516" }}>{firstName || "Name"}!</span>
+              <span style={{ color: "#DF1516" }}>
+                {firstName || "Name"}!
+              </span>
             </p>
-            <p style={{ marginTop: 18, fontFamily: "Montserrat", fontSize: 18 }}>
+
+            <p
+              style={{
+                marginTop: 18,
+                fontFamily: "Montserrat",
+                fontSize: 18,
+              }}
+            >
               Each step brings you closer to clarity, confidence, and execution.
             </p>
           </motion.div>
@@ -106,7 +130,7 @@ export default function Tasks() {
               left: 372,
               width: 995,
               height: 439,
-              background: "#fff",
+              background: "#FFFFFF",
               boxShadow: "0px 4px 4px #00000040",
               position: "relative",
             }}
@@ -116,8 +140,8 @@ export default function Tasks() {
               type="checkbox"
               style={{
                 position: "absolute",
-                top: 53,   // 338 - 285
-                left: 67,  // 439 - 372
+                top: 53,
+                left: 67,
                 width: 28,
                 height: 24,
                 border: "1px solid #000",
@@ -128,8 +152,8 @@ export default function Tasks() {
             <p
               style={{
                 position: "absolute",
-                top: 47,   // 332 - 285
-                left: 117, // 489 - 372
+                top: 47,
+                left: 117,
                 fontFamily: "Montserrat",
                 fontSize: 24,
                 fontWeight: 500,
@@ -141,8 +165,8 @@ export default function Tasks() {
             <p
               style={{
                 position: "absolute",
-                top: 98,   // 383 - 285
-                left: 119, // 491 - 372
+                top: 98,
+                left: 119,
                 fontFamily: "Montserrat",
                 fontSize: 18,
               }}
@@ -155,7 +179,7 @@ export default function Tasks() {
               type="checkbox"
               style={{
                 position: "absolute",
-                top: 143, // 428 - 285
+                top: 143,
                 left: 65,
                 width: 28,
                 height: 24,
@@ -271,8 +295,8 @@ export default function Tasks() {
             <Button
               style={{
                 position: "absolute",
-                top: 376,  // 661 - 285
-                left: 741, // 1113 - 372
+                top: 376,
+                left: 741,
                 width: 203,
                 height: 44,
                 borderRadius: 17,
@@ -282,6 +306,43 @@ export default function Tasks() {
             >
               Start Tasks
             </Button>
+          </div>
+
+          {/* QUICK TIPS */}
+          <div
+            style={{
+              position: "absolute",
+              top: 747,
+              left: 372,
+              width: 995,
+              height: 208,
+              border: "2px solid #F3C17E",
+              padding: 36,
+              color: "#FFFFFF",
+            }}
+          >
+            <p
+              style={{
+                fontFamily: "Montserrat",
+                fontSize: 26,
+                fontWeight: 700,
+              }}
+            >
+              Quick Tips
+            </p>
+
+            <ul
+              style={{
+                marginTop: 20,
+                fontFamily: "Montserrat",
+                fontSize: 20,
+                lineHeight: "32px",
+              }}
+            >
+              <li>Start your day with clarity.</li>
+              <li>Break goals into smaller steps.</li>
+              <li>Review wins weekly.</li>
+            </ul>
           </div>
         </div>
       </div>
