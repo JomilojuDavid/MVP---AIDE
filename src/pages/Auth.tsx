@@ -8,9 +8,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 
-const BASE_WIDTH = 1440;
-const BASE_HEIGHT = 900;
-
 export default function Auth() {
   const [fullName, setFullName] = useState("");
   const [signUpEmail, setSignUpEmail] = useState("");
@@ -19,7 +16,6 @@ export default function Auth() {
   const [signInPassword, setSignInPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [scale, setScale] = useState(1);
 
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -30,20 +26,7 @@ export default function Auth() {
   const leftRef = useRef<HTMLDivElement>(null);
   const rightRef = useRef<HTMLDivElement>(null);
 
-  /* ---------- UNIFORM SCALING ---------- */
-  useEffect(() => {
-    const resize = () => {
-      const scaleX = window.innerWidth / BASE_WIDTH;
-      const scaleY = window.innerHeight / BASE_HEIGHT;
-      setScale(Math.min(scaleX, scaleY));
-    };
-
-    resize();
-    window.addEventListener("resize", resize);
-    return () => window.removeEventListener("resize", resize);
-  }, []);
-
-  /* ---------- AUTH LISTENER ---------- */
+  /** AUTH STATE LISTENER (single source of truth for redirects) */
   useEffect(() => {
     const {
       data: { subscription },
@@ -55,31 +38,56 @@ export default function Auth() {
           .eq("id", session.user.id)
           .single();
 
-        const isNew =
-          profile?.created_at &&
-          Date.now() - new Date(profile.created_at).getTime() < 30000;
+        if (profile?.created_at) {
+          const createdAt = new Date(profile.created_at);
+          const now = new Date();
+          const isNewUser = now.getTime() - createdAt.getTime() < 30000;
 
-        navigate(isNew ? "/quiz-step2" : "/dashboard");
+          navigate(isNewUser ? "/quiz-step2" : "/dashboard");
+        } else {
+          navigate("/quiz-step2");
+        }
       }
     });
 
     return () => subscription.unsubscribe();
   }, [navigate]);
 
-  /* ---------- REMEMBER EMAIL ---------- */
+  /** AUTO-SCALING */
   useEffect(() => {
-    const saved = localStorage.getItem("rememberedEmail");
-    if (saved) {
-      setSignInEmail(saved);
+    const resize = () => {
+      const baseWidth = 1440;
+      const baseHeight = 900;
+
+      const scaleX = window.innerWidth / baseWidth;
+      const scaleY = window.innerHeight / baseHeight;
+      const finalScale = Math.min(scaleX, scaleY) * 1.1;
+
+      document.documentElement.style.setProperty(
+        "--auth-scale",
+        String(finalScale)
+      );
+    };
+
+    resize();
+    window.addEventListener("resize", resize);
+    return () => window.removeEventListener("resize", resize);
+  }, []);
+
+  /** LOAD REMEMBERED EMAIL */
+  useEffect(() => {
+    const savedEmail = localStorage.getItem("rememberedEmail");
+    if (savedEmail) {
+      setSignInEmail(savedEmail);
       setRememberMe(true);
     }
   }, []);
 
-  /* ---------- OBSERVER ---------- */
+  /** FADE-IN OBSERVER */
   useEffect(() => {
     const observer = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
+      (entries) => {
+        entries.forEach((entry) => {
           if (entry.isIntersecting) {
             if (entry.target === leftRef.current)
               leftControls.start("visible");
@@ -91,13 +99,46 @@ export default function Auth() {
       { threshold: 0.2 }
     );
 
-    leftRef.current && observer.observe(leftRef.current);
-    rightRef.current && observer.observe(rightRef.current);
+    if (leftRef.current) observer.observe(leftRef.current);
+    if (rightRef.current) observer.observe(rightRef.current);
 
     return () => observer.disconnect();
   }, [leftControls, rightControls]);
 
-  /* ---------- AUTH ACTIONS ---------- */
+  /** SIGN UP */
+  const handleSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const nameParts = fullName.trim().split(" ");
+      const firstName = nameParts[0] || "";
+      const lastName = nameParts.slice(1).join(" ") || "";
+
+      const { error } = await supabase.auth.signUp({
+        email: signUpEmail,
+        password: signUpPassword,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth`,
+          data: { first_name: firstName, last_name: lastName },
+        },
+      });
+
+      if (error) throw error;
+
+      toast({ title: "Account created successfully!" });
+    } catch (error: any) {
+      toast({
+        title: "Sign up failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  /** SIGN IN */
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -110,91 +151,238 @@ export default function Auth() {
 
       if (error) throw error;
 
-      rememberMe
-        ? localStorage.setItem("rememberedEmail", signInEmail)
-        : localStorage.removeItem("rememberedEmail");
+      if (rememberMe) {
+        localStorage.setItem("rememberedEmail", signInEmail);
+      } else {
+        localStorage.removeItem("rememberedEmail");
+      }
 
       toast({ title: "Welcome back!" });
-    } catch (err: any) {
-      toast({ title: "Sign in failed", description: err.message, variant: "destructive" });
+    } catch (error: any) {
+      toast({
+        title: "Sign in failed",
+        description: error.message,
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
   };
 
-  const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault();
+  /** GOOGLE SIGN IN */
+  const handleGoogle = async () => {
     setLoading(true);
-
     try {
-      const [first, ...rest] = fullName.trim().split(" ");
-
-      const { error } = await supabase.auth.signUp({
-        email: signUpEmail,
-        password: signUpPassword,
+      await supabase.auth.signInWithOAuth({
+        provider: "google",
         options: {
-          data: { first_name: first, last_name: rest.join(" ") },
+          redirectTo: `${window.location.origin}/auth`,
         },
       });
-
-      if (error) throw error;
-      toast({ title: "Account created!" });
-    } catch (err: any) {
-      toast({ title: "Sign up failed", description: err.message, variant: "destructive" });
-    } finally {
+    } catch (error: any) {
+      toast({
+        title: "Google Sign In failed",
+        description: error.message,
+        variant: "destructive",
+      });
       setLoading(false);
     }
   };
 
-  const handleGoogle = async () => {
-    await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: { redirectTo: `${window.location.origin}/auth` },
-    });
+  const sectionVariants = {
+    hidden: { opacity: 0, y: 80 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 1.1 },
+    },
+  };
+
+  const fadeItem = {
+    hidden: { opacity: 0, y: 25 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: { delay: 0.25 + i * 0.15, duration: 0.7 },
+    }),
   };
 
   return (
-    <div className="w-screen h-screen overflow-hidden bg-white flex justify-center items-center">
-      <div
-        style={{
-          width: BASE_WIDTH,
-          height: BASE_HEIGHT,
-          transform: `scale(${scale})`,
-          transformOrigin: "top left",
-          position: "relative",
-        }}
+    <div className="min-h-screen w-full flex relative bg-white">
+      {/* LOGO */}
+      <img
+        src={aideLogo}
+        onClick={() => navigate("/dashboard")}
+        className="h-16 absolute top-6 left-8 cursor-pointer z-50"
+        alt="AIDE logo"
+      />
+
+      {/* LEFT PANEL */}
+      <motion.div
+        ref={leftRef}
+        variants={sectionVariants}
+        initial="hidden"
+        animate={leftControls}
+        className="w-[40%] flex flex-col items-center justify-start pt-48 p-12 bg-white"
       >
-        {/* LOGO */}
-        <img
-          src={aideLogo}
-          className="h-16 absolute top-6 left-8 cursor-pointer z-50"
-          onClick={() => navigate("/dashboard")}
-        />
-
-        <div className="flex w-full h-full">
-          {/* LEFT */}
-          <motion.div
-            ref={leftRef}
-            initial={{ opacity: 0, y: 80 }}
-            animate={leftControls}
-            className="w-[40%] flex flex-col items-center justify-center px-12"
+        <div
+          className="w-full max-w-sm flex flex-col items-center text-center"
+          style={{
+            transform: "scale(var(--auth-scale))",
+            transformOrigin: "top center",
+          }}
+        >
+          <motion.h1
+            variants={fadeItem}
+            custom={0}
+            className="text-[#DF1516] font-extrabold text-[48px] whitespace-nowrap font-montserrat"
           >
-            {/* content unchanged */}
-            {/* ... */}
-          </motion.div>
+            Hello, Friend!
+          </motion.h1>
 
-          {/* RIGHT */}
-          <motion.div
-            ref={rightRef}
-            initial={{ opacity: 0, y: 80 }}
-            animate={rightControls}
-            className="w-[60%] bg-[#DF1516] flex flex-col items-center justify-center px-16"
+          <motion.p
+            variants={fadeItem}
+            custom={1}
+            className="text-gray-700 text-[22px] mt-4 max-w-[350px]"
+            style={{ lineHeight: 1.4 }}
           >
-            {/* content unchanged */}
-            {/* ... */}
-          </motion.div>
+            Sign in to continue your personalized journey with{" "}
+            <span className="font-bold text-black">AIDE</span>—where mindset
+            mastery meets business growth.
+          </motion.p>
+
+          <motion.form
+            variants={fadeItem}
+            custom={2}
+            onSubmit={handleSignIn}
+            className="space-y-6 w-full mt-8"
+          >
+            <Input
+              type="email"
+              placeholder="Your Email"
+              className="h-[80px] text-[22px] px-6 placeholder:text-[22px] border border-[#DF1516] rounded-none"
+              value={signInEmail}
+              onChange={(e) => setSignInEmail(e.target.value)}
+            />
+
+            <div className="flex border border-[#DF1516] rounded-none">
+              <Input
+                type="password"
+                placeholder="Password"
+                className="h-[80px] flex-1 text-[22px] px-6 placeholder:text-[22px] border-none"
+                value={signInPassword}
+                onChange={(e) => setSignInPassword(e.target.value)}
+              />
+              <Button
+                type="submit"
+                className="w-[160px] h-[80px] bg-[#DF1516] text-white font-bold text-[22px] rounded-none hover:bg-[#c01314]"
+              >
+                {loading ? "..." : "SIGN IN"}
+              </Button>
+            </div>
+
+            <div className="flex justify-between mt-2 text-[18px] text-gray-800">
+              <label className="flex items-center gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  className="w-6 h-6 accent-[#DF1516]"
+                />
+                Remember Me
+              </label>
+
+              <button
+                type="button"
+                onClick={() => navigate("/reset-password")}
+                className="hover:text-[#DF1516] font-medium"
+              >
+                Forgot Password
+              </button>
+            </div>
+          </motion.form>
         </div>
-      </div>
+      </motion.div>
+
+      {/* RIGHT PANEL */}
+      <motion.div
+        ref={rightRef}
+        variants={sectionVariants}
+        initial="hidden"
+        animate={rightControls}
+        className="w-[60%] bg-[#DF1516] flex flex-col items-center justify-start pt-48 p-16"
+      >
+        <div
+          className="w-full max-w-xl text-center"
+          style={{
+            transform: "scale(var(--auth-scale))",
+            transformOrigin: "top center",
+          }}
+        >
+          <motion.h2
+            variants={fadeItem}
+            custom={0}
+            className="text-white font-extrabold text-[55px] whitespace-nowrap font-montserrat"
+          >
+            Create an Account
+          </motion.h2>
+
+          <button
+            onClick={handleGoogle}
+            className="flex w-[80%] mx-auto mt-8 mb-6 rounded-none overflow-hidden"
+          >
+            <div className="bg-white w-[80px] h-[80px] flex items-center justify-center">
+              <FcGoogle size={42} />
+            </div>
+            <span className="flex-1 h-[80px] bg-white text-[#DF1516] flex items-center justify-center text-[23px] font-bold">
+              Continue With Google
+            </span>
+          </button>
+
+          <p className="text-white text-[23px] mt-4 mb-6">
+            or use your Email for registration
+          </p>
+
+          <motion.form
+            variants={fadeItem}
+            custom={1}
+            onSubmit={handleSignUp}
+            className="space-y-6"
+          >
+            <div className="grid grid-cols-2 gap-6">
+              <Input
+                type="text"
+                placeholder="Full Name"
+                className="h-[80px] text-[22px] px-6 rounded-none placeholder:text-[22px]"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+              />
+              <Input
+                type="email"
+                placeholder="Your Email"
+                className="h-[80px] text-[22px] px-6 rounded-none placeholder:text-[22px]"
+                value={signUpEmail}
+                onChange={(e) => setSignUpEmail(e.target.value)}
+              />
+            </div>
+
+            <Input
+              type="password"
+              placeholder="Password"
+              className="h-[80px] text-[22px] px-6 rounded-none placeholder:text-[22px]"
+              value={signUpPassword}
+              onChange={(e) => setSignUpPassword(e.target.value)}
+            />
+
+            <Button
+              type="submit"
+              className="w-full h-[80px] text-[23px] font-bold bg-white text-[#DF1516] rounded-none hover:bg-gray-100 mt-6"
+            >
+              {loading ? "..." : "SIGN UP"}
+            </Button>
+          </motion.form>
+        </div>
+      </motion.div>
     </div>
   );
 }
