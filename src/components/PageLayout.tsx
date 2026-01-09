@@ -17,7 +17,7 @@ interface PageLayoutProps {
 export function PageLayout({
   children,
   showTasksAndResources = true,
-  scale = 0.7, // 👈 default for most pages
+  scale = 0.6, // 👈 default for most pages
 }: PageLayoutProps) {
   return (
     <div className="h-screen w-full bg-primary overflow-hidden">
