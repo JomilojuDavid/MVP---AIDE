@@ -132,7 +132,6 @@ export default function Tasks() {
               height: 439,
               background: "#FFFFFF",
               boxShadow: "0px 4px 4px #00000040",
-              position: "relative",
             }}
           >
             {/* TASK 1 */}
