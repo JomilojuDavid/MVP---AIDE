@@ -1,5 +1,4 @@
-import { Sidebar } from "@/components/Sidebar";
-import { TopBar } from "@/components/TopBar";
+import { PageLayout } from "@/components/PageLayout";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
@@ -8,23 +7,12 @@ interface DashboardProps {
   showQuizPrompt?: boolean;
 }
 
-const TOPBAR_OFFSET = 5; // px
-const SIDEBAR_WIDTH = 293; // px — sidebar untouched
-
 export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
   const [firstName, setFirstName] = useState("");
-  const [scale, setScale] = useState(1);
 
-  /* ================================
-     PROFILE ONLY (NO AUTH REDIRECT)
-  ================================= */
   useEffect(() => {
     const fetchProfile = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-
-      // ⛔ NO REDIRECT HERE
+      const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user) return;
 
       const { data: profile } = await supabase
@@ -39,299 +27,94 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
     fetchProfile();
   }, []);
 
-  /* ================================
-     INDUSTRY-STANDARD SCALING
-  ================================= */
-  useEffect(() => {
-    const updateScale = () => {
-      const scaleX = window.innerWidth / 1512;
-      const scaleY = window.innerHeight / 982;
-      setScale(Math.min(scaleX, scaleY));
-    };
-
-    updateScale();
-    window.addEventListener("resize", updateScale);
-    return () => window.removeEventListener("resize", updateScale);
-  }, []);
-
   return (
-    <div className="relative flex bg-primary h-screen w-screen overflow-hidden">
-      <Sidebar showTasksAndResources />
-      <TopBar />
-
-      {/* === CENTERING + OPTICAL ADJUSTMENT === */}
-      <div
-        className="relative flex items-start justify-center w-full h-full"
-        style={{
-          paddingTop: TOPBAR_OFFSET,
-          paddingLeft: SIDEBAR_WIDTH / 2,
-        }}
+    <PageLayout>
+      {/* Welcome Card */}
+      <motion.div
+        initial={{ opacity: 0, y: 30, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="hover-bubble bg-white rounded-2xl shadow-lg p-6 md:p-8"
       >
-        {/* === SCALE WRAPPER === */}
-        <div
-          style={{
-            width: "1512px",
-            height: "982px",
-            transform: `scale(${scale})`,
-            transformOrigin: "top left",
-          }}
-        >
-          {/* === DESKTOP CANVAS === */}
-          <main
-            style={{
-              position: "relative",
-              width: "1512px",
-              height: "982px",
-              borderRadius: "30px",
-            }}
-          >
-            {/* === WELCOME CARD === */}
-            <motion.div
-              initial={{ opacity: 0, y: 30, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className="hover-bubble"
-              style={{
-                position: "absolute",
-                width: "995px",
-                height: "152px",
-                top: "111px",
-                left: "372px",
-                background: "#FFFFFF",
-                borderRadius: "17px",
-                boxShadow: "0px 4px 4px rgba(0,0,0,0.25)",
-              }}
-            >
-              <h1
-                style={{
-                  position: "absolute",
-                  top: "24px",
-                  left: "65px",
-                  fontFamily: "Arial",
-                  fontWeight: 400,
-                  fontSize: "45px",
-                  lineHeight: "45px",
-                }}
-              >
-                Welcome,{" "}
-                <span style={{ color: "#DF1516" }}>
-                  {firstName || "Name"}!
-                </span>
-              </h1>
+        <h1 className="text-2xl md:text-4xl font-normal" style={{ fontFamily: "Arial" }}>
+          Welcome, <span className="text-primary">{firstName || "Name"}!</span>
+        </h1>
+        <p className="mt-3 text-base md:text-xl font-montserrat">
+          Moving From Stuck & Stagnant to Clear & Confident.
+        </p>
+      </motion.div>
 
-              <p
-                style={{
-                  position: "absolute",
-                  top: "80px",
-                  left: "65px",
-                  fontFamily: "Montserrat",
-                  fontSize: "22px",
-                }}
-              >
-                Moving From Stuck & Stagnant to Clear & Confident.
-              </p>
-            </motion.div>
-
-            {/* === AIDE ROADMAP === */}
-            <motion.div
-              initial={{ opacity: 0, y: 30, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.15, ease: "easeOut" }}
-              className="hover-bubble"
-              style={{
-                position: "absolute",
-                width: "995px",
-                height: "185px",
-                top: "285px",
-                left: "372px",
-                background: "#FFFFFF",
-                boxShadow: "0px 4px 4px rgba(0,0,0,0.25)",
-              }}
-            >
-              <h2
-                style={{
-                  position: "absolute",
-                  top: "37px",
-                  left: "49px",
-                  fontFamily: "Montserrat",
-                  fontWeight: 500,
-                  fontSize: "24px",
-                }}
-              >
-                Your AIDE Roadmap
-              </h2>
-
-              <div
-                style={{
-                  position: "absolute",
-                  top: "82px",
-                  left: "53px",
-                  width: "798px",
-                  height: "26px",
-                  borderRadius: "50px",
-                  border: "1px solid #F3C17E",
-                }}
-              >
-                <div
-                  style={{
-                    width: showQuizPrompt ? "40px" : "482px",
-                    height: "100%",
-                    borderRadius: "50px",
-                    background: "#DF1516",
-                  }}
-                />
-              </div>
-
-              <p
-                style={{
-                  position: "absolute",
-                  top: "124px",
-                  left: "42px",
-                  fontFamily: "Montserrat",
-                  fontSize: "20px",
-                }}
-              >
-                Awareness → Intention → Decisiveness → Execution
-              </p>
-            </motion.div>
-
-            {/* === DAILY PROMPT === */}
-            <motion.div
-              initial={{ opacity: 0, y: 30, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-              onClick={() => window.open("https://calendar.google.com")}
-              className="hover-bubble"
-              style={{
-                position: "absolute",
-                width: "482px",
-                height: "179px",
-                top: "493px",
-                left: "372px",
-                border: "2px solid #F3C17E",
-                cursor: "pointer",
-              }}
-            >
-              <h3
-                style={{
-                  position: "absolute",
-                  top: "34px",
-                  left: "62px",
-                  fontFamily: "Montserrat",
-                  fontWeight: 700,
-                  fontSize: "26px",
-                  color: "#FFFFFF",
-                }}
-              >
-                Daily Prompt
-              </h3>
-
-              <p
-                style={{
-                  position: "absolute",
-                  top: "90px",
-                  left: "62px",
-                  fontFamily: "Montserrat",
-                  fontWeight: 500,
-                  fontSize: "20px",
-                  lineHeight: "32px",
-                  color: "#FFFFFF",
-                }}
-              >
-                Set one clear intention for today and take one step toward it.
-              </p>
-            </motion.div>
-
-            {/* === PROGRESS TRACKER === */}
-            <div
-              style={{
-                position: "absolute",
-                width: "467px",
-                height: "179px",
-                top: "493px",
-                left: "900px",
-                border: "2px solid #F3C17E",
-              }}
-            >
-              <h3
-                style={{
-                  position: "absolute",
-                  top: "34px",
-                  left: "47px",
-                  fontFamily: "Montserrat",
-                  fontWeight: 700,
-                  fontSize: "26px",
-                  color: "#FFFFFF",
-                }}
-              >
-                Progress Tracker
-              </h3>
-
-              <p
-                style={{
-                  position: "absolute",
-                  top: "90px",
-                  left: "47px",
-                  fontFamily: "Montserrat",
-                  fontWeight: 500,
-                  fontSize: "20px",
-                  lineHeight: "32px",
-                  color: "#FFFFFF",
-                }}
-              >
-                You’ve completed 2 of 4 stages this month.
-              </p>
-            </div>
-
-            {/* === QUICK TIPS === */}
-            <motion.div
-              initial={{ opacity: 0, y: 30, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
-              className="hover-bubble"
-              style={{
-                position: "absolute",
-                width: "995px",
-                height: "208px",
-                top: "689px",
-                left: "372px",
-                border: "2px solid #F3C17E",
-              }}
-            >
-              <h3
-                style={{
-                  position: "absolute",
-                  top: "35px",
-                  left: "62px",
-                  fontFamily: "Montserrat",
-                  fontWeight: 700,
-                  fontSize: "26px",
-                  color: "#FFFFFF",
-                }}
-              >
-                Quick Tips
-              </h3>
-
-              <ul
-                style={{
-                  position: "absolute",
-                  top: "82px",
-                  left: "45px",
-                  fontFamily: "Montserrat",
-                  fontWeight: 500,
-                  fontSize: "20px",
-                  lineHeight: "32px",
-                  color: "#FFFFFF",
-                }}
-              >
-                <li>Start your day with clarity.</li>
-                <li>Break goals into smaller steps.</li>
-                <li>Review wins weekly.</li>
-              </ul>
-            </motion.div>
-          </main>
+      {/* AIDE Roadmap */}
+      <motion.div
+        initial={{ opacity: 0, y: 30, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.8, delay: 0.15, ease: "easeOut" }}
+        className="hover-bubble bg-white shadow-lg p-6 md:p-8"
+      >
+        <h2 className="text-lg md:text-2xl font-medium font-montserrat mb-4">
+          Your AIDE Roadmap
+        </h2>
+        <div className="w-full h-6 md:h-7 rounded-full border border-secondary overflow-hidden">
+          <div
+            className="h-full bg-primary rounded-full transition-all duration-500"
+            style={{ width: showQuizPrompt ? "5%" : "60%" }}
+          />
         </div>
+        <p className="mt-4 text-sm md:text-lg font-montserrat">
+          Awareness → Intention → Decisiveness → Execution
+        </p>
+      </motion.div>
+
+      {/* Daily Prompt & Progress Tracker Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+        {/* Daily Prompt */}
+        <motion.div
+          initial={{ opacity: 0, y: 30, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+          onClick={() => window.open("https://calendar.google.com")}
+          className="hover-bubble border-2 border-secondary p-6 md:p-8 cursor-pointer"
+        >
+          <h3 className="text-xl md:text-2xl font-bold font-montserrat text-white">
+            Daily Prompt
+          </h3>
+          <p className="mt-4 text-base md:text-lg font-medium font-montserrat text-white leading-relaxed">
+            Set one clear intention for today and take one step toward it.
+          </p>
+        </motion.div>
+
+        {/* Progress Tracker */}
+        <motion.div
+          initial={{ opacity: 0, y: 30, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+          className="hover-bubble border-2 border-secondary p-6 md:p-8"
+        >
+          <h3 className="text-xl md:text-2xl font-bold font-montserrat text-white">
+            Progress Tracker
+          </h3>
+          <p className="mt-4 text-base md:text-lg font-medium font-montserrat text-white leading-relaxed">
+            You've completed 2 of 4 stages this month.
+          </p>
+        </motion.div>
       </div>
-    </div>
+
+      {/* Quick Tips */}
+      <motion.div
+        initial={{ opacity: 0, y: 30, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
+        className="hover-bubble border-2 border-secondary p-6 md:p-8"
+      >
+        <h3 className="text-xl md:text-2xl font-bold font-montserrat text-white">
+          Quick Tips
+        </h3>
+        <ul className="mt-4 text-base md:text-lg font-medium font-montserrat text-white space-y-2">
+          <li>• Start your day with clarity.</li>
+          <li>• Break goals into smaller steps.</li>
+          <li>• Review wins weekly.</li>
+        </ul>
+      </motion.div>
+    </PageLayout>
   );
 }

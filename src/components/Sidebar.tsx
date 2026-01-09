@@ -46,7 +46,7 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
       </button>
 
       {/* Desktop Sidebar */}
-      <aside className="hidden md:flex flex-col justify-between fixed left-0 top-0 w-[260px] h-screen bg-background text-black z-40 shadow-md">
+      <aside className="hidden md:flex flex-col justify-between fixed left-0 top-0 w-[260px] h-screen bg-background text-black z-40 shadow-md flex-shrink-0">
         {/* Top: Logo + Menu */}
         <div className="flex flex-col pt-6 px-6 gap-8">
           <Link to="/dashboard">

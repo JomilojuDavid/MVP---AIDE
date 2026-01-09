@@ -8,12 +8,12 @@ export const TopBar = () => {
     <div
       className="
         fixed
-        top-[41px]
-        right-[30px]
+        top-4 md:top-[41px]
+        right-4 md:right-[30px]
         z-[999]
         flex
         items-center
-        gap-[20px]
+        gap-3 md:gap-[20px]
         pointer-events-auto
       "
     >

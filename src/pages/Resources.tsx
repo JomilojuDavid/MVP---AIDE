@@ -1,19 +1,9 @@
-import { Sidebar } from "@/components/Sidebar";
-import { TopBar } from "@/components/TopBar";
+import { PageLayout } from "@/components/PageLayout";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-
-
-
-const FRAME_WIDTH = 1512;
-const FRAME_HEIGHT = 982;
-const SIDEBAR_WIDTH = 293;
-const TOPBAR_HEIGHT = 68;
-const TOPBAR_GAP = 40; 
-
 
 const RESOURCES = {
   mindset: "/pdfs/mindset-reset-guide.pdf",
@@ -22,19 +12,44 @@ const RESOURCES = {
   leadership: "/pdfs/leadership-influence-playbook.pdf",
 };
 
+interface ResourceCardProps {
+  title: string;
+  description: string;
+  file: string;
+  variant: "primary" | "secondary";
+  delay: number;
+}
+
+function ResourceCard({ title, description, file, variant, delay }: ResourceCardProps) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.7, delay, ease: "easeOut" }}
+      className={`hover-bubble shadow-lg p-6 flex flex-col justify-between min-h-[180px] ${
+        variant === "primary" ? "bg-secondary" : "bg-white"
+      }`}
+    >
+      <div>
+        <h3 className="text-lg md:text-xl font-medium font-montserrat">{title}</h3>
+        <p className="mt-3 text-sm md:text-base font-montserrat">{description}</p>
+      </div>
+      <a href={file} download className="mt-4">
+        <Button className="bg-primary hover:bg-primary/90 text-white w-full md:w-auto px-6 py-2 rounded-2xl">
+          Access Now
+        </Button>
+      </a>
+    </motion.div>
+  );
+}
+
 export default function Resources() {
   const [firstName, setFirstName] = useState("");
-  const [scale, setScale] = useState(1);
   const navigate = useNavigate();
 
-  /* ================================
-     USER AUTH
-  ================================= */
   useEffect(() => {
     const fetchProfile = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+      const { data: { user } } = await supabase.auth.getUser();
 
       if (!user) {
         navigate("/auth");
@@ -55,250 +70,71 @@ export default function Resources() {
     fetchProfile();
   }, [navigate]);
 
- 
-  useEffect(() => {
-    const updateScale = () => {
-      const usableWidth = window.innerWidth - SIDEBAR_WIDTH;
-      const usableHeight =
-        window.innerHeight - TOPBAR_HEIGHT - TOPBAR_GAP;
-
-      const scaleX = usableWidth / FRAME_WIDTH;
-      const scaleY = usableHeight / FRAME_HEIGHT;
-
-      setScale(Math.min(scaleX, scaleY));
-    };
-
-    updateScale();
-    window.addEventListener("resize", updateScale);
-    return () => window.removeEventListener("resize", updateScale);
-  }, []);
-
   return (
-    <div
-      style={{
-        position: "relative",
-        width: "100vw",
-        height: "100vh",
-        background: "#DF1516",
-        overflow: "hidden",
-      }}
-    >
-      
-      <Sidebar showTasksAndResources />
-      <TopBar />
-
-      <div
-        style={{
-          position: "absolute",
-          left: SIDEBAR_WIDTH,
-          top: TOPBAR_HEIGHT + TOPBAR_GAP,
-          right: 0,
-          bottom: 0,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "flex-start",
-        }}
+    <PageLayout>
+      {/* Header */}
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+        className="hover-bubble bg-white rounded-2xl shadow-lg p-6 md:p-8"
       >
-        {/* ===== SCALE WRAPPER ===== */}
-        <div
-          style={{
-            width: FRAME_WIDTH,
-            height: FRAME_HEIGHT,
-            transform: `scale(${scale})`,
-            transformOrigin: "top left",
-          }}
-        >
-          {/* ===== RED FRAME ===== */}
-          <div
-            style={{
-              position: "relative",
-              width: FRAME_WIDTH,
-              height: FRAME_HEIGHT,
-              borderRadius: 30,
-            }}
-          >
-           
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
-              style={{
-                position: "absolute",
-                top: 111,
-                left: 372,
-                width: 995,
-                height: 152,
-                backgroundColor: "#FFFFFF",
-                borderRadius: 17,
-                boxShadow: "0px 4px 4px rgba(0,0,0,0.25)",
-                padding: "24px 36px",
-              }}
-            >
-              <p style={{ fontFamily: "Arial", fontSize: 45, lineHeight: "45px" }}>
-                Here’s Your Resource Library,{" "}
-                <span style={{ color: "#DF1516" }}>
-                  {firstName || "Name"}!
-                </span>
-              </p>
-
-              <p style={{ marginTop: 18, fontFamily: "Montserrat", fontSize: 18, fontWeight: 400 }}>
-                Access your personalized materials to enhance your AIDE journey.
-              </p>
-            </motion.div>
-
-            {/* ================= CARD 1 ================= */}
-            <ResourceCard
-              top={285}
-              left={372}
-              bg="#F6C888"
-              title="Mindset Reset Guide"
-              description="Download or explore to apply AIDE principles effectively."
-              file={RESOURCES.mindset}
-              buttonWidth={203}
-              delay={0.15}
-            />
-
-            {/* ================= CARD 2 ================= */}
-            <ResourceCard
-              top={285}
-              left={893}
-              bg="#FFFFFF"
-              title="Business Growth Blueprint"
-              description="Download or explore to apply AIDE principles effectively."
-              file={RESOURCES.growth}
-              buttonWidth={208}
-              delay={0.25}
-            />
-
-            {/* ================= CARD 3 ================= */}
-            <ResourceCard
-              top={516}
-              left={372}
-              bg="#FFFFFF"
-              title="Execution Masterclass"
-              description="Download or explore to apply AIDE principles effectively."
-              file={RESOURCES.execution}
-              buttonWidth={203}
-              delay={0.35}
-            />
-
-            {/* ================= CARD 4 ================= */}
-            <ResourceCard
-              top={516}
-              left={893}
-              bg="#F6C888"
-              title="Leadership & Influence Playbook"
-              description="Develop leadership skills that help you inspire and influence people effectively."
-              file={RESOURCES.leadership}
-              buttonWidth={208}
-              delay={0.45}
-            />
-
-            {/* ================= QUICK TIPS ================= */}
-            <motion.div
-              initial={{ opacity: 0, y: 30, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.7, delay: 0.55, ease: "easeOut" }}
-              className="hover-bubble"
-              style={{
-                position: "absolute",
-                top: 747,
-                left: 372,
-                width: 995,
-                height: 208,
-                border: "2px solid #F3C17E",
-                padding: 36,
-                color: "#FFFFFF",
-              }}
-            >
-              <p style={{ fontFamily: "Montserrat", fontSize: 26, fontWeight: 700 }}>
-                Quick Tips
-              </p>
-
-              <ul
-                style={{
-                  marginTop: 20,
-                  fontFamily: "Montserrat",
-                  fontSize: 20,
-                  lineHeight: "32px",
-                }}
-              >
-                <li>Start your day with clarity.</li>
-                <li>Break goals into smaller steps.</li>
-                <li>Review wins weekly.</li>
-              </ul>
-            </motion.div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ================================
-   REUSABLE RESOURCE CARD
-================================ */
-function ResourceCard({
-  top,
-  left,
-  bg,
-  title,
-  description,
-  file,
-  buttonWidth,
-  delay = 0,
-}: {
-  top: number;
-  left: number;
-  bg: string;
-  title: string;
-  description: string;
-  file: string;
-  buttonWidth: number;
-  delay?: number;
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 30, scale: 0.95 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.7, delay, ease: "easeOut" }}
-      className="hover-bubble"
-      style={{
-        position: "absolute",
-        top,
-        left,
-        width: 474,
-        height: 214,
-        backgroundColor: bg,
-        boxShadow: "0px 4px 4px rgba(0,0,0,0.25)",
-        padding: 28,
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-      }}
-    >
-      <div>
-        <p style={{ fontFamily: "Montserrat", fontSize: 24, fontWeight: 500 }}>
-          {title}
+        <h1 className="text-2xl md:text-4xl font-normal" style={{ fontFamily: "Arial" }}>
+          Here's Your Resource Library, <span className="text-primary">{firstName || "Name"}!</span>
+        </h1>
+        <p className="mt-3 text-base md:text-lg font-montserrat">
+          Access your personalized materials to enhance your AIDE journey.
         </p>
-        <p style={{ marginTop: 16, fontFamily: "Montserrat", fontSize: 18 }}>
-          {description}
-        </p>
+      </motion.div>
+
+      {/* Resources Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+        <ResourceCard
+          title="Mindset Reset Guide"
+          description="Download or explore to apply AIDE principles effectively."
+          file={RESOURCES.mindset}
+          variant="primary"
+          delay={0.15}
+        />
+        <ResourceCard
+          title="Business Growth Blueprint"
+          description="Download or explore to apply AIDE principles effectively."
+          file={RESOURCES.growth}
+          variant="secondary"
+          delay={0.25}
+        />
+        <ResourceCard
+          title="Execution Masterclass"
+          description="Download or explore to apply AIDE principles effectively."
+          file={RESOURCES.execution}
+          variant="secondary"
+          delay={0.35}
+        />
+        <ResourceCard
+          title="Leadership & Influence Playbook"
+          description="Develop leadership skills that help you inspire and influence people effectively."
+          file={RESOURCES.leadership}
+          variant="primary"
+          delay={0.45}
+        />
       </div>
 
-      <a href={file} download style={{ width: buttonWidth }}>
-        <Button
-          style={{
-            width: "100%",
-            height: 44,
-            borderRadius: 17,
-            fontSize: 20,
-          }}
-          className="bg-[#DF1516] text-white"
-        >
-          Access Now
-        </Button>
-      </a>
-    </motion.div>
+      {/* Quick Tips */}
+      <motion.div
+        initial={{ opacity: 0, y: 30, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.7, delay: 0.55, ease: "easeOut" }}
+        className="hover-bubble border-2 border-secondary p-6 md:p-8"
+      >
+        <h3 className="text-xl md:text-2xl font-bold font-montserrat text-white">
+          Quick Tips
+        </h3>
+        <ul className="mt-4 text-base md:text-lg font-montserrat text-white space-y-2">
+          <li>• Start your day with clarity.</li>
+          <li>• Break goals into smaller steps.</li>
+          <li>• Review wins weekly.</li>
+        </ul>
+      </motion.div>
+    </PageLayout>
   );
 }
