@@ -145,3 +145,10 @@
     @apply text-2xl;
   }
 }
+
+/* Montserrat utility class */
+@layer utilities {
+  .font-montserrat {
+    font-family: "Montserrat", sans-serif;
+  }
+}

@@ -1,26 +1,17 @@
+import { PageLayout } from "@/components/PageLayout";
 import { Button } from "@/components/ui/button";
-import LockedCanvas from "@/components/LockedCanvas";
-import { useAppLayout } from "@/hooks/useAppLayout";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
 
-const SIDEBAR_WIDTH = 293; // px — sidebar untouched
-const CANVAS_WIDTH = 1512;
-const CANVAS_HEIGHT = 982;
-
 export default function Assessment() {
   const navigate = useNavigate();
   const [firstName, setFirstName] = useState("");
-  const { topOffset } = useAppLayout();
-  const [scale, setScale] = useState(1);
 
   useEffect(() => {
     const fetchProfile = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+      const { data: { user } } = await supabase.auth.getUser();
 
       if (!user) {
         navigate("/auth");
@@ -39,162 +30,59 @@ export default function Assessment() {
     fetchProfile();
   }, [navigate]);
 
-  // Industry-standard scaling to keep content within viewport
-  useEffect(() => {
-    const updateScale = () => {
-      const scaleX = window.innerWidth / CANVAS_WIDTH;
-      const scaleY = window.innerHeight / CANVAS_HEIGHT;
-      setScale(Math.min(scaleX, scaleY));
-    };
-
-    updateScale();
-    window.addEventListener("resize", updateScale);
-    return () => window.removeEventListener("resize", updateScale);
-  }, []);
-
   return (
-    <LockedCanvas>
-      {/* === CENTERING + SIDEBAR + TOPBAR OFFSET === */}
-      <div
-        style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          justifyContent: "center",
-          paddingLeft: SIDEBAR_WIDTH / 2,
-          paddingTop: topOffset, // ensure content is below TopBar
-        }}
+    <PageLayout>
+      {/* Header Card */}
+      <motion.div
+        initial={{ opacity: 0, y: 30, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="hover-bubble bg-white rounded-2xl shadow-lg p-6 md:p-8 text-center"
       >
-        {/* === SCALE WRAPPER === */}
-        <div
-          style={{
-            width: CANVAS_WIDTH,
-            height: CANVAS_HEIGHT,
-            transform: `scale(${scale})`,
-            transformOrigin: "top left",
-            position: "relative",
-          }}
+        <h1 className="text-2xl md:text-4xl font-normal" style={{ fontFamily: "Arial" }}>
+          Your Weekly AIDE Assessment, <span className="text-primary">{firstName || "Name"}!</span>
+        </h1>
+      </motion.div>
+
+      {/* Main Assessment Card */}
+      <motion.div
+        initial={{ opacity: 0, y: 30, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.8, delay: 0.15, ease: "easeOut" }}
+        className="hover-bubble bg-white shadow-lg p-8 md:p-12 flex flex-col items-center text-center"
+      >
+        <h2 className="text-2xl md:text-4xl font-normal max-w-lg" style={{ fontFamily: "Arial" }}>
+          Ready to take your AIDE Assessment?
+        </h2>
+
+        <p className="text-lg md:text-2xl font-montserrat mt-6 max-w-xl">
+          This assessment takes less than 5 minutes and helps us personalize your growth experience.
+        </p>
+
+        <Button
+          onClick={() => navigate("/quizstep2")}
+          className="mt-8 bg-primary hover:bg-primary/90 focus:ring-2 focus:ring-offset-2 focus:ring-primary px-10 py-4 rounded-2xl text-lg md:text-xl"
         >
-          {/* HEADER CARD */}
-          <motion.div
-            initial={{ opacity: 0, y: 30, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="hover-bubble"
-            style={{
-              position: "absolute",
-              top: 111,
-              left: 372,
-              width: 995,
-              height: 111,
-              backgroundColor: "#FFFFFF",
-              borderRadius: 17,
-              boxShadow: "0px 4px 4px rgba(0,0,0,0.25)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <p style={{ fontSize: 45, fontFamily: "Arial" }}>
-              Your Weekly AIDE Assessment,{" "}
-              <span style={{ color: "#DF1516" }}>{firstName || "Name"}!</span>
-            </p>
-          </motion.div>
+          Take Assessment
+        </Button>
+      </motion.div>
 
-          {/* MAIN ASSESSMENT CARD */}
-          <motion.div
-            initial={{ opacity: 0, y: 30, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.15, ease: "easeOut" }}
-            className="hover-bubble"
-            style={{
-              position: "absolute",
-              top: 245,
-              left: 372,
-              width: 995,
-              height: 401,
-              backgroundColor: "#FFFFFF",
-              borderRadius: 0,
-              boxShadow: "0px 4px 4px rgba(0,0,0,0.25)",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              padding: "0 24px",
-            }}
-          >
-            <h1
-              style={{
-                fontSize: 48,
-                textAlign: "center",
-                width: 700,
-                fontFamily: "Arial",
-              }}
-            >
-              Ready to take your AIDE Assessment?
-            </h1>
-
-            <p
-              style={{
-                fontSize: 28,
-                textAlign: "center",
-                width: 770,
-                marginTop: 24,
-                fontFamily: "Montserrat",
-              }}
-            >
-              This assessment takes less than 5 minutes and helps us personalize
-              your growth experience.
-            </p>
-
-            <Button
-              onClick={() => navigate("/quizstep2")}
-              className="mt-8 bg-[#DF1516] hover:bg-[#c01314] focus:ring-2 focus:ring-offset-2 focus:ring-[#DF1516]"
-              style={{
-                width: 257,
-                height: 52,
-                borderRadius: 17,
-                fontSize: 20,
-              }}
-            >
-              Take Assessment
-            </Button>
-          </motion.div>
-
-          {/* QUICK TIPS */}
-          <motion.div
-            initial={{ opacity: 0, y: 30, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-            className="hover-bubble"
-            style={{
-              position: "absolute",
-              top: 689,
-              left: 372,
-              width: 995,
-              height: 208,
-              border: "2px solid #F3C17E",
-              padding: 32,
-              color: "#FFFFFF",
-            }}
-          >
-            <h2 style={{ fontSize: 26, fontWeight: 500 }}>Quick Tips</h2>
-            <ul
-              style={{
-                marginTop: 16,
-                fontWeight: 300,
-                fontSize: 20,
-                lineHeight: "32px",
-                fontFamily: "Montserrat",
-              }}
-            >
-              <li>Start your day with clarity.</li>
-              <li>Break goals into smaller steps.</li>
-              <li>Review wins weekly.</li>
-            </ul>
-          </motion.div>
-        </div>
-      </div>
-    </LockedCanvas>
+      {/* Quick Tips */}
+      <motion.div
+        initial={{ opacity: 0, y: 30, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+        className="hover-bubble border-2 border-secondary p-6 md:p-8"
+      >
+        <h3 className="text-xl md:text-2xl font-medium font-montserrat text-white">
+          Quick Tips
+        </h3>
+        <ul className="mt-4 text-base md:text-lg font-light font-montserrat text-white space-y-2">
+          <li>• Start your day with clarity.</li>
+          <li>• Break goals into smaller steps.</li>
+          <li>• Review wins weekly.</li>
+        </ul>
+      </motion.div>
+    </PageLayout>
   );
 }
