@@ -48,7 +48,7 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
       {/* Desktop Sidebar */}
       <aside className="hidden md:flex flex-col justify-between fixed left-0 top-0 w-[14vw] min-w-[200px] max-w-[240px] h-screen bg-background text-black z-40 shadow-md flex-shrink-0">
         {/* Top: Logo + Menu */}
-        <div className="flex flex-col pt-4 px-4 gap-6">
+        <div className="flex flex-col pt-4 px-4 gap-10">
           <Link to="/dashboard">
             <img
               src={aideLogo}
@@ -57,7 +57,7 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
             />
           </Link>
 
-          <nav className="flex flex-col gap-4">
+          <nav className="flex flex-col gap-6">
             {menuItems.map((item) => (
               <Link
                 key={item.label}
