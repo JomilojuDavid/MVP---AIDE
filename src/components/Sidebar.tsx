@@ -46,14 +46,14 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
       </button>
 
       {/* Desktop Sidebar */}
-      <aside className="hidden md:flex flex-col justify-between fixed left-0 top-0 w-[260px] h-screen bg-background text-black z-40 shadow-md flex-shrink-0">
+      <aside className="hidden md:flex flex-col justify-between fixed left-0 top-0 w-[16.25rem] h-screen bg-background text-black z-40 shadow-md flex-shrink-0">
         {/* Top: Logo + Menu */}
         <div className="flex flex-col pt-6 px-6 gap-8">
           <Link to="/dashboard">
             <img
               src={aideLogo}
               alt="AIDE Logo"
-              className="w-[167px] h-[132px] object-contain cursor-pointer"
+              className="w-[10.4rem] h-[8.25rem] object-contain cursor-pointer"
             />
           </Link>
 
@@ -63,11 +63,11 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
                 key={item.label}
                 to={item.path}
                 className={cn(
-                  "flex items-center gap-4 text-[21px] font-normal font-sans hover:opacity-80 transition-opacity",
+                  "flex items-center gap-4 text-[1.3rem] font-normal font-sans hover:opacity-80 transition-opacity",
                   isActive(item.path) ? "font-bold text-black" : "text-black/70"
                 )}
               >
-                <img src={item.icon} alt={item.label} className="w-[30px] h-[30px]" />
+                <img src={item.icon} alt={item.label} className="w-[1.875rem] h-[1.875rem]" />
                 {item.label}
               </Link>
             ))}
@@ -82,9 +82,9 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
           <img
             src={supportWoman}
             alt="Support"
-            className="w-[46px] h-[52px] rounded-full object-cover"
+            className="w-[2.875rem] h-[3.25rem] rounded-full object-cover"
           />
-          <span className="text-[24px] font-normal font-sans text-black">
+          <span className="text-[1.5rem] font-normal font-sans text-black">
             Support
           </span>
         </button>
@@ -99,12 +99,12 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
             className="md:hidden fixed inset-0 bg-black/50 z-30"
             onClick={() => setIsOpen(false)}
           />
-          <aside className="md:hidden fixed left-0 top-0 w-64 h-screen bg-background text-black z-40 p-6 flex flex-col justify-between">
+          <aside className="md:hidden fixed left-0 top-0 w-[16rem] h-screen bg-background text-black z-40 p-6 flex flex-col justify-between">
             <Link to="/dashboard">
               <img
                 src={aideLogo}
                 alt="AIDE Logo"
-                className="w-[167px] h-[132px] object-contain cursor-pointer mb-4"
+                className="w-[10.4rem] h-[8.25rem] object-contain cursor-pointer mb-4"
               />
             </Link>
 
@@ -114,12 +114,12 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
                   key={item.label}
                   to={item.path}
                   className={cn(
-                    "flex items-center gap-4 text-[21px] font-normal font-sans hover:opacity-80 transition-opacity",
+                    "flex items-center gap-4 text-[1.3rem] font-normal font-sans hover:opacity-80 transition-opacity",
                     isActive(item.path) ? "font-bold text-black" : "text-black/70"
                   )}
                   onClick={() => setIsOpen(false)}
                 >
-                  <img src={item.icon} alt={item.label} className="w-[30px] h-[30px]" />
+                  <img src={item.icon} alt={item.label} className="w-[1.875rem] h-[1.875rem]" />
                   {item.label}
                 </Link>
               ))}
@@ -135,9 +135,9 @@ export const Sidebar = ({ showTasksAndResources = false }: SidebarProps) => {
               <img
                 src={supportWoman}
                 alt="Support"
-                className="w-[46px] h-[52px] rounded-full object-cover"
+                className="w-[2.875rem] h-[3.25rem] rounded-full object-cover"
               />
-              <span className="text-[24px] font-normal font-weight-300 font-sans text-black">
+              <span className="text-[1.5rem] font-normal font-sans text-black">
                 Support
               </span>
             </button>
