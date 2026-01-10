@@ -49,7 +49,7 @@ export function PageLayout({
       <Sidebar showTasksAndResources={showTasksAndResources} />
       <TopBar />
 
-      <main className="h-screen w-full md:pl-[260px] pt-20 md:pt-24 overflow-hidden flex justify-center">
+      <main className="h-screen w-full md:pl-[16.25rem] pt-20 md:pt-24 overflow-hidden flex justify-center">
         <div
           className="origin-top"
           style={{

@@ -208,7 +208,7 @@ export default function Auth() {
   };
 
   return (
-    <div className="min-h-screen w-full flex relative bg-white">
+    <div className="h-screen w-full flex relative bg-white overflow-hidden">
       {/* LOGO */}
       <img
         src={aideLogo}
