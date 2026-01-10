@@ -26,46 +26,27 @@ export default function Auth() {
   const leftRef = useRef<HTMLDivElement>(null);
   const rightRef = useRef<HTMLDivElement>(null);
 
-  /** CHECK EXISTING SESSION ON MOUNT */
-  useEffect(() => {
-    const checkExistingSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session?.user) {
-        navigate("/dashboard");
-      }
-    };
-    checkExistingSession();
-  }, [navigate]);
-
-  /** AUTH STATE LISTENER (single source of truth for redirects) */
+  /** AUTH STATE LISTENER - set up BEFORE checking session */
   useEffect(() => {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (event === "SIGNED_IN" && session?.user) {
-        try {
-          const { data: profile } = await supabase
-            .from("profiles")
-            .select("created_at")
-            .eq("id", session.user.id)
-            .single();
-
-          if (profile?.created_at) {
-            const createdAt = new Date(profile.created_at);
-            const now = new Date();
-            const isNewUser = now.getTime() - createdAt.getTime() < 30000;
-
-            navigate(isNewUser ? "/quiz-step2" : "/dashboard");
-          } else {
-            navigate("/quiz-step2");
-          }
-        } catch (error) {
-          // If profile query fails, just go to dashboard
-          console.error("Profile check error:", error);
+        // Small delay to ensure session is fully established
+        setTimeout(() => {
           navigate("/dashboard");
-        }
+        }, 100);
       }
     });
+
+    // Check existing session AFTER listener is set up
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        navigate("/dashboard");
+      }
+    };
+    checkSession();
 
     return () => subscription.unsubscribe();
   }, [navigate]);
