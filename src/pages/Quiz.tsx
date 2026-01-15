@@ -7,12 +7,14 @@ import { cn } from "@/lib/utils";
 import { Settings } from "lucide-react";
 import aideLogo from "@/assets/aide-logo.png";
 import { motion } from "framer-motion";
+import { SupportModal } from "@/components/SupportModal";
 
 export default function Quiz() {
   const navigate = useNavigate();
   const [question1, setQuestion1] = useState("");
   const [question2, setQuestion2] = useState("");
   const [question3, setQuestion3] = useState("");
+  const [showSupportModal, setShowSupportModal] = useState(false);
 
   const handleSubmit = () => {
     if (!question1 || !question2 || !question3.trim()) {
@@ -40,7 +42,10 @@ export default function Quiz() {
           </p>
         </div>
 
-        <div className="flex items-center gap-3 justify-center">
+        <div 
+          className="flex items-center gap-3 justify-center cursor-pointer hover:opacity-80 transition-opacity"
+          onClick={() => setShowSupportModal(true)}
+        >
           <img
             src="https://randomuser.me/api/portraits/women/44.jpg"
             alt="Support"
@@ -49,6 +54,8 @@ export default function Quiz() {
           <span className="text-sm font-semibold text-gray-800">Support</span>
         </div>
       </div>
+
+      <SupportModal open={showSupportModal} onOpenChange={setShowSupportModal} />
 
       {/* Main Quiz Section */}
       <motion.div
