@@ -60,7 +60,7 @@ export default function Assessment() {
         </p>
 
         <Button
-          onClick={() => navigate("/quizstep2")}
+          onClick={() => navigate("/quiz-step2")}
           className="mt-8 bg-primary hover:bg-primary/90 focus:ring-2 focus:ring-offset-2 focus:ring-primary px-10 py-4 rounded-2xl text-lg md:text-xl"
         >
           Take Assessment
