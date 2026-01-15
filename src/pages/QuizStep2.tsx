@@ -7,11 +7,13 @@ import { cn } from "@/lib/utils";
 import { Settings } from "lucide-react";
 import aideLogo from "@/assets/aide-logo.png";
 import { motion } from "framer-motion";
+import { SupportModal } from "@/components/SupportModal";
 
 export default function QuizStep2() {
   const navigate = useNavigate();
   const [aideStage, setAideStage] = useState("");
   const [improvement, setImprovement] = useState("");
+  const [showSupportModal, setShowSupportModal] = useState(false);
 
   const handleSubmit = () => {
     if (!aideStage || !improvement) {
@@ -40,7 +42,10 @@ export default function QuizStep2() {
         </div>
 
         {/* Support Section */}
-        <div className="flex items-center gap-3 justify-center">
+        <div 
+          className="flex items-center gap-3 justify-center cursor-pointer hover:opacity-80 transition-opacity"
+          onClick={() => setShowSupportModal(true)}
+        >
           <img
             src="https://randomuser.me/api/portraits/women/44.jpg"
             alt="Support"
@@ -49,6 +54,8 @@ export default function QuizStep2() {
           <span className="text-sm font-semibold text-gray-800">Support</span>
         </div>
       </div>
+
+      <SupportModal open={showSupportModal} onOpenChange={setShowSupportModal} />
 
       {/* Main Area */}
       <div className="flex-1 bg-primary relative flex justify-center items-center p-8">
