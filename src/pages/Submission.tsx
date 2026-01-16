@@ -3,97 +3,147 @@ import LockedCanvas from "@/components/LockedCanvas";
 import { useNavigate } from "react-router-dom";
 import aideLogo from "@/assets/aide-logo.png";
 import { motion } from "framer-motion";
-import { HelpCircle } from "lucide-react";
 
 export default function Submission() {
   const navigate = useNavigate();
 
   return (
     <LockedCanvas>
-      {/* VIEWPORT WRAPPER — THIS IS THE FIX */}
-      <div className="relative h-screen w-full flex items-center justify-center">
+      {/* VIEWPORT */}
+      <div className="relative w-full h-screen bg-white">
 
-        {/* LOGO — matches screenshot position */}
+        {/* LOGO */}
         <img
           src={aideLogo}
           alt="AIDE Logo"
-          className="absolute top-[32px] left-[40px] w-[160px]"
+          style={{
+            position: "absolute",
+            top: 19,
+            left: 26,
+            width: 167,
+            height: 132,
+          }}
         />
 
-        {/* SUPPORT ICON — bottom right */}
-        <div className="absolute bottom-[32px] right-[40px] cursor-pointer">
-          <HelpCircle size={34} className="text-black opacity-80" />
+        {/* CENTERED OUTER CARD */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            style={{
+              width: 995,
+              height: 578,
+              borderRadius: 17,
+              background: "#FFFFFF",
+              position: "relative",
+              boxShadow:
+                "inset 0px 4px 4px rgba(0,0,0,0.25), 0px 4px 4px rgba(0,0,0,0.25)",
+            }}
+          >
+            {/* QUIZ COMPLETED CARD */}
+            <div
+              style={{
+                position: "absolute",
+                top: 99,
+                left: 40,
+                width: 914,
+                height: 230,
+                background: "#F3C17E",
+                boxShadow: "0px 4px 4px rgba(0,0,0,0.25)",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              {/* TITLE */}
+              <h1
+                style={{
+                  width: 736,
+                  height: 74,
+                  fontFamily: "Arial",
+                  fontWeight: 400,
+                  fontSize: 64,
+                  lineHeight: "100%",
+                  textAlign: "center",
+                  marginBottom: 32,
+                }}
+              >
+                🎉 Quiz Completed! 🎉
+              </h1>
+
+              {/* SUBTEXT */}
+              <p
+                style={{
+                  width: 559,
+                  height: 58,
+                  fontFamily: "Montserrat",
+                  fontWeight: 500,
+                  fontSize: 24,
+                  lineHeight: "100%",
+                  textAlign: "center",
+                }}
+              >
+                Thank you for completing the quiz. Your personalized roadmap is now ready.
+              </p>
+            </div>
+
+            {/* CTA BUTTON */}
+            <Button
+              onClick={() => navigate("/dashboard")}
+              className="bg-[#DF1516] hover:bg-[#c01314]"
+              style={{
+                position: "absolute",
+                bottom: 52,
+                left: "50%",
+                transform: "translateX(-50%)",
+                width: 650,
+                height: 116,
+                borderRadius: 17,
+                border: "1px solid #FFFFFF",
+                fontFamily: "Montserrat",
+                fontWeight: 500,
+                fontSize: 24,
+              }}
+            >
+              START YOUR JOURNEY TO MINDSET MASTERY
+            </Button>
+          </motion.div>
         </div>
 
-        {/* MAIN SUBMISSION CARD — TRUE CENTER */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.96 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-          className="flex flex-col items-center justify-center bg-white"
+        {/* SUPPORT */}
+        <div
           style={{
-            width: 995,
-            height: 578,
-            borderRadius: 20,
-            border: "1px solid #D9D9D9",
-            boxShadow: "0px 6px 18px rgba(0,0,0,0.18)",
+            position: "absolute",
+            left: 26,
+            bottom: 40,
+            display: "flex",
+            alignItems: "center",
+            gap: 12,
           }}
         >
-          {/* YELLOW MESSAGE CARD */}
           <div
             style={{
-              width: 820,
-              height: 160,
-              backgroundColor: "#F6C888",
-              borderRadius: 8,
-              padding: "28px 40px",
-              textAlign: "center",
-              marginBottom: 90,
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
+              width: 46,
+              height: 52,
+              borderRadius: "50%",
+              background: "#EAEAEA",
             }}
-          >
-            <h1
-              style={{
-                fontSize: 56,
-                fontWeight: 400,
-                lineHeight: "100%",
-                marginBottom: 20,
-              }}
-            >
-              🎉 Quiz Completed! 🎉
-            </h1>
-
-            <p
-              style={{
-                fontSize: 22,
-                fontWeight: 400,
-                lineHeight: "140%",
-                maxWidth: 640,
-              }}
-            >
-              Thank you for completing the quiz. Your personalized roadmap is now
-              ready.
-            </p>
-          </div>
-
-          {/* CTA BUTTON */}
-          <Button
-            onClick={() => navigate("/dashboard")}
-            className="bg-[#DF1516] hover:bg-[#c01314]"
+          />
+          <span
             style={{
-              width: 480,
-              height: 72,
-              borderRadius: 36,
-              fontSize: 20,
-              fontWeight: 600,
+              width: 160,
+              height: 28,
+              fontFamily: "Arial",
+              fontWeight: 400,
+              fontSize: 24,
+              lineHeight: "100%",
             }}
           >
-            START YOUR JOURNEY TO MINDSET MASTERY
-          </Button>
-        </motion.div>
+            Support
+          </span>
+        </div>
       </div>
     </LockedCanvas>
   );
