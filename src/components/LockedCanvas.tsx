@@ -2,13 +2,13 @@ import { ReactNode } from "react";
 import { useAppLayout } from "@/hooks/useAppLayout";
 
 /**
- * LockedCanvas
- * ------------
- * Fixed Figma-accurate canvas
+ * LockedCanvas (Option A)
+ * ----------------------
+ * Global, fixed-size canvas that matches Figma exactly.
  * - 1512 × 982
- * - Centered horizontally & vertically
+ * - No scaling
  * - No scrolling
- * - Children position relative to this frame
+ * - Consistent across all routes
  */
 interface LockedCanvasProps {
   children: ReactNode;
@@ -20,26 +20,22 @@ export function LockedCanvas({ children }: LockedCanvasProps) {
   return (
     <div
       style={{
+        position: "relative",
         width: "100vw",
         height: "100vh",
-        background: "#000", // optional: helps debug overflow
         overflow: "hidden",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        paddingTop: topOffset,
-        boxSizing: "border-box",
       }}
     >
-      {/* Figma Frame */}
+      {/* Fixed canvas */}
       <div
         style={{
+          position: "absolute",
+          top: topOffset,
+          left: "50%",
           width: 1512,
           height: 982,
-          backgroundColor: "#DF1516",
-          borderRadius: 30,
-          position: "relative",
-          overflow: "hidden",
+          transform: "translateX(-50%)",
+          transformOrigin: "top center",
         }}
       >
         {children}
