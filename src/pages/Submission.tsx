@@ -1,14 +1,11 @@
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { LockedCanvas } from "@/components/LockedCanvas";
 import { useNavigate } from "react-router-dom";
 import aideLogo from "@/assets/aide-logo.png";
 import { motion } from "framer-motion";
-import { SupportModal } from "@/components/SupportModal";
 
 export default function Submission() {
   const navigate = useNavigate();
-  const [showSupportModal, setShowSupportModal] = useState(false);
 
   return (
     <LockedCanvas>
@@ -18,58 +15,40 @@ export default function Submission() {
         alt="AIDE Logo"
         style={{
           position: "absolute",
-          top: 24,
+          top: 28,
           left: 32,
-          width: 150,
+          width: 155,
         }}
       />
 
-      {/* SUCCESS CARD */}
+      {/* CENTERED SUCCESS CARD */}
       <motion.div
         initial={{ opacity: 0, scale: 0.97 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
         style={{
           position: "absolute",
-<<<<<<< HEAD
-          top: 170,
-          left: 258,
-          width: 995,
-          height: 580,
-=======
-          top: 180,
+          top: "50%",
           left: "50%",
-          transform: "translateX(-50%)",
-          width: 850,
->>>>>>> e28e2440ac8805942311653034144e7a1e19b7df
+          transform: "translate(-50%, -50%)",
+          width: 995,
+          height: 578,
           backgroundColor: "#FFFFFF",
-<<<<<<< HEAD
           borderRadius: 20,
-          boxShadow: "0px 6px 20px rgba(0,0,0,0.18)",
-=======
-          borderRadius: 16,
-          boxShadow: "0px 4px 20px rgba(0,0,0,0.08)",
-          border: "1px solid #E0E0E0",
->>>>>>> e28e2440ac8805942311653034144e7a1e19b7df
+          border: "1px solid #D9D9D9",
+          boxShadow: "0px 6px 18px rgba(0,0,0,0.18)",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          paddingBottom: 50,
+          justifyContent: "center",
         }}
       >
-<<<<<<< HEAD
         {/* YELLOW BANNER */}
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
-=======
-        {/* ORANGE BANNER */}
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
->>>>>>> e28e2440ac8805942311653034144e7a1e19b7df
+          initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
+          transition={{ delay: 0.25 }}
           style={{
-<<<<<<< HEAD
             width: 820,
             height: 160,
             backgroundColor: "#F6C888",
@@ -78,22 +57,11 @@ export default function Submission() {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            padding: "24px 40px",
-=======
-            width: "100%",
-            backgroundColor: "#F5C98A",
-            borderTopLeftRadius: 16,
-            borderTopRightRadius: 16,
-            padding: "50px 60px",
->>>>>>> e28e2440ac8805942311653034144e7a1e19b7df
+            padding: "28px 40px",
             textAlign: "center",
-<<<<<<< HEAD
-            marginBottom: 80,
-=======
->>>>>>> e28e2440ac8805942311653034144e7a1e19b7df
+            marginBottom: 90,
           }}
         >
-<<<<<<< HEAD
           <h1
             style={{
               fontFamily: "Arial, sans-serif",
@@ -105,41 +73,6 @@ export default function Submission() {
           >
             🎉 Quiz Completed! 🎉
           </h1>
-=======
-          <h1
-            style={{
-              fontFamily: "Georgia, serif",
-              fontStyle: "italic",
-              fontWeight: 400,
-              fontSize: 52,
-              color: "#333333",
-              marginBottom: 20,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 16,
-            }}
-          >
-            <span>🎉</span>
-            <span>Quiz Completed!</span>
-            <span>🎉</span>
-          </h1>
-          <p
-            style={{
-              fontFamily: "Georgia, serif",
-              fontStyle: "italic",
-              fontWeight: 400,
-              fontSize: 20,
-              color: "#333333",
-              lineHeight: 1.6,
-            }}
-          >
-            Thank you for completing the quiz. Your
-            <br />
-            personalized roadmap is now ready.
-          </p>
-        </motion.div>
->>>>>>> e28e2440ac8805942311653034144e7a1e19b7df
 
           <p
             style={{
@@ -147,7 +80,7 @@ export default function Submission() {
               fontSize: 22,
               fontWeight: 400,
               lineHeight: "140%",
-              maxWidth: 620,
+              maxWidth: 640,
             }}
           >
             Thank you for completing the quiz. Your personalized roadmap is now
@@ -159,60 +92,23 @@ export default function Submission() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-<<<<<<< HEAD
-          transition={{ delay: 0.4 }}
-=======
           transition={{ delay: 0.45 }}
-          style={{ marginTop: 50 }}
->>>>>>> e28e2440ac8805942311653034144e7a1e19b7df
         >
           <Button
             onClick={() => navigate("/dashboard")}
-            className="bg-[#DF1516] hover:bg-[#c01314] uppercase tracking-wide text-white"
+            className="bg-[#DF1516] hover:bg-[#c01314]"
             style={{
-<<<<<<< HEAD
               width: 480,
               height: 72,
               borderRadius: 36,
               fontSize: 20,
-=======
-              width: 520,
-              height: 60,
-              borderRadius: 30,
-              fontSize: 16,
->>>>>>> e28e2440ac8805942311653034144e7a1e19b7df
               fontWeight: 600,
-              letterSpacing: "1px",
             }}
           >
-<<<<<<< HEAD
             START YOUR JOURNEY TO MINDSET MASTERY
-=======
-            Start Your Journey to Mindset Mastery
->>>>>>> e28e2440ac8805942311653034144e7a1e19b7df
           </Button>
         </motion.div>
       </motion.div>
-
-      {/* SUPPORT SECTION */}
-      <div
-        className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity"
-        onClick={() => setShowSupportModal(true)}
-        style={{
-          position: "absolute",
-          bottom: 40,
-          left: 40,
-        }}
-      >
-        <img
-          src="https://randomuser.me/api/portraits/women/44.jpg"
-          alt="Support"
-          className="w-10 h-10 rounded-full object-cover"
-        />
-        <span className="text-sm font-semibold text-gray-800">Support</span>
-      </div>
-
-      <SupportModal open={showSupportModal} onOpenChange={setShowSupportModal} />
     </LockedCanvas>
   );
 }
