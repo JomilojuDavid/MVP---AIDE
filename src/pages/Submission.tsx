@@ -32,18 +32,18 @@ export default function Submission() {
         transition={{ duration: 0.6 }}
         style={{
           position: "absolute",
-          top: 160,
-          left: 258,
-          width: 995,
-          height: 480,
+          top: 180,
+          left: "50%",
+          transform: "translateX(-50%)",
+          width: 850,
           backgroundColor: "#FFFFFF",
-          borderRadius: 17,
-          boxShadow: "0px 2px 8px rgba(0,0,0,0.1)",
-          border: "1px solid #E5E5E5",
+          borderRadius: 16,
+          boxShadow: "0px 4px 20px rgba(0,0,0,0.08)",
+          border: "1px solid #E0E0E0",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          overflow: "hidden",
+          paddingBottom: 50,
         }}
       >
         {/* ORANGE BANNER */}
@@ -52,11 +52,11 @@ export default function Submission() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
           style={{
-            width: "80%",
+            width: "100%",
             backgroundColor: "#F5C98A",
-            borderRadius: 8,
-            padding: "40px 60px",
-            marginTop: 60,
+            borderTopLeftRadius: 16,
+            borderTopRightRadius: 16,
+            padding: "50px 60px",
             textAlign: "center",
           }}
         >
@@ -65,21 +65,27 @@ export default function Submission() {
               fontFamily: "Georgia, serif",
               fontStyle: "italic",
               fontWeight: 400,
-              fontSize: 48,
+              fontSize: 52,
               color: "#333333",
-              marginBottom: 16,
+              marginBottom: 20,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 16,
             }}
           >
-            🎉 Quiz Completed! 🎉
+            <span>🎉</span>
+            <span>Quiz Completed!</span>
+            <span>🎉</span>
           </h1>
           <p
             style={{
               fontFamily: "Georgia, serif",
               fontStyle: "italic",
               fontWeight: 400,
-              fontSize: 18,
+              fontSize: 20,
               color: "#333333",
-              lineHeight: 1.5,
+              lineHeight: 1.6,
             }}
           >
             Thank you for completing the quiz. Your
@@ -97,14 +103,14 @@ export default function Submission() {
         >
           <Button
             onClick={() => navigate("/dashboard")}
-            className="bg-[#DF1516] hover:bg-[#c01314] uppercase tracking-wide"
+            className="bg-[#DF1516] hover:bg-[#c01314] uppercase tracking-wide text-white"
             style={{
-              width: 480,
-              height: 64,
-              borderRadius: 32,
+              width: 520,
+              height: 60,
+              borderRadius: 30,
               fontSize: 16,
               fontWeight: 600,
-              letterSpacing: "0.5px",
+              letterSpacing: "1px",
             }}
           >
             Start Your Journey to Mindset Mastery
