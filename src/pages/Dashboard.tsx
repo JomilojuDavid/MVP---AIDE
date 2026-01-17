@@ -88,6 +88,7 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
           initial={{ opacity: 0, y: 30, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+          onClick={() => window.open("https://mvp-aide.onrender.com/tasks")}
           className="hover-bubble border-2 border-secondary p-6 md:p-8"
         >
           <h3 className="text-xl md:text-2xl font-bold font-montserrat text-white">

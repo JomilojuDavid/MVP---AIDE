@@ -2,7 +2,8 @@ import { Button } from "@/components/ui/button";
 import LockedCanvas from "@/components/LockedCanvas";
 import { useNavigate } from "react-router-dom";
 import aideLogo from "@/assets/aide-logo.png";
-import { supportAvatar } from "@/components/Sidebar";
+import supportWoman from "@/assets/support-woman.jpg";
+import { SupportModal } from "./SupportModal";
 import { motion } from "framer-motion";
 
 export default function Submission() {
