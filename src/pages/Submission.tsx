@@ -1,12 +1,14 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import LockedCanvas from "@/components/LockedCanvas";
 import { useNavigate } from "react-router-dom";
 import aideLogo from "@/assets/aide-logo.png";
 import supportWoman from "@/assets/support-woman.jpg";
-import { SupportModal } from "./SupportModal";
+import { SupportModal } from "@/components/SupportModal";
 import { motion } from "framer-motion";
 
 export default function Submission() {
+  const [showSupportModal, setShowSupportModal] = useState(false);
   const navigate = useNavigate();
 
   return (
@@ -125,6 +127,7 @@ export default function Submission() {
 
       {/* SUPPORT */}
       <div
+        onClick={() => setShowSupportModal(true)}
         style={{
           position: "absolute",
           left: 26,
@@ -132,15 +135,17 @@ export default function Submission() {
           display: "flex",
           alignItems: "center",
           gap: 11,
+          cursor: "pointer",
         }}
       >
         <img
-          src={supportAvatar}
+          src={supportWoman}
           alt="Support"
           style={{
             width: 46,
             height: 52,
             objectFit: "cover",
+            borderRadius: "50%",
           }}
         />
 
@@ -157,6 +162,8 @@ export default function Submission() {
           Support
         </span>
       </div>
+
+      <SupportModal open={showSupportModal} onOpenChange={setShowSupportModal} />
     </LockedCanvas>
   );
 }
