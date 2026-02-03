@@ -21,7 +21,7 @@ export default function Settings() {
             <h1 className="text-4xl md:text-5xl font-bold mb-4 text-primary">
               Account Settings
             </h1>
-            <p className="text-xl text-muted-foreground">
+            <p className="text-xl text-muted-foreground text-black">
               Manage your preferences, notifications, and account information.
             </p>
           </motion.div>
