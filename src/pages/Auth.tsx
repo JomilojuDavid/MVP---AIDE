@@ -17,6 +17,7 @@ export default function Auth() {
   const [signInPassword, setSignInPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isSigningUp, setIsSigningUp] = useState(false);
 
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -33,9 +34,22 @@ export default function Auth() {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (event === "SIGNED_IN" && session?.user) {
+        // Check if user has a profile (existing user) or not (new user)
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("id")
+          .eq("id", session.user.id)
+          .single();
+
         // Small delay to ensure session is fully established
         setTimeout(() => {
-          navigate("/dashboard");
+          if (!profile || isSigningUp) {
+            // New user - go to quiz flow
+            navigate("/quiz-step2");
+          } else {
+            // Existing user - go to dashboard
+            navigate("/dashboard");
+          }
         }, 100);
       }
     });
@@ -50,7 +64,7 @@ export default function Auth() {
     checkSession();
 
     return () => subscription.unsubscribe();
-  }, [navigate]);
+  }, [navigate, isSigningUp]);
 
   /** AUTO-SCALING */
   useEffect(() => {
@@ -108,6 +122,7 @@ export default function Auth() {
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setIsSigningUp(true);
 
     try {
       const nameParts = fullName.trim().split(" ");
@@ -127,6 +142,7 @@ export default function Auth() {
 
       toast({ title: "Account created successfully!" });
     } catch (error: any) {
+      setIsSigningUp(false);
       toast({
         title: "Sign up failed",
         description: error.message,
