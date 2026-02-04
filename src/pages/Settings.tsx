@@ -8,8 +8,9 @@ export default function Settings() {
     <div className="flex min-h-screen bg-primary relative">
       <Sidebar showTasksAndResources />
       <TopBar />
-      
-      <main className="flex-1 md:ml-64 p-8 md:p-12">
+
+      {/* MAIN CONTENT */}
+      <main className="flex-1 md:ml-64 pt-28 px-8 md:px-12">
         <div className="max-w-5xl mx-auto space-y-8">
           {/* Header */}
           <motion.div
@@ -21,7 +22,7 @@ export default function Settings() {
             <h1 className="text-4xl md:text-5xl font-bold mb-4 text-primary">
               Account Settings
             </h1>
-            <p className="text-xl text-muted-foreground text-black">
+            <p className="text-xl text-black/70">
               Manage your preferences, notifications, and account information.
             </p>
           </motion.div>
@@ -36,6 +37,7 @@ export default function Settings() {
             <p className="text-xl text-foreground mb-8">
               Update your email, password, or notification settings below.
             </p>
+
             <Button className="bg-primary text-white hover:bg-primary/90 h-14 px-10 font-bold rounded-full">
               Update Settings
             </Button>
