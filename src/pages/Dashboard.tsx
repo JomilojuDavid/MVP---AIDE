@@ -9,22 +9,47 @@ interface DashboardProps {
 
 export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
   const [firstName, setFirstName] = useState("");
+  const [taskProgress, setTaskProgress] = useState(0);
+  const [notificationsCount, setNotificationsCount] = useState(0);
 
   useEffect(() => {
-    const fetchProfile = async () => {
+    const fetchData = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user) return;
 
+      const userId = session.user.id;
+
+      // Fetch first name
       const { data: profile } = await supabase
         .from("profiles")
         .select("first_name")
-        .eq("id", session.user.id)
+        .eq("id", userId)
         .single();
 
       if (profile?.first_name) setFirstName(profile.first_name);
+
+      // Fetch task progress
+      const { data: progressData } = await supabase
+        .from("user_progress")
+        .select("percentage")
+        .eq("user_id", userId)
+        .eq("progress_type", "tasks")
+        .single();
+
+      setTaskProgress(progressData?.percentage || 0);
+
+      // Fetch task notifications count
+      const { data: notifications } = await supabase
+        .from("notifications")
+        .select("*")
+        .eq("user_id", userId)
+        .eq("type", "task")
+        .order("created_at", { ascending: false });
+
+      setNotificationsCount(notifications?.length || 0);
     };
 
-    fetchProfile();
+    fetchData();
   }, []);
 
   return (
@@ -49,7 +74,7 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
         initial={{ opacity: 0, y: 30, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.8, delay: 0.15, ease: "easeOut" }}
-        className="hover-bubble bg-white shadow-lg p-6 md:p-8"
+        className="hover-bubble bg-white shadow-lg p-6 md:p-8 mt-6"
       >
         <h2 className="text-lg md:text-2xl font-medium font-montserrat mb-4">
           Your AIDE Roadmap
@@ -66,7 +91,7 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
       </motion.div>
 
       {/* Daily Prompt & Progress Tracker Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-6">
         {/* Daily Prompt */}
         <motion.div
           initial={{ opacity: 0, y: 30, scale: 0.95 }}
@@ -89,14 +114,25 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
           onClick={() => window.location.href = "/tasks"}
-          className="hover-bubble border-2 border-secondary p-6 md:p-8"
+          className="hover-bubble border-2 border-secondary p-6 md:p-8 cursor-pointer"
         >
-          <h3 className="text-xl md:text-2xl font-bold font-montserrat text-white">
+          <h3 className="text-xl md:text-2xl font-bold font-montserrat text-white flex justify-between items-center">
             Progress Tracker
+            {notificationsCount > 0 && (
+              <span className="ml-2 bg-red-600 text-white px-2 py-1 rounded-full text-sm">
+                {notificationsCount}
+              </span>
+            )}
           </h3>
           <p className="mt-4 text-base md:text-lg font-medium font-montserrat text-white leading-relaxed">
-            You've completed 2 of 4 stages this month.
+            You've completed {taskProgress}% of your tasks this month.
           </p>
+          <div className="w-full h-6 md:h-7 rounded-full border border-white overflow-hidden mt-2">
+            <div
+              className="h-full bg-primary rounded-full transition-all duration-500"
+              style={{ width: `${taskProgress}%` }}
+            />
+          </div>
         </motion.div>
       </div>
 
@@ -105,7 +141,7 @@ export default function Dashboard({ showQuizPrompt = false }: DashboardProps) {
         initial={{ opacity: 0, y: 30, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
-        className="hover-bubble border-2 border-secondary p-6 md:p-8"
+        className="hover-bubble border-2 border-secondary p-6 md:p-8 mt-6"
       >
         <h3 className="text-xl md:text-2xl font-bold font-montserrat text-white">
           Quick Tips
