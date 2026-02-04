@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Checkbox } from "@/components/ui/checkbox";
+import { toast } from "sonner";
 
 interface Task {
   id: string;
@@ -62,11 +63,41 @@ export default function Tasks() {
     fetchProfile();
   }, [navigate]);
 
-  const toggleTask = (id: string) => {
-    setTasks(tasks.map(task => 
-      task.id === id ? { ...task, completed: !task.completed } : task
-    ));
+  // Compute progress for dashboard
+  const completedCount = tasks.filter(t => t.completed).length;
+  const progressPercent = Math.round((completedCount / tasks.length) * 100);
+
+  const toggleTask = async (id: string) => {
+    setTasks(prev =>
+      prev.map(task => {
+        if (task.id === id && !task.completed) {
+          // Fire notification
+          toast.success(`Task completed: ${task.title}`);
+
+          // Optional: save to notifications table
+          supabase.from("notifications").insert({
+            title: "Task Completed",
+            message: task.title,
+            type: "task",
+          });
+        }
+
+        return task.id === id
+          ? { ...task, completed: !task.completed }
+          : task;
+      })
+    );
   };
+
+  // Update progress on Supabase whenever tasks change
+  useEffect(() => {
+    supabase.from("user_progress").upsert({
+      progress_type: "tasks",
+      completed: completedCount,
+      total: tasks.length,
+      percentage: progressPercent,
+    });
+  }, [completedCount, progressPercent, tasks.length]);
 
   return (
     <PageLayout>
@@ -107,10 +138,10 @@ export default function Tasks() {
                 className="mt-1 h-6 w-6 border-2 border-foreground"
               />
               <div className="flex-1">
-                <h3 className={`text-lg md:text-xl font-medium font-montserrat ${task.completed ? 'line-through opacity-60' : ''}`}>
+                <h3 className="text-lg md:text-xl font-medium font-montserrat">
                   {task.title}
                 </h3>
-                <p className={`mt-1 text-sm md:text-base font-montserrat text-muted-foreground ${task.completed ? 'line-through opacity-60' : ''}`}>
+                <p className="mt-1 text-sm md:text-base font-montserrat text-muted-foreground">
                   {task.description}
                 </p>
               </div>
