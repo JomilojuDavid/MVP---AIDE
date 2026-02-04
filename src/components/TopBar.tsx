@@ -24,6 +24,11 @@ export const TopBar = () => {
       document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const goToNotifications = () => {
+    setShowNotifications(false);
+    navigate("/notifications");
+  };
+
   return (
     <div
       ref={dropdownRef}
@@ -38,7 +43,7 @@ export const TopBar = () => {
         pointer-events-auto
       "
     >
-      {/* SETTINGS — 42.6 × 41 */}
+      {/* SETTINGS */}
       <button
         onClick={() => navigate("/settings")}
         className="w-[42.6px] h-[41px] flex items-center justify-center"
@@ -50,7 +55,7 @@ export const TopBar = () => {
         />
       </button>
 
-      {/* BELL — 44 × 44 */}
+      {/* BELL */}
       <button
         onClick={() => setShowNotifications((prev) => !prev)}
         className="relative w-[44px] h-[44px] flex items-center justify-center"
@@ -61,7 +66,7 @@ export const TopBar = () => {
           className="text-white"
         />
 
-        {/* BADGE — EXACT FIGMA */}
+        {/* BADGE */}
         <span
           className="
             absolute
@@ -86,16 +91,16 @@ export const TopBar = () => {
         </span>
       </button>
 
-      {/* 🔔 ANIMATED NOTIFICATION DROPDOWN */}
+      {/* 🔔 SLIDE-DOWN NOTIFICATION DROPDOWN */}
       <AnimatePresence>
         {showNotifications && (
           <motion.div
-            initial={{ opacity: 0, y: -8, scale: 0.96 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -6, scale: 0.96 }}
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -16 }}
             transition={{
-              duration: 0.25,
-              ease: [0.16, 1, 0.3, 1], // smooth, premium easing
+              duration: 0.28,
+              ease: [0.22, 1, 0.36, 1], // natural slide ease
             }}
             className="
               absolute
@@ -127,7 +132,10 @@ export const TopBar = () => {
             </ul>
 
             <div className="px-5 py-3 border-t text-center">
-              <button className="text-primary font-semibold hover:underline">
+              <button
+                onClick={goToNotifications}
+                className="text-primary font-semibold hover:underline"
+              >
                 View all notifications
               </button>
             </div>
