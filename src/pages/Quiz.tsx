@@ -7,7 +7,8 @@ import { cn } from "@/lib/utils";
 import { Settings } from "lucide-react";
 import aideLogo from "@/assets/aide-logo.png";
 import { motion } from "framer-motion";
-import { SupportModal } from "@/components/SupportModal";
+import supportWoman from "@/assets/support-woman.jpg";
+import { SupportModal } from "./SupportModal";
 
 export default function Quiz() {
   const navigate = useNavigate();
