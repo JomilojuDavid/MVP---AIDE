@@ -1,6 +1,7 @@
 import { Settings, Bell } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export const TopBar = () => {
   const navigate = useNavigate();
@@ -85,45 +86,54 @@ export const TopBar = () => {
         </span>
       </button>
 
-      {/* 🔔 NOTIFICATION DROPDOWN */}
-      {showNotifications && (
-        <div
-          className="
-            absolute
-            top-[60px]
-            right-0
-            w-[320px]
-            bg-white
-            rounded-[20px]
-            shadow-2xl
-            border
-            z-[1000]
-            overflow-hidden
-          "
-        >
-          <div className="px-5 py-4 border-b font-bold text-lg">
-            Notifications
-          </div>
+      {/* 🔔 ANIMATED NOTIFICATION DROPDOWN */}
+      <AnimatePresence>
+        {showNotifications && (
+          <motion.div
+            initial={{ opacity: 0, y: -8, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -6, scale: 0.96 }}
+            transition={{
+              duration: 0.25,
+              ease: [0.16, 1, 0.3, 1], // smooth, premium easing
+            }}
+            className="
+              absolute
+              top-[60px]
+              right-0
+              w-[320px]
+              bg-white
+              rounded-[20px]
+              shadow-2xl
+              border
+              z-[1000]
+              overflow-hidden
+            "
+          >
+            <div className="px-5 py-4 border-b font-bold text-lg">
+              Notifications
+            </div>
 
-          <ul className="max-h-[280px] overflow-y-auto">
-            <li className="px-5 py-4 hover:bg-gray-50 cursor-pointer">
-              🔔 New assessment is available
-            </li>
-            <li className="px-5 py-4 hover:bg-gray-50 cursor-pointer">
-              ✅ Profile updated successfully
-            </li>
-            <li className="px-5 py-4 hover:bg-gray-50 cursor-pointer">
-              📚 New resource added to library
-            </li>
-          </ul>
+            <ul className="max-h-[280px] overflow-y-auto">
+              <li className="px-5 py-4 hover:bg-gray-50 cursor-pointer">
+                🔔 New assessment is available
+              </li>
+              <li className="px-5 py-4 hover:bg-gray-50 cursor-pointer">
+                ✅ Profile updated successfully
+              </li>
+              <li className="px-5 py-4 hover:bg-gray-50 cursor-pointer">
+                📚 New resource added to library
+              </li>
+            </ul>
 
-          <div className="px-5 py-3 border-t text-center">
-            <button className="text-primary font-semibold hover:underline">
-              View all notifications
-            </button>
-          </div>
-        </div>
-      )}
+            <div className="px-5 py-3 border-t text-center">
+              <button className="text-primary font-semibold hover:underline">
+                View all notifications
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
