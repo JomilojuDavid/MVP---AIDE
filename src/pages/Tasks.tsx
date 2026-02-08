@@ -67,19 +67,11 @@ export default function Tasks() {
   const completedCount = tasks.filter(t => t.completed).length;
   const progressPercent = Math.round((completedCount / tasks.length) * 100);
 
-  const toggleTask = async (id: string) => {
+  const toggleTask = (id: string) => {
     setTasks(prev =>
       prev.map(task => {
         if (task.id === id && !task.completed) {
-          // Fire notification
           toast.success(`Task completed: ${task.title}`);
-
-          // Optional: save to notifications table
-          supabase.from("notifications").insert({
-            title: "Task Completed",
-            message: task.title,
-            type: "task",
-          });
         }
 
         return task.id === id
@@ -88,16 +80,6 @@ export default function Tasks() {
       })
     );
   };
-
-  // Update progress on Supabase whenever tasks change
-  useEffect(() => {
-    supabase.from("user_progress").upsert({
-      progress_type: "tasks",
-      completed: completedCount,
-      total: tasks.length,
-      percentage: progressPercent,
-    });
-  }, [completedCount, progressPercent, tasks.length]);
 
   return (
     <PageLayout>
