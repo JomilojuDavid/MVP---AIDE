@@ -319,7 +319,7 @@ export default function Auth() {
             style={{ lineHeight: 1.4 }}
           >
             Sign in to continue your personalized journey with{" "}
-            <span className="font-bold text-black">AIDE</span>—where mindset
+            <span className="font-bold text-black">AIDE</span>where mindset
             mastery meets business growth.
           </motion.p>
 
